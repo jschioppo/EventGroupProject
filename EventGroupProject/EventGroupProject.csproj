@@ -27,4 +27,9 @@
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.4" />
   </ItemGroup>
 
+
+  <ItemGroup>
+    <DotNetCliToolReference Include="Amazon.ElasticBeanstalk.Tools" Version="1.1.4" />
+  </ItemGroup>
 </Project>
+
