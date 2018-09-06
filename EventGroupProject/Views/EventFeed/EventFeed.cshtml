@@ -1,0 +1,26 @@
+﻿
+@{
+    ViewData["Title"] = "EventFeed";
+}
+
+<h2>EventFeed</h2>
+
+<p>Maybe this is where events will go, idk</p>
+
+<button onclick="revealPiff()">Click here for dragon</button>
+
+<div id="secret-lair" style="visibility: hidden">
+    <img src="~/images/piff.jpg" />
+    <p style="margin-top: 15px">
+        This was done with some really easy Javascript. It's magic, just like Piff here.
+        You can see the code I wrote to do all this. Just know my CSS ("Style="X") is bad CSS. We will work that out later.
+    </p>
+</div>
+
+<script type="text/javascript">
+    function revealPiff()
+    { 
+        document.getElementById("secret-lair").style.visibility = "visible"
+    }
+</script>
+
