@@ -234,8 +234,10 @@ namespace EventGroupProject.Controllers
                     _logger.LogInformation("User created a new account with password.");
 
                     //Submit user to our database table
-                    DBHandler handler = new DBHandler();
-                    handler.AddUser(model.DisplayName, model.Email);
+                    //DBHandler handler = new DBHandler();
+
+                    //#TODO
+                    //handler.AddUser(model.DisplayName, model.Email);
 
                     return RedirectToLocal(returnUrl);
                 }

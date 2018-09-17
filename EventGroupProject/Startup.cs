@@ -35,6 +35,8 @@ namespace EventGroupProject
 
             // Add application services.
             services.AddTransient<IEmailSender, EmailSender>();
+            services.AddTransient<AuthenticatedUser>();
+            services.AddTransient<DBHandler>();
 
             services.AddScoped<IUserClaimsPrincipalFactory<ApplicationUser>, UserClaimsPrincipalFactory>();
             services.AddMvc();

@@ -19,27 +19,39 @@ namespace EventGroupProject.Models
     public class DBHandler : Controller
     {
         private SqlConnection con { get; set; }
-        public static IConfiguration AppSetting { get; }
+        public IConfiguration AppSetting { get; }
+        public string userEmail;
+        public IHttpContextAccessor contextAccessor;
 
-        static DBHandler()
+        public DBHandler(IHttpContextAccessor _contextAccessor)
         {
             AppSetting = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("appsettings.json")
                 .Build();
+
+            contextAccessor = _contextAccessor;
+            userEmail = contextAccessor.HttpContext.User.Identity.Name;
         }
+
 
         private void StartConnection()
         {
-            string conStr = DBHandler.AppSetting["ConnectionStrings:DefaultConnection"];
+            string conStr = AppSetting["ConnectionStrings:DefaultConnection"];
             con = new SqlConnection(conStr);
-            //string id = GetUserID();
         }
 
-        public bool UserTagsSelected(string displayName)
+        public bool UserTagsSelected()
         {
             StartConnection();
-            return false;
+            SqlCommand cmd = new SqlCommand("GetUserTagsSelected", con);
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            cmd.Parameters.AddWithValue("@EmailAddress", userEmail);
+
+            con.Open();
+            bool tagsSelected = (bool)cmd.ExecuteScalar();
+            return tagsSelected;
         }
 
         public bool AddUser(string displayName, string email)

@@ -14,22 +14,16 @@ namespace EventGroupProject.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly UserManager<ApplicationUser> _userManager;
-        private string AuthenticatedUser;
         DBHandler handler;
 
-        public HomeController(
-            UserManager<ApplicationUser> userManager, IHttpContextAccessor contextAccessor)
+        public HomeController(DBHandler _dbHandler)
         {
-            _userManager = userManager;
-            AuthenticatedUser = contextAccessor.HttpContext.User.Identity.Name;
-            handler = new DBHandler();
+            handler = _dbHandler;
         }
-
 
         public IActionResult Index()
         {
-            if (!handler.UserTagsSelected(AuthenticatedUser))
+            if (!handler.UserTagsSelected())
             {
                 return View("TagSelection", this);
             }
