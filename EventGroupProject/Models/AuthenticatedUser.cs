@@ -8,11 +8,11 @@ namespace EventGroupProject.Models
 {
     public class AuthenticatedUser
     {
-        public string email { get; private set; }
+        public string Email { get; private set; }
 
         public AuthenticatedUser(IHttpContextAccessor contextAccessor)
         {
-            email = contextAccessor.HttpContext.User.Identity.Name;
+            Email = contextAccessor.HttpContext.User.Identity.Name;
         }
     }
 }
