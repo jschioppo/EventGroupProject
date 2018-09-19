@@ -38,6 +38,7 @@ namespace EventGroupProject
 
             services.AddTransient<AuthenticatedUser>();
             services.AddTransient<DBHandler>();
+            services.AddTransient<AppValues>();
 
             services.AddScoped<IUserClaimsPrincipalFactory<ApplicationUser>, UserClaimsPrincipalFactory>();
             services.AddMvc();
