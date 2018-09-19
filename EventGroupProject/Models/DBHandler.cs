@@ -19,33 +19,30 @@ namespace EventGroupProject.Models
     public class DBHandler : Controller
     {
         private SqlConnection Con { get; set; }
-        public IConfiguration AppSetting { get; }
-        public string UserEmail { get; set; }
-        public AuthenticatedUser _authenticatedUser { get; set; }
+        public string UserEmail { get; private set; }
+        public AuthenticatedUser _authenticatedUser { get; private set; }
+        public AppValues _appValues { get; private set; }
 
-        public DBHandler(AuthenticatedUser authenticatedUser)
+        public DBHandler(AuthenticatedUser authenticatedUser, AppValues appValues)
         {
-            AppSetting = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json")
-                .Build();
-
+            _appValues = appValues;
             _authenticatedUser = authenticatedUser;
             UserEmail = _authenticatedUser.Email;
         }
 
-
         private void StartConnection()
         {
-            string conStr = AppSetting["ConnectionStrings:DefaultConnection"];
+            string conStr = _appValues.ConnectionString;
             Con = new SqlConnection(conStr);
         }
 
         public bool UserTagsSelected()
         {
             StartConnection();
-            SqlCommand cmd = new SqlCommand("GetUserTagsSelected", Con);
-            cmd.CommandType = CommandType.StoredProcedure;
+            SqlCommand cmd = new SqlCommand("GetUserTagsSelected", Con)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
 
             cmd.Parameters.AddWithValue("@EmailAddress", UserEmail);
 
@@ -57,8 +54,10 @@ namespace EventGroupProject.Models
         public bool AddUser(string displayName, string email)
         {
             StartConnection();
-            SqlCommand cmd = new SqlCommand("CreateNormalUser", Con);
-            cmd.CommandType = CommandType.StoredProcedure;
+            SqlCommand cmd = new SqlCommand("CreateNormalUser", Con)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
 
             cmd.Parameters.AddWithValue("@DisplayName", displayName);
             cmd.Parameters.AddWithValue("@EmailAddress", email);
@@ -75,8 +74,10 @@ namespace EventGroupProject.Models
         public bool CheckDisplayNameExists(string displayName)
         {
             StartConnection();
-            SqlCommand cmd = new SqlCommand("EnsureUniqueDisplayName", Con);
-            cmd.CommandType = CommandType.StoredProcedure;
+            SqlCommand cmd = new SqlCommand("EnsureUniqueDisplayName", Con)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
 
             cmd.Parameters.AddWithValue("@DisplayName", displayName);
 
