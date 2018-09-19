@@ -14,16 +14,16 @@ namespace EventGroupProject.Controllers
 {
     public class HomeController : Controller
     {
-        private DBHandler Handler { get; set; }
+        private DBHandler _dbHandler { get; set; }
 
-        public HomeController(DBHandler _dbHandler)
+        public HomeController(DBHandler dbHandler)
         {
-            Handler = _dbHandler;
+            _dbHandler = dbHandler;
         }
 
         public IActionResult Index()
         {
-            if (!Handler.UserTagsSelected())
+            if (!_dbHandler.UserTagsSelected())
             {
                 return View("TagSelection", this);
             }

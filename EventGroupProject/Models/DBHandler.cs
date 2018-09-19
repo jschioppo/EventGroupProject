@@ -21,17 +21,17 @@ namespace EventGroupProject.Models
         private SqlConnection Con { get; set; }
         public IConfiguration AppSetting { get; }
         public string UserEmail { get; set; }
-        public AuthenticatedUser AuthenticatedUser { get; set; }
+        public AuthenticatedUser _authenticatedUser { get; set; }
 
-        public DBHandler(AuthenticatedUser _authenticatedUser)
+        public DBHandler(AuthenticatedUser authenticatedUser)
         {
             AppSetting = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("appsettings.json")
                 .Build();
 
-            AuthenticatedUser = _authenticatedUser;
-            UserEmail = AuthenticatedUser.Email;
+            _authenticatedUser = authenticatedUser;
+            UserEmail = _authenticatedUser.Email;
         }
 
 
