@@ -220,7 +220,7 @@ namespace EventGroupProject.Controllers
             ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, DisplayName = model.DisplayName };
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
@@ -232,6 +232,13 @@ namespace EventGroupProject.Controllers
 
                     await _signInManager.SignInAsync(user, isPersistent: false);
                     _logger.LogInformation("User created a new account with password.");
+
+                    //Submit user to our database table
+                    //DBHandler handler = new DBHandler();
+
+                    //#TODO
+                    //handler.AddUser(model.DisplayName, model.Email);
+
                     return RedirectToLocal(returnUrl);
                 }
                 AddErrors(result);
