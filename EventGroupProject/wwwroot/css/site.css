@@ -1,6 +1,7 @@
 ﻿body {
     padding-top: 50px;
     padding-bottom: 20px;
+    background-color: #CFC493;
 }
 
 /* Wrapping element */
@@ -16,6 +17,24 @@
     line-height: 1.4;
 }
 
+h2 {
+    color: #006747;
+    font-weight: bold;
+    font-size: 48px;
+    align-items: center;
+}
+
+.description-text {
+    color: #006747;
+    font-weight: bold;
+}
+
+.error-text {
+    color: red;
+    font-weight: bold;
+    visibility: hidden;
+}
+
 /* Make .svg files in the carousel display properly in older browsers */
 .carousel-inner .item img[src$=".svg"] {
     width: 100%;
@@ -24,6 +43,46 @@
 /* QR code generator */
 #qrCode {
     margin: 15px;
+}
+
+/*The next three describe the behavior of those tag buttons*/
+.tag-container {
+    width: 350px;
+    overflow-y: auto;
+    margin-bottom: 35px;
+    justify-content: center;
+}
+
+    .tag-container > button {
+        width: 100px;
+        height: 50px;
+        float: left;
+        background-color: #009969;
+        color: white;
+        margin: 5px;
+    }
+        
+        /*So what this important means is that it will override any other style applied to an element.
+            For our purposes this means when a button is clicked, these properties will remain
+            It isn't really a good idea to use important on anything, but is ok in this case. It is to be used sparingly.
+            This is all a part of the cascading feature, hence CASCADING Style Sheets (CSS).
+            If you want to know more about the cascading stuff, you can read about it. It's a whole thing.
+
+            tldr: Don't use important constantly. I only used it because this is so nested. There are ways around it.
+            Using it often can make debuffing harder.
+        */
+        .tag-container > button:active, .active {
+            background-color: #006747 !important; /*USF Green Color*/
+            border: solid 2px !important;
+            border-color: black !important;
+        }
+
+.save-button {
+    width: 65px;
+    height: 35px;
+    background-color: #006747; /*USF Green Color*/
+    color: white;
+    margin-left: 5px;
 }
 
 /* Hide/rearrange for smaller screens */

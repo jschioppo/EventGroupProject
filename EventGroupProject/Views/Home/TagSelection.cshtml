@@ -1,30 +1,99 @@
-﻿
+﻿@model IEnumerable<EventGroupProject.Models.Tag>
 @{
     ViewData["Title"] = "TagSelection";
 }
 
-<h2>TagSelection</h2>
+@* Including these lets me use CSS from wwwroot/css/site.css, as well as jQUery, which is another front end tool.  *@
+<link rel="stylesheet" href="~/css/site.css" />
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<h2>Choose Your Tags</h2>
 
 <div id="tags-section">
-    @* Add Tags here somewhere. Feel free to use some default buttons until we create something more dynamic. "Business", "Tech", etc *@
-    @* Try to make it look a little pretty. Prototype is fine though. No need for perfect UI yet. *@
-    @* Add a submit button as well *@
-    <button type="button">Entertainment</button>
-    <button type="button">Lifestyle</button>
-    <button type="button">Gaming</button>
-    <button type="button">Literature</button>
-    <button type="button">Politics</button>
-    <button type="button">Technology</button>
-    <button type="button">Submit</button>
+    <p class="description-text"> These tags are going to help us recommend events based on your preference. Choose one or more tags based on your interests.</p>
+    <p id="no-tag-error" class="error-text">Error: At least one tag needs to be selected</p>
+    <div class="tag-container">
+        @foreach (var tag in Model)
+        {
+            <button type="button" class="tag-btn" onclick="addUserTag(@tag.TagID)">@tag.Name</button>
+        }
+    </div>
+
+    <button id="save-tags-btn" class="save-button" onclick="saveTags()">Save</button>
 </div>
 
 @section Scripts
-{ 
+    {
     <script type="text/javascript">
-                //Add javascript to make submit button unclickable if no tags are selected
-                //Hint: Use CSS. Add all CSS to wwwroot/css and call the CSS class you created in the HTML.
-                //Use good naming conventions for your CSS.
-                //Next step will be letting our DB know that the user selected some tags.
+        //Throughout this section of scripts please take of how basically every small piece of functionality gets it's own function
+
+        var userTags;
+        //This runs every time the page loads, so you can initialize some things right away. Everything starting with a $ is jQuery
+        $(document).ready(function () {
+            $('.tag-btn').click(function () {
+                $(this).toggleClass("active");
+            });
+
+            userTags = new Array();
+        });
+
+        //The reason I have two onclicks is because it's hard to combine the functionality of what the two functions are doing
+        //One is using 'this' to reference which button of that class was clicked, and this one uses the model ID passed from Razor
+        //We can only access the ID in HTML with Razor, hence why this onclick is assigned in the HTML
+        //There is probably a way to combine the two, but this works fine too. Somewhat untypical situation
+        function addUserTag(tagId) {
+
+            if (userTags.includes(tagId)) { 
+                userTags.pop(tagId);
+            }
+            else {
+                userTags.push(tagId);
+            }
+        }
+
+        function ShowErrorText() {
+            $("#no-tag-error").css("visibility", "visible");
+        }
+
+        function HideErrorText() {
+            $("#no-tag-error").css("visibility", "hidden");
+        }
+
+        function saveTags() {
+            if (validateOneTagSelected()) {
+                HideErrorText();
+                sendTags();
+            }
+            else {
+                ShowErrorText();
+            }
+        }
+
+        function validateOneTagSelected() {
+            if (userTags.length > 0) {
+                return true;
+            }
+            return false;
+        }
+
+        function sendTags() {
+            alert(userTags);
+            //Example of an ajax call.
+            //Feel free to use this as an example, but your best bet will be to use Google 
+            //whenever you need to implement one. I never get them right on my first try
+            //The url is the method in the Home controller
+            //"tagIds" is the name of the parameter in the respective C# method
+            //traditional is needed since I sent an array, usually not needed
+            $.ajax({
+                type: "POST",
+                traditional: true,
+                url: "/Home/SaveTags",
+                data: { tagIds: userTags },
+                success: function () {
+                    window.location.href='/Home/Index'
+                }
+            });
+        }
     </script>
 }
 

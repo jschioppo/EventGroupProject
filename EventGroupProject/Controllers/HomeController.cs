@@ -25,7 +25,8 @@ namespace EventGroupProject.Controllers
         {
             if (!_dbHandler.UserTagsSelected())
             {
-                return View("TagSelection", this);
+                List<Tag> tags = _dbHandler.GetAllTags();
+                return View("TagSelection", tags);
             }
             return View();
         }
@@ -47,6 +48,22 @@ namespace EventGroupProject.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+        [HttpPost]
+        public JsonResult SaveTags(string[] tagIds)
+        {
+            int userId = _dbHandler.GetUserId();
+
+            _dbHandler.DeleteUserTags(userId);
+            foreach(var id in tagIds)
+            {
+                int tagId = int.Parse(id);
+                _dbHandler.AddTagToUser(userId, tagId);
+            }
+            _dbHandler.SetTagSelectedToTrue(userId);
+
+            return Json(true);
         }
     }
 }

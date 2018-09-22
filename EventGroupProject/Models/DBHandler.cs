@@ -87,5 +87,98 @@ namespace EventGroupProject.Models
 
             return (i == 1 ? true : false);
         }
+
+        public List<Tag> GetAllTags()
+        {
+            List<Tag> tags = new List<Tag>();
+
+            StartConnection();
+            SqlCommand cmd = new SqlCommand("getAllTags", Con)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+
+            Con.Open();
+            SqlDataReader reader = cmd.ExecuteReader();
+
+            while (reader.Read())
+            {
+                Tag newTag = new Tag()
+                {
+                    TagID = int.Parse(reader["TagID"].ToString()),
+                    Name = reader["TagName"].ToString()
+                };
+
+                tags.Add(newTag);
+            }
+            Con.Close();
+
+            return tags;
+        }
+
+        public bool AddTagToUser(int userId, int tagId)
+        {
+            StartConnection();
+            SqlCommand cmd = new SqlCommand("AddTagToUser", Con)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+
+            cmd.Parameters.AddWithValue("@UserId", userId);
+            cmd.Parameters.AddWithValue("@TagId", tagId);
+
+            Con.Open();
+            int i = cmd.ExecuteNonQuery();
+            Con.Close();
+
+            return (i == 1 ? true : false);
+        }
+
+        public int GetUserId()
+        {
+            StartConnection();
+            SqlCommand cmd = new SqlCommand("GetUserID", Con)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+
+            cmd.Parameters.AddWithValue("@EmailAddress", UserEmail);
+
+            Con.Open();
+            int userId = (int)cmd.ExecuteScalar();
+            Con.Close();
+
+            return userId;
+        }
+
+        public void DeleteUserTags(int userId)
+        {
+            StartConnection();
+            SqlCommand cmd = new SqlCommand("DeleteUserTags", Con)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+
+            cmd.Parameters.AddWithValue("@UserId", userId);
+
+            Con.Open();
+            cmd.ExecuteNonQuery();
+            Con.Close();
+        }
+
+        public void SetTagSelectedToTrue(int userId)
+        {
+            StartConnection();
+            SqlCommand cmd = new SqlCommand("TagsSelectedTrue", Con)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+
+            cmd.Parameters.AddWithValue("@userId", userId);
+
+            Con.Open();
+            cmd.ExecuteNonQuery();
+            Con.Close();
+        }
     }
 }
