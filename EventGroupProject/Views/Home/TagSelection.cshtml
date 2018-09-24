@@ -12,10 +12,10 @@
 <div id="tags-section">
     <p class="description-text"> These tags are going to help us recommend events based on your preference. Choose one or more tags based on your interests.</p>
     <p id="no-tag-error" class="error-text">Error: At least one tag needs to be selected</p>
-    <div class="tag-container">
+    <div class="tag-container" id="tag-btn-container">
         @foreach (var tag in Model)
         {
-            <button type="button" class="tag-btn" onclick="addUserTag(@tag.TagID)">@tag.Name</button>
+            <button type="button" class="tag-btn">@tag.Name</button>
         }
     </div>
 
@@ -37,20 +37,6 @@
             userTags = new Array();
         });
 
-        //The reason I have two onclicks is because it's hard to combine the functionality of what the two functions are doing
-        //One is using 'this' to reference which button of that class was clicked, and this one uses the model ID passed from Razor
-        //We can only access the ID in HTML with Razor, hence why this onclick is assigned in the HTML
-        //There is probably a way to combine the two, but this works fine too. Somewhat untypical situation
-        function addUserTag(tagId) {
-
-            if (userTags.includes(tagId)) { 
-                userTags.pop(tagId);
-            }
-            else {
-                userTags.push(tagId);
-            }
-        }
-
         function ShowErrorText() {
             $("#no-tag-error").css("visibility", "visible");
         }
@@ -60,12 +46,24 @@
         }
 
         function saveTags() {
+            findSelected();
             if (validateOneTagSelected()) {
                 HideErrorText();
                 sendTags();
             }
             else {
                 ShowErrorText();
+            }
+        }
+
+        function findSelected() {
+            var btnContainer = document.getElementById('tag-btn-container');
+            var buttons = btnContainer.getElementsByTagName('button');
+
+            for (i = 0; i < buttons.length; ++i) {
+                if ($(buttons[i]).hasClass("active")) {
+                    userTags.push(i + 1);
+                }
             }
         }
 
@@ -77,7 +75,6 @@
         }
 
         function sendTags() {
-            alert(userTags);
             //Example of an ajax call.
             //Feel free to use this as an example, but your best bet will be to use Google 
             //whenever you need to implement one. I never get them right on my first try
