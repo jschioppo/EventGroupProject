@@ -23,7 +23,9 @@ namespace EventGroupProject.Controllers
 
         public IActionResult Index()
         {
-            if (!_dbHandler.UserTagsSelected())
+            bool isAuthenticated = User.Identity.IsAuthenticated;
+
+            if (isAuthenticated && !_dbHandler.UserTagsSelected())
             {
                 List<Tag> tags = _dbHandler.GetAllTags();
                 return View("TagSelection", tags);
