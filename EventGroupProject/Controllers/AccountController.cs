@@ -24,17 +24,20 @@ namespace EventGroupProject.Controllers
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IEmailSender _emailSender;
         private readonly ILogger _logger;
+        private DBHandler _dbHandler;
 
         public AccountController(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             IEmailSender emailSender,
-            ILogger<AccountController> logger)
+            ILogger<AccountController> logger,
+            DBHandler dbHandler)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _emailSender = emailSender;
             _logger = logger;
+            _dbHandler = dbHandler;
         }
 
         [TempData]
@@ -234,10 +237,7 @@ namespace EventGroupProject.Controllers
                     _logger.LogInformation("User created a new account with password.");
 
                     //Submit user to our database table
-                    //DBHandler handler = new DBHandler();
-
-                    //#TODO
-                    //handler.AddUser(model.DisplayName, model.Email);
+                    _dbHandler.AddUser(model.DisplayName, model.Email);
 
                     return RedirectToLocal(returnUrl);
                 }
