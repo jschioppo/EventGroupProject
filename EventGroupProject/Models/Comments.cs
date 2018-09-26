@@ -7,6 +7,7 @@ namespace EventGroupProject.Models
 {
     public class Comments
     {
-        public char Content { get; set; }
+        public int CommentId { get; set; }
+        public string Content { get; set; }
     }
 }
