@@ -11,6 +11,8 @@ using Microsoft.Extensions.DependencyInjection;
 using EventGroupProject.Data;
 using EventGroupProject.Models;
 using EventGroupProject.Services;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Authorization;
 
 namespace EventGroupProject
 {
@@ -42,6 +44,15 @@ namespace EventGroupProject
 
             services.AddScoped<IUserClaimsPrincipalFactory<ApplicationUser>, UserClaimsPrincipalFactory>();
             services.AddMvc();
+
+            //Force user to login
+            services.AddMvc(config =>
+            {
+                var policy = new AuthorizationPolicyBuilder()
+                                    .RequireAuthenticatedUser()
+                                    .Build();
+                config.Filters.Add(new AuthorizeFilter(policy));
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
