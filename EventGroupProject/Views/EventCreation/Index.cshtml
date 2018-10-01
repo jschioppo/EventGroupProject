@@ -8,10 +8,10 @@
 
 <h2>Create an Event</h2>
 
-@* I know this form is ugly, it's supposed to be. It's just placeholder for now. If you are editing this form, the important thing
-    is to keep the IDs, as that is what the Javascript will use. Edit anything else. All CSS goes in wwwroot/CSS/site.css*@
 <div id="event-creation-form">
-
+        <ul class="error-text" id="error-list">
+            <li class="error-text">Test</li>
+        </ul>
     <div id="city-form" class="event-creation-panel">
         <p class="header-text">Let's start with the basics</p>
         <div>
@@ -102,12 +102,14 @@
     validateButtonAppearance();
 
     $(document).ready(function () {
+        $("#no-tag-error").css("visibility", "visible");
 
         $('.tag-btn').click(function () {
             $(this).toggleClass("active");
         });
 
         $('#next-btn').click(function () {
+            $("#error-list").empty();
             $(':animated').finish();
             switch (currentForm) {
                 case "city":
@@ -115,6 +117,10 @@
                     currentForm = "tag";
                     break;
                 case "tag":
+                    if (!validateOneTagSelected()) {
+                        addError("At least one tag must be selected.");
+                        return;
+                    }
                     transitionNextForm("#tag-form", "#location-time-form");
                     currentForm = "locationDateTime";
                     break;
@@ -131,6 +137,7 @@
         });
 
         $('#prev-btn').click(function () {
+            $("#error-list").empty();
             $(':animated').finish();
             switch (currentForm) {
                 case "city":
@@ -139,10 +146,12 @@
                 case "tag":
                     transitionPrevForm("#tag-form", "#city-form");
                     currentForm = "city";
+                    userTags = [];
                     break;
                 case "locationDateTime":
                     transitionPrevForm("#location-time-form", "#tag-form");
                     currentForm = "tag";
+                    userTags = [];
                     break;
                 case "extraDetails":
                     transitionPrevForm("#extra-details-form", "#location-time-form");
@@ -157,6 +166,7 @@
     });
 
     function validateOneTagSelected() {
+        findSelected();
         if (userTags.length > 0) {
             return true;
         }
@@ -198,6 +208,14 @@
         }
     }
 
+    function showErrorList() {
+        $("#error-list").css("visibility", "visible");
+    }
+
+    function hideErrorList() {
+        $("#error-list").css("visibility", "hidden");
+    }
+
     function validateButtonAppearance() {
         if (currentForm == "city") {
             $("#next-btn").show();
@@ -214,6 +232,11 @@
             $("#prev-btn").show();
             $("#next-btn").show();
         }
+    }
+
+    function addError(error) {
+        $("#error-list").append('<li>' + error + '</li>');
+        showErrorList();
     }
 
 </script>
@@ -247,6 +270,11 @@
 
     #date-input, #time-input{
         width: 160px;
+    }
+
+    #error-list{
+        margin-top: 10px;
+        font-size: 24px;
     }
 
     .multi-container{
