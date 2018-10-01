@@ -1,47 +1,240 @@
 ﻿@model IEnumerable<EventGroupProject.Models.Tag>
 @{
-    ViewData["Title"] = "EventCreation";
+    ViewData["Title"] = "Create an Event";
 }
 
 <link rel="stylesheet" href="~/css/site.css" />
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
-<h2>EventCreation</h2>
+<h2>Create an Event</h2>
 
 @* I know this form is ugly, it's supposed to be. It's just placeholder for now. If you are editing this form, the important thing
     is to keep the IDs, as that is what the Javascript will use. Edit anything else. All CSS goes in wwwroot/CSS/site.css*@
-<div>
-    <div>
-        <input placeholder="City" id="city-input" />
+<div id="event-creation-form">
+
+    <div id="city-form" class="event-creation-panel">
+        <p class="header-text">What city is your event in?</p>
+        <input id="city-input" class="form-control" />
     </div>
-    <div class="tag-container" id="tag-btn-container">
-        @foreach (var tag in Model)
-        {
-            <button type="button" class="tag-btn">@tag.Name</button>
-        }
+
+    <div id="tag-form" class="event-creation-panel">
+        <p class="header-text">Pick some tags that help describe your event. These are how people will find it.</p>
+        <div class="tag-container" id="tag-btn-container">
+            @foreach (var tag in Model)
+            {
+                <button type="button" class="tag-btn">@tag.Name</button>
+            }
+        </div>
     </div>
-    <div>
-        <input placeholder="Location" id="location-input" />
+
+    <div id="location-time-form" class="event-creation-panel">
+        <p class="header-text">Let people know when and where.</p>
+        <div>
+            <label class="description-text">Event Duration</label>
+            <div class="multi-container">
+
+                <div>
+                    <label for="description-hour-input">Hours: </label>
+                </div>
+                <div>
+                    <input id="description-hour-input" class="form-control" />
+                </div>
+                <div>
+                    <label for="description-minute-input">Minutes: </label>
+                </div>
+                <div>
+                    <input id="description-minute-input" class="form-control" />
+                </div>
+            </div>
+            <div>
+                <input placeholder="Location" id="location-input" class="form-control" />
+            </div>
+        </div>
     </div>
-    <div>
-        Duration:
-        Hours: <input  id="description-hour-input" />
-        Minutes: <input id="description-minute-input" />
+
+    <div id="extra-details-form" class="event-creation-panel">
+        <p>Extra Info</p>
+        <div>
+            <input placeholder="Cost" id="cost-input" class="form-control"/>
+        </div>
+        <div>
+            Start Date:
+            <input type="date" id="date-input" />
+            Start Time:
+            <input type="time" id="time-input" />
+        </div>
+        <div>
+            <input placeholder="Description (optional)" id="duration-input" class="form-control"/>
+        </div>
     </div>
-    <div>
-        <input placeholder="Cost" id="cost-input" />
+
+
+    <div class="event-creation-btns">
+        <button hidden id="prev-btn">Previous</button>
+        <button id="next-btn">Next</button>
+        <button hidden id="save-btn">Save</button>
     </div>
-    <div>
-        Start Time:
-        <input type="time" />
-    </div>
-    <div>
-        <input placeholder="Description (optional)" id="duration-input" />
-    </div>
+    
 </div>
 
 @* Write scripts here. With the IDs we are using in place we can make some javascript stuff without finalizing the UI *@
 <script type="text/javascript">
 
+    var userTags;
+    var currentForm = "city";
+    validateButtonAppearance();
+
+    $(document).ready(function () {
+
+        $('.tag-btn').click(function () {
+            $(this).toggleClass("active");
+        });
+
+        $('#next-btn').click(function () {
+            $(':animated').finish();
+            switch (currentForm) {
+                case "city":
+                    transitionNextForm("#city-form", "#tag-form");
+                    currentForm = "tag";
+                    break;
+                case "tag":
+                    transitionNextForm("#tag-form", "#location-time-form");
+                    currentForm = "locationDateTime";
+                    break;
+                case "locationDateTime":
+                    transitionNextForm("#location-time-form", "#extra-details-form");
+                    currentForm = "extraDetails";
+                    break;
+                case "extraDetails":
+                    alert("At the end");
+                    break;
+            }
+
+            validateButtonAppearance();
+        });
+
+        $('#prev-btn').click(function () {
+            $(':animated').finish();
+            switch (currentForm) {
+                case "city":
+                    alert("Already at beginning")
+                    break;
+                case "tag":
+                    transitionPrevForm("#tag-form", "#city-form");
+                    currentForm = "city";
+                    break;
+                case "locationDateTime":
+                    transitionPrevForm("#location-time-form", "#tag-form");
+                    currentForm = "tag";
+                    break;
+                case "extraDetails":
+                    transitionPrevForm("#extra-details-form", "#location-time-form");
+                    currentForm = "locationDateTime";
+                    break;
+            }
+
+            validateButtonAppearance();
+        });
+
+        userTags = new Array();
+    });
+
+    function validateOneTagSelected() {
+        if (userTags.length > 0) {
+            return true;
+        }
+        return false;
+    }
+
+    function transitionNextForm(currentForm, nextForm) {
+        $(currentForm).animate({
+            left: '-50%'
+        }, 500, function () {
+            $(nextForm).css('left', '150%');
+        });
+
+        $(nextForm).animate({
+            left: '50%'
+        }, 500);
+    }
+
+    function transitionPrevForm(currentForm, prevForm) {
+        $(currentForm).animate({
+            left: '150%'
+        }, 500, function () {
+            $(prevForm).css('left', '50%');
+        });
+
+        $(prevForm).animate({
+            left: '50%'
+        }, 500);
+    }
+
+    function findSelected() {
+        var btnContainer = document.getElementById('tag-btn-container');
+        var buttons = btnContainer.getElementsByTagName('button');
+
+        for (i = 0; i < buttons.length; ++i) {
+            if ($(buttons[i]).hasClass("active")) {
+                userTags.push(i + 1);
+            }
+        }
+    }
+
+    function validateButtonAppearance() {
+        if (currentForm == "city") {
+            $("#next-btn").show();
+            $("#save-btn").hide();
+            $("#prev-btn").hide();
+        }
+        else if (currentForm === "extraDetails") {
+            $("#next-btn").hide();
+            $("#prev-btn").show();
+            $("#save-btn").show();
+        }
+        else {
+            $("#save-btn").hide();
+            $("#prev-btn").show();
+            $("#next-btn").show();
+        }
+    }
+
 </script>
+
+@* This is where the really specific CSS goes. Has no chance of being reused elsewhere *@
+<style type="text/css">
+    #city-form{
+        left: 50%;
+    }
+
+    #cost-input{
+        width: 55px;
+    }
+
+    #city-input {
+        width: 50%;
+        margin: 0 auto;
+        margin-top: 15px;
+    }
+
+    #description-hour-input, #description-minute-input{
+        width: 75px;
+    }
+
+    .multi-container{
+        display: table;
+        margin: 0 auto;
+        margin-bottom: 15px;
+    }
+
+        .multi-container > div{
+            margin: 0, 15px, 0, 15px !important;
+            display:table-cell;
+        }
+
+            .multi-container > div > label, input {
+                color: #DEB887;
+                margin-right: 15px;
+            }
+</style>
 

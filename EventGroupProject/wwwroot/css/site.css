@@ -1,7 +1,11 @@
 ﻿body {
     padding-top: 50px;
     padding-bottom: 20px;
-    background-color: #CFC493;
+    /*background-color: #CFC493;*/
+    /*background-color: #249170;*/
+    background-image: linear-gradient(#249170, #008377, #007577, #0D6672);
+    background-repeat: no-repeat;
+    background-attachment: fixed;
 }
 
 /* Wrapping element */
@@ -18,15 +22,24 @@
 }
 
 h2 {
-    color: #006747;
+    /*color: #006747;*/
+    color: #DEB887;
     font-weight: bold;
     font-size: 48px;
     align-items: center;
 }
 
-.description-text {
-    color: #006747;
+.header-text {
+    /*color: #006747;*/
+    color: #DEB887;
     font-weight: bold;
+    font-size: 24px;
+    margin-bottom: 35px;
+}
+
+.description-text {
+    color: #DEB887;
+    font-size: 20px;
 }
 
 .error-text {
@@ -47,34 +60,34 @@ h2 {
 
 /*The next three describe the behavior of those tag buttons*/
 .tag-container {
-    width: 350px;
+    width: 50%;
+    margin: 0 auto;
     overflow-y: auto;
     margin-bottom: 35px;
     justify-content: center;
+    overflow: hidden;
 }
 
     .tag-container > button {
         width: 100px;
         height: 50px;
         float: left;
-        background-color: #009969;
-        color: white;
-        margin: 5px;
+        background-color: #006747;
+        color: #DEB887;
+        margin: 15px;
+        border-radius: 12px;
+        /*I didn't come up with the below. It's really intense. I just copied it from a blog to give the buttons the floaty effects*/
+        -webkit-box-shadow: 0px 2px 0px #2b638f, 0px 1px 6px rgba(0,0,0,.4), inset 0px 1px 0px rgba(255,255,255,.3), inset 0px 0px 3px rgba(255,255,255,.5);
+        -moz-box-shadow: 0px 2px 0px #2b638f, 0px 1px 6px rgba(0,0,0,.4), inset 0px 1px 0px rgba(255,255,255,.3), inset 0px 0px 3px rgba(255,255,255,.5);
+        box-shadow: 0px 2px 0px #2b638f, 0px 1px 6px rgba(0,0,0,.4), inset 0px 1px 0px rgba(255,255,255,.3), inset 0px 0px 3px rgba(255,255,255,.5);
     }
         
-        /*So what this important means is that it will override any other style applied to an element.
-            For our purposes this means when a button is clicked, these properties will remain
-            It isn't really a good idea to use important on anything, but is ok in this case. It is to be used sparingly.
-            This is all a part of the cascading feature, hence CASCADING Style Sheets (CSS).
-            If you want to know more about the cascading stuff, you can read about it. It's a whole thing.
-
-            tldr: Don't use important constantly. I only used it because this is so nested. There are ways around it.
-            Using it often can make debuffing harder.
-        */
         .tag-container > button:active, .active {
-            background-color: #006747 !important; /*USF Green Color*/
-            border: solid 2px !important;
             border-color: black !important;
+            /*Makes the buttons sink down*/
+            -webkit-transform: translate(0, 4px);
+            -moz-transform: translate(0, 4px);
+            transform: translate(0, 4px);
         }
 
 .save-button {
@@ -84,6 +97,45 @@ h2 {
     color: white;
     margin-left: 5px;
 }
+
+.event-creation-panel{
+    position: absolute;
+    width: 50%;
+    height: 300px;
+    text-align: center;
+    left: 150%;
+    top: 100px;
+    margin-left: -25%;
+}
+    /*I want the tag container (all the tag buttons) to have some special behavior when they are on the event creation
+        page without having to alter the tag registration selection. Might go back and change that too though.
+    */
+    .event-creation-panel > .tag-container{
+        width: 100% !important;
+    }
+
+#event-creation-form {
+    position: absolute;
+    margin: 0px;
+    padding: 0px;
+    width: 60%;
+    height: 50%;
+    overflow: hidden;
+}
+
+.event-creation-btns{
+    position: absolute;
+    bottom: 10px;
+}
+
+    .event-creation-btns > button {
+        width: 65px;
+        height: 35px;
+        background-color: #006747; /*USF Green Color*/
+        color: #DEB887;
+        margin: 5px;
+        border-radius: 12px;
+    }
 
 /* Hide/rearrange for smaller screens */
 @media screen and (max-width: 767px) {
