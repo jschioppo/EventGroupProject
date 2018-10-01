@@ -114,12 +114,16 @@ h2 {
         width: 100% !important;
     }
 
+    .event-creation-panel > div {
+        margin-bottom: 30px;
+    }
+
 #event-creation-form {
     position: absolute;
     margin: 0px;
     padding: 0px;
     width: 60%;
-    height: 50%;
+    height: 60%;
     overflow: hidden;
 }
 
