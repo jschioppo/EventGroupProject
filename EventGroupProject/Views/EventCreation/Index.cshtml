@@ -43,5 +43,14 @@
 @* Write scripts here. With the IDs we are using in place we can make some javascript stuff without finalizing the UI *@
 <script type="text/javascript">
 
+    var hours_to_minutes = parseFloat(document.getElementById('description-hour-input').value) * 60;
+    var minutes = parseFloat(document.getElementById('description-minute-input').value);
+    var duration_in_minutes = hours_to_minutes + minutes;
+
+    console.log(duration_in_minutes);
+    /* How to pass variable into model? Should I just change input value? There is two. My guess it to
+     wrap all parameters in an object and use an actionlink?*/
+
+    
 </script>
 
