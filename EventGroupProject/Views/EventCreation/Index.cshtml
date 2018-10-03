@@ -1,4 +1,4 @@
-﻿@model IEnumerable<EventGroupProject.Models.Tag>
+@model IEnumerable<EventGroupProject.Models.Tag>
 @{
     ViewData["Title"] = "Create an Event";
 }
@@ -237,6 +237,19 @@
     function addError(error) {
         $("#error-list").append('<li>' + error + '</li>');
         showErrorList();
+    }
+
+    function convert_to_minutes()
+    {
+        var hours_to_minutes = parseFloat(document.getElementById('description-hour-input').value) * 60;
+        var minutes = parseFloat(document.getElementById('description-minute-input').value);
+        var duration_in_minutes = hours_to_minutes + minutes;
+
+        return duration_in_minutes;
+
+        //console.log(duration_in_minutes);
+        /* How to pass variable into model? Should I just change input value? There is two. My guess it to
+         wrap all parameters in an object and use an actionlink?*/
     }
 
 </script>
