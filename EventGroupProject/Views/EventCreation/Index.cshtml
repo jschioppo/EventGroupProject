@@ -128,9 +128,6 @@
                     transitionNextForm("#location-time-form", "#extra-details-form");
                     currentForm = "extraDetails";
                     break;
-                case "extraDetails":
-                    alert("At the end");
-                    break;
             }
 
             validateButtonAppearance();
@@ -140,9 +137,6 @@
             $("#error-list").empty();
             $(':animated').finish();
             switch (currentForm) {
-                case "city":
-                    alert("Already at beginning")
-                    break;
                 case "tag":
                     transitionPrevForm("#tag-form", "#city-form");
                     currentForm = "city";
