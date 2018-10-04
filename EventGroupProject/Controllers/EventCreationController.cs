@@ -21,5 +21,11 @@ namespace EventGroupProject.Controllers
             List<Tag> tags = _dbHandler.GetAllTags();
             return View(tags);
         }
+        [HttpPost]
+        public JsonResult saveEventData(string eventName, string eventCity, string dateTime, int duration, 
+            string address, int cost, string description, string[] tagIds)
+        {
+            return Json(true);
+        }
     }
 }
