@@ -14,6 +14,7 @@ namespace EventGroupProject.Controllers
         public EventCreationController(DBHandler dBHandler)
         {
             _dbHandler = dBHandler;
+            
         }
 
         public IActionResult Index()

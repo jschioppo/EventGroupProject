@@ -180,5 +180,30 @@ namespace EventGroupProject.Models
             cmd.ExecuteNonQuery();
             Con.Close();
         }
+
+        /*This is mmy edit*/
+        public void AddEvent(string city, string desc, string start_time, int Duration, string location, int price)
+        {
+            StartConnection();
+            SqlCommand cmd = new SqlCommand("AddEvent", Con)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+
+            DateTime myDateTime = DateTime.Now;
+            string sqlFormattedDate = myDateTime.ToString("yyyy-MM-dd HH:mm:ss.fff");
+
+            cmd.Parameters.AddWithValue("@EventCity", city);
+            cmd.Parameters.AddWithValue("@EventDescription", desc);
+            cmd.Parameters.AddWithValue("@EventTime", sqlFormattedDate);
+            cmd.Parameters.AddWithValue("@EventDuration", Duration);
+            cmd.Parameters.AddWithValue("@EventLocation", location);
+            cmd.Parameters.AddWithValue("@EventPrice", price);
+
+            Con.Open();
+            cmd.ExecuteNonQuery();
+            Con.Close();
+        }
+
     }
 }

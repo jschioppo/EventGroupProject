@@ -1,4 +1,4 @@
-﻿@model IEnumerable<EventGroupProject.Models.Tag>
+@model IEnumerable<EventGroupProject.Models.Tag>
 @{
     ViewData["Title"] = "Create an Event";
 }
@@ -131,9 +131,6 @@
                     transitionNextForm("#location-time-form", "#extra-details-form");
                     currentForm = "extraDetails";
                     break;
-                case "extraDetails":
-                    alert("At the end");
-                    break;
             }
 
             validateButtonAppearance();
@@ -143,9 +140,6 @@
             $("#error-list").empty();
             $(':animated').finish();
             switch (currentForm) {
-                case "city":
-                    alert("Already at beginning")
-                    break;
                 case "tag":
                     transitionPrevForm("#tag-form", "#city-form");
                     currentForm = "city";
@@ -357,6 +351,17 @@
         }
         return true;
 
+    function convert_to_minutes()
+    {
+        var hours_to_minutes = parseFloat(document.getElementById('description-hour-input').value) * 60;
+        var minutes = parseFloat(document.getElementById('description-minute-input').value);
+        var duration_in_minutes = hours_to_minutes + minutes;
+
+        return duration_in_minutes;
+
+        //console.log(duration_in_minutes);
+        /* How to pass variable into model? Should I just change input value? There is two. My guess it to
+         wrap all parameters in an object and use an actionlink?*/
     }
 
 </script>
@@ -400,6 +405,42 @@
     .tag-container {
         margin-left: 30px !important;
     }
+
+    .event-creation-panel > .tag-container {
+        width: 100% !important;
+    }
+
+    .event-creation-panel > div {
+        margin-bottom: 30px;
+    }
+
+    #event-creation-form {
+        position: absolute;
+        margin: 0px;
+        padding: 0px;
+        width: 75%;
+        height: 75%;
+        overflow: hidden;
+    }
+
+    .event-creation-btns {
+        position: absolute;
+        bottom: 10px;
+    }
+
+        .event-creation-btns > button {
+            width: 65px;
+            height: 35px;
+            background-color: #006747; /*USF Green Color*/
+            color: #DEB887;
+            margin: 5px;
+            border-radius: 12px;
+        }
+
+            .event-creation-btns > button:focus {
+                outline: 0;
+            }
+
     .multi-container{
         display: table;
         margin: 0 auto;

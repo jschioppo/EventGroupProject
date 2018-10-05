@@ -107,43 +107,6 @@ h2 {
     top: 100px;
     margin-left: -25%;
 }
-    /*I want the tag container (all the tag buttons) to have some special behavior when they are on the event creation
-        page without having to alter the tag registration selection. Might go back and change that too though.
-    */
-    .event-creation-panel > .tag-container{
-        width: 100% !important;
-    }
-
-    .event-creation-panel > div {
-        margin-bottom: 30px;
-    }
-
-#event-creation-form {
-    position: absolute;
-    margin: 0px;
-    padding: 0px;
-    width: 60%;
-    height: 60%;
-    overflow: hidden;
-}
-
-.event-creation-btns{
-    position: absolute;
-    bottom: 10px;
-}
-
-    .event-creation-btns > button {
-        width: 65px;
-        height: 35px;
-        background-color: #006747; /*USF Green Color*/
-        color: #DEB887;
-        margin: 5px;
-        border-radius: 12px;
-    }
-
-    .event-creation-btns > button:focus{
-        outline: 0;
-    }
 
 /* Hide/rearrange for smaller screens */
 @media screen and (max-width: 767px) {
