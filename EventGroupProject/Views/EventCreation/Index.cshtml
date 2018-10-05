@@ -113,6 +113,9 @@
             $(':animated').finish();
             switch (currentForm) {
                 case "city":
+                    if (!validateCityForm()) {
+                        return;
+                    }
                     transitionNextForm("#city-form", "#tag-form");
                     currentForm = "tag";
                     break;
@@ -153,7 +156,13 @@
                     break;
             }
 
+        
+
             validateButtonAppearance();
+        });
+
+        $('#save-btn').click(function () {
+            sendEventData("TEST NAME", "TEST CITY", "TEST DATE", 3, "TEST ADDRESS", 3, "TEST DESCRIPTION", userTags);
         });
 
         userTags = new Array();
@@ -232,6 +241,115 @@
         $("#error-list").append('<li>' + error + '</li>');
         showErrorList();
     }
+
+    function sendEventData(eventName, eventCity, dateTime, duration,
+        address, cost, description) {
+        $.ajax({
+            type: "POST",
+            url: "/EventCreation/saveEventData",
+            data: {
+                eventName: eventName, eventCity: eventCity, dateTime: dateTime, duration: duration,
+                address: address, cost: cost, desciption: description, tagIds: userTags
+            },
+            success: function () {
+                alert("Event Saved!");
+            },
+            error: function () {
+                alert("FU FAIL");
+            }
+        });
+    }
+
+    function validateCityForm() {
+        if (!validateNameField()) {
+            return false;
+        }
+        if (!validateCityField()) {
+            return false;
+        }
+        return true;
+    }
+
+    function validateNameField() {
+        var eventName = $('#event-name-input').val();
+        if (eventName.length == 0) {
+            addError("Please provide a name for your event.");
+            return false;
+        }
+        return true;
+    }
+
+    function validateCityField() {
+        var cityName = $('#city-input').val();
+        if (cityName.length == 0) {
+            addError("Please provide a city for your event.");
+            return false;
+        }
+        return true;
+    }
+
+    function validateDetailsForm() {
+        if (!validateDate()) {
+            return false;
+        }
+        if (!validateDuration()) {
+            return false;
+        }
+        if (!validateAddress()) {
+            return false;
+        }
+        if (!validateCost()) {
+            return false;
+        }
+        return true;
+    }
+
+    function validateDate() {
+        var dateTime = $('#date-input').val();
+        if (dateTime.length == 0) {
+            addError("Please provide a date for your event.");
+            return false;
+        }
+        return true;
+    }
+
+    function validateDuration() {
+        var durationHour = $('#duration-hour-input').val();
+        var durationMinute = $('#duration-minute-input').val();
+        if (durationHour.length == 0) {
+            addError("Please provide some number of hours in duration for your event.");
+            return false;
+        }
+        return true;
+        if (durationMinute.length == 0) {
+            addError("Please provide some number of minutes in duration for your event.");
+            return false;
+        }
+        return true;
+        if (durationHour == 0 && durationMinute == 0) {
+            addError("Please provide some duration for your event.");
+            return false;
+        }
+        return true;
+
+    }
+
+    function validateAddress() {
+        var address = $('#location-input').val();
+        if (address.length == 0) {
+            addError("Please add a location address for your event.")
+            return false;
+        }
+        return true;
+    }
+
+    function validateCost() {
+        var cost = $('#cost-input').val();
+        if (cost.length == 0) {
+            addError("Please add the cost of your event or '0' if it is free.")
+            return false;
+        }
+        return true;
 
     function convert_to_minutes()
     {
