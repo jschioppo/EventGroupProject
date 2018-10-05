@@ -134,6 +134,24 @@ namespace EventGroupProject.Models
             return (i == 1 ? true : false);
         }
 
+        public bool AddTagToEvent(int eventId, int tagId)
+        {
+            StartConnection();
+            SqlCommand cmd = new SqlCommand("AddTagToEvent", Con)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+
+            cmd.Parameters.AddWithValue("@EventId", eventId);
+            cmd.Parameters.AddWithValue("@TagId", tagId);
+
+            Con.Open();
+            int i = cmd.ExecuteNonQuery();
+            Con.Close();
+
+            return (i == 1 ? true : false);
+        }
+
         public int GetUserId()
         {
             StartConnection();
@@ -181,28 +199,36 @@ namespace EventGroupProject.Models
             Con.Close();
         }
 
-        /*This is mmy edit*/
-        public void AddEvent(string city, string desc, string start_time, int Duration, string location, int price)
+        public int AddEvent(string name, string city, string desc, DateTime dateTime, int Duration, string location, int price, int creatorId)
         {
             StartConnection();
+
             SqlCommand cmd = new SqlCommand("AddEvent", Con)
             {
                 CommandType = CommandType.StoredProcedure
             };
 
-            DateTime myDateTime = DateTime.Now;
-            string sqlFormattedDate = myDateTime.ToString("yyyy-MM-dd HH:mm:ss.fff");
+            if(desc == null)
+            {
+                desc = "";
+            }
 
+            string sqlFormattedDate = dateTime.ToString("yyyy-MM-dd HH:mm:ss.fff");
+
+            cmd.Parameters.AddWithValue("@EventName", name);
             cmd.Parameters.AddWithValue("@EventCity", city);
-            cmd.Parameters.AddWithValue("@EventDescription", desc);
             cmd.Parameters.AddWithValue("@EventTime", sqlFormattedDate);
             cmd.Parameters.AddWithValue("@EventDuration", Duration);
             cmd.Parameters.AddWithValue("@EventLocation", location);
             cmd.Parameters.AddWithValue("@EventPrice", price);
+            cmd.Parameters.AddWithValue("@EventCreatorID", creatorId);
+            cmd.Parameters.AddWithValue("@EventDescription", desc);
 
             Con.Open();
-            cmd.ExecuteNonQuery();
+            int createdEventId = (int)cmd.ExecuteScalar();
             Con.Close();
+
+            return createdEventId;
         }
 
     }

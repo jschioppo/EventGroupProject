@@ -43,7 +43,7 @@ h2 {
 }
 
 .error-text {
-    color: red;
+    color: #831f00;
     font-weight: bold;
     visibility: hidden;
 }
