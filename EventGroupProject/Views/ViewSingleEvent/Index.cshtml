@@ -1,8 +1,12 @@
-﻿@model EventGroupProject.Models.Tag
+﻿@model EventGroupProject.Models.Events
 
 @{
     ViewData["Title"] = "Index";
 }
+
+<link rel="stylesheet" href="~/css/site.css" />
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
 
 <h2>Index</h2>
 
@@ -11,20 +15,53 @@
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.TagID)
+            @Html.DisplayNameFor(model => model.EventId)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.TagID)
+            @Html.DisplayFor(model => model.EventId)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.Name)
+            @Html.DisplayNameFor(model => model.EventName)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.Name)
+            @Html.DisplayFor(model => model.EventName)
         </dd>
     </dl>
 </div>
-<div>
-    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
-    <a asp-action="Index">Back to List</a>
+
+<div id="comment-section">
+    <ul id="comments-list">
+
+    </ul>
 </div>
+
+<script type="text/javascript">
+    var comments = []
+    $(document).ready(function () {
+        getComments();
+    });
+
+    function getComments() {
+        var id = 1;
+        
+        $.ajax({
+            type: "GET",
+            url: "GetComments",
+            contentType: "application/json;charset=utf-8",
+            data: { eventId: id },
+            dataType: "json",
+            success: function (result) {
+                comments = result
+            },
+            error: function (response) {
+                alert("Error");
+            }
+        })
+    }
+</script>
+
+<style type="text/css">
+    ul{
+        list-style: none;
+    }
+</style>
