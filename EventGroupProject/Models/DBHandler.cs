@@ -231,5 +231,94 @@ namespace EventGroupProject.Models
             return createdEventId;
         }
 
+        public Events GetEvent(int eventId)
+        {
+            List<Tag> eventTags = GetEventTags(GetEventTagIds(eventId));
+            Events newEvent = null;
+
+            StartConnection();
+
+            SqlCommand cmd = new SqlCommand("GetEvent", Con)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+
+            cmd.Parameters.AddWithValue("@EventId", eventId);
+
+            Con.Open();
+            SqlDataReader reader = cmd.ExecuteReader();
+
+            while (reader.Read())
+            {
+                newEvent = new Events()
+                {
+                    EventName = reader["EventName"].ToString(),
+                    City = reader["City"].ToString(),
+                    Description = reader["Description"].ToString(),
+                    Duration = int.Parse(reader["Duration"].ToString()),
+                    Location = reader["Location"].ToString(),
+                    StartTime = reader.GetDateTime(4),
+                    Price = int.Parse(reader["Price"].ToString()),
+                    EventCreatorId = int.Parse(reader["EventCreatorID"].ToString()),
+                    EventTags = eventTags
+                };
+            }
+
+            Con.Close();
+
+            return newEvent;
+        }
+
+        List<int> GetEventTagIds(int eventId)
+        {
+            StartConnection();
+
+            SqlCommand cmd = new SqlCommand("GetEventTagIds", Con)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+
+            cmd.Parameters.AddWithValue("@EventId", eventId);
+            Con.Open();
+
+            SqlDataReader reader = cmd.ExecuteReader();
+
+            List<int> tagIds = new List<int>();
+
+            while (reader.Read())
+            {
+                tagIds.Add(int.Parse(reader["TagID"].ToString()));
+            }
+
+            Con.Close();
+
+            return tagIds;
+        }
+
+        List<Tag> GetEventTags(List<int> eventTagIds)
+        {
+            SqlCommand cmd = new SqlCommand("GetTag", Con)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+
+            List<Tag> eventTags = new List<Tag>();
+
+            Con.Open();
+
+            foreach (int tagId in eventTagIds)
+            {
+                cmd.Parameters.AddWithValue("@TagId", tagId);
+                eventTags.Add(new Tag()
+                {
+                    Name = (string)cmd.ExecuteScalar()
+                });
+                cmd.Parameters.Clear();
+            }
+
+            Con.Close();
+
+            return eventTags;
+        }
     }
 }

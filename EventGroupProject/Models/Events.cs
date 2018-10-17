@@ -15,5 +15,7 @@ namespace EventGroupProject.Models
         public int Duration { get; set; }
         public string Location { get; set; }
         public int Price { get; set; }
+        public int EventCreatorId { get; set; }
+        public List<Tag> EventTags { get; set; }
     }
 }

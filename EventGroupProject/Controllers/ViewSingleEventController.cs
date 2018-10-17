@@ -11,8 +11,15 @@ using Newtonsoft.Json;
 
 namespace EventGroupProject.Controllers
 {
-    public class ViewSingleEvent : Controller
+    public class ViewSingleEventController : Controller
     {
+        private DBHandler _dbHandler { get; set; }
+
+        public ViewSingleEventController(DBHandler dbHandler)
+        {
+            _dbHandler = dbHandler;
+        }
+
         // GET: /<controller>/
         public IActionResult Index()
         {
@@ -21,6 +28,8 @@ namespace EventGroupProject.Controllers
                 EventName = "Test",
                 EventId = 1
             };
+
+            _dbHandler.GetEvent(4);
 
             return View(newEvent);
         }
