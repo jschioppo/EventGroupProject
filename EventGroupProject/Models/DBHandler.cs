@@ -16,7 +16,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace EventGroupProject.Models
 {
-    public class DBHandler : Controller
+    public class DBHandler
     {
         private SqlConnection Con { get; set; }
         public string UserEmail { get; private set; }
@@ -28,6 +28,11 @@ namespace EventGroupProject.Models
             _appValues = appValues;
             _authenticatedUser = authenticatedUser;
             UserEmail = _authenticatedUser.Email;
+        }
+
+        public DBHandler()
+        {
+
         }
 
         private void StartConnection()
@@ -161,6 +166,23 @@ namespace EventGroupProject.Models
             };
 
             cmd.Parameters.AddWithValue("@EmailAddress", UserEmail);
+
+            Con.Open();
+            int userId = (int)cmd.ExecuteScalar();
+            Con.Close();
+
+            return userId;
+        }
+
+        public int GetUserId(string email)
+        {
+            StartConnection();
+            SqlCommand cmd = new SqlCommand("GetUserID", Con)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+
+            cmd.Parameters.AddWithValue("@EmailAddress", email);
 
             Con.Open();
             int userId = (int)cmd.ExecuteScalar();
