@@ -26,6 +26,8 @@ namespace EventGroupProject.Controllers
         {
             bool isAuthenticated = User.Identity.IsAuthenticated;
 
+            bool test = _dbHandler.IsUserRegisteredToEvent(2, 2);
+
             if (isAuthenticated && !_dbHandler.UserTagsSelected())
             {
                 List<Tag> tags = _dbHandler.GetAllTags();
