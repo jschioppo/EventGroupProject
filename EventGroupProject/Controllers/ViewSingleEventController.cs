@@ -23,15 +23,7 @@ namespace EventGroupProject.Controllers
         // GET: /<controller>/
         public IActionResult Index()
         {
-            Events newEvent = new Events
-            {
-                EventName = "Test",
-                EventId = 1
-            };
-
-            _dbHandler.GetEvent(4);
-
-            return View(newEvent);
+            return View(_dbHandler.GetEvent(4));
         }
 
         [HttpGet]

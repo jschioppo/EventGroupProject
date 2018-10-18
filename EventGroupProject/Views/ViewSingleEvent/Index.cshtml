@@ -8,32 +8,48 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
 
-<h2>Index</h2>
+<h2>@Html.DisplayFor(model => model.EventName)</h2>
 
-<div>
-    <h4>Tag</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.EventId)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.EventId)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.EventName)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.EventName)
-        </dd>
-    </dl>
+<div id="main-pane">
+    <div id="details-pane" class="info-text">
+        <div>
+            @Html.DisplayFor(model => model.City)
+        </div>
+        <div>
+            @Html.DisplayFor(model => model.Location)
+        </div>
+        <div>
+            @Html.DisplayFor(model => model.StartTime)
+        </div>
+        <div>
+            @Html.DisplayFor(model => model.Duration)
+        </div>
+        <div>
+            @Html.DisplayFor(model => model.Price)
+        </div>
+        <div>
+            @Html.DisplayFor(model => model.Description)
+        </div>
+    </div>
+    <div id="comment-section">
+        <ul id="comments-list"></ul>
+        <textarea></textarea>
+    </div>
+    <div id="users-pane">
+        <ul>
+            <li>User 1</li>
+            <li>User 2</li>
+            <li>User 3</li>
+            <li>User 4</li>
+            <li>User 5</li>
+            <li>User 6</li>
+            <li>User 7</li>
+            <li>User 8</li>
+        </ul>
+    </div>
 </div>
 
-<div id="comment-section">
-    <ul id="comments-list">
 
-    </ul>
-</div>
 
 <script type="text/javascript">
     var comments = []
@@ -63,5 +79,29 @@
 <style type="text/css">
     ul{
         list-style: none;
+    }
+
+    #main-pane{
+        height: 100%;
+        margin-top: 50px;
+    }
+
+    #comment-section {
+        height: 100%;
+        background: white;
+        width: 40%;
+        margin: auto;
+    }
+
+    #details-pane {
+        height: 100%;
+        float: left;
+        width: 30%;
+    }
+
+    #users-pane {
+        height: 100%;
+        float: right;
+        width: 30%;
     }
 </style>

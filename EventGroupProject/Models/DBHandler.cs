@@ -75,6 +75,23 @@ namespace EventGroupProject.Models
             return (i >= 1 ? true : false);
         }
 
+        public string GetDisplayName(int userId)
+        {
+            StartConnection();
+            SqlCommand cmd = new SqlCommand("GetUserDisplayName", Con)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+
+            cmd.Parameters.AddWithValue("@UserId", userId);
+
+            Con.Open();
+            string displayName = (string)cmd.ExecuteScalar();
+            Con.Close();
+
+            return displayName;
+        }
+
         //Keep just in case we want display name to be unique.
         public bool CheckDisplayNameExists(string displayName)
         {
@@ -274,6 +291,7 @@ namespace EventGroupProject.Models
             {
                 newEvent = new Events()
                 {
+                    EventId = int.Parse(reader["EventId"].ToString()),
                     EventName = reader["EventName"].ToString(),
                     City = reader["City"].ToString(),
                     Description = reader["Description"].ToString(),
@@ -281,7 +299,11 @@ namespace EventGroupProject.Models
                     Location = reader["Location"].ToString(),
                     StartTime = reader.GetDateTime(4),
                     Price = int.Parse(reader["Price"].ToString()),
-                    EventCreatorId = int.Parse(reader["EventCreatorID"].ToString()),
+                    EventCreator = new User()
+                    {
+                        UserId = int.Parse(reader["EventCreatorID"].ToString()),
+                        UserDisplayName = GetDisplayName(int.Parse(reader["EventCreatorID"].ToString()))
+                    },
                     EventTags = eventTags
                 };
             }
@@ -341,6 +363,34 @@ namespace EventGroupProject.Models
             Con.Close();
 
             return eventTags;
+        }
+
+        List<User> GetSignedUpUsers(int eventId)
+        {
+            List<User> users = new List<User>();
+
+            SqlCommand cmd = new SqlCommand("GetEventUsers", Con)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+
+            cmd.Parameters.AddWithValue("@EventId", eventId);
+            Con.Open();
+
+            SqlDataReader reader = cmd.ExecuteReader();
+
+            while (reader.Read())
+            {
+                users.Add(new User()
+                {
+                    UserId = int.Parse(reader["UserId"].ToString()),
+                    UserDisplayName = reader["DisplayName"].ToString()
+                });
+            }
+
+            Con.Close();
+
+            return users;
         }
     }
 }
