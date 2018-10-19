@@ -17,6 +17,7 @@ namespace EventGroupProject.Models
         public int Price { get; set; }
         public User EventCreator { get; set; } 
         public List<Tag> EventTags { get; set; }
-        public List<User> SignedUpUsers { get; set; } 
+        public List<User> SignedUpUsers { get; set; }
+        public List<Comments> EventComments { get; set; }
     }
 }

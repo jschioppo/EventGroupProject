@@ -30,6 +30,7 @@ namespace EventGroupProject.Models
             UserEmail = _authenticatedUser.Email;
         }
 
+        //TODO: Am I using this? Check unit tests
         public DBHandler()
         {
 
@@ -273,6 +274,7 @@ namespace EventGroupProject.Models
         public Events GetEvent(int eventId)
         {
             List<Tag> eventTags = GetEventTags(GetEventTagIds(eventId));
+            List<User> signedUpUsers = GetSignedUpUsers(eventId);
             Events newEvent = null;
 
             StartConnection();
@@ -304,6 +306,7 @@ namespace EventGroupProject.Models
                         UserId = int.Parse(reader["EventCreatorID"].ToString()),
                         UserDisplayName = GetDisplayName(int.Parse(reader["EventCreatorID"].ToString()))
                     },
+                    SignedUpUsers = signedUpUsers,
                     EventTags = eventTags
                 };
             }
@@ -367,6 +370,7 @@ namespace EventGroupProject.Models
 
         List<User> GetSignedUpUsers(int eventId)
         {
+            List<int> userIds = new List<int>();
             List<User> users = new List<User>();
 
             SqlCommand cmd = new SqlCommand("GetEventUsers", Con)
@@ -381,14 +385,19 @@ namespace EventGroupProject.Models
 
             while (reader.Read())
             {
-                users.Add(new User()
-                {
-                    UserId = int.Parse(reader["UserId"].ToString()),
-                    UserDisplayName = reader["DisplayName"].ToString()
-                });
+                userIds.Add(int.Parse(reader["UserId"].ToString()));
             }
 
             Con.Close();
+
+            foreach(int userID in userIds)
+            {
+                users.Add(new User()
+                {
+                    UserId = userID,
+                    UserDisplayName = GetDisplayName(userID)
+                });
+            }
 
             return users;
         }

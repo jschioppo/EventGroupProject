@@ -12,8 +12,21 @@
 
 <div id="main-pane">
     <div id="details-pane" class="info-text">
-        <div>
-            @Html.DisplayFor(model => model.City)
+        <div class="detail-box">
+            <div class="info-text">
+                City:
+            </div>
+            <div class="info-text">
+                @Html.DisplayFor(model => model.City)
+            </div>
+        </div>
+        <div class="detail-box">
+            <div class="info-text">
+                City:
+            </div>
+            <div class="info-text">
+                @Html.DisplayFor(model => model.City)
+            </div>
         </div>
         <div>
             @Html.DisplayFor(model => model.Location)
@@ -103,5 +116,13 @@
         height: 100%;
         float: right;
         width: 30%;
+    }
+
+    .detail-box{
+        margin-bottom: 15px;
+    }
+
+    .detail-box > div:first-of-type{
+        font-weight: bold;
     }
 </style>
