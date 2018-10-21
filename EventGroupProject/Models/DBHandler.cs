@@ -316,7 +316,7 @@ namespace EventGroupProject.Models
             return newEvent;
         }
 
-        public bool isAdmin(int userId)
+        public bool IsAdmin(int userId)
         {
             StartConnection();
             SqlCommand cmd = new SqlCommand("checkIfAdmin", Con)
