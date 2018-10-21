@@ -316,6 +316,23 @@ namespace EventGroupProject.Models
             return newEvent;
         }
 
+        public bool isAdmin(int userId)
+        {
+            StartConnection();
+            SqlCommand cmd = new SqlCommand("checkIfAdmin", Con)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+
+            cmd.Parameters.AddWithValue("@UserId", userId);
+
+            Con.Open();
+            int i = (int)cmd.ExecuteScalar();
+            Con.Close();
+
+            return (i == 1 ? true : false);
+        }
+
         List<int> GetEventTagIds(int eventId)
         {
             StartConnection();
