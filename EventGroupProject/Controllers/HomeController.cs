@@ -19,7 +19,6 @@ namespace EventGroupProject.Controllers
         public HomeController(DBHandler dbHandler)
         {
             _dbHandler = dbHandler;
-            //_dbHandler.AddEvent("Tampa", "Software Engineering Test", "2", 25, "USF", 25);
         }
 
         public IActionResult Index()

@@ -23,10 +23,21 @@ namespace EventGroupProject.Controllers
             return View(tags);
         }
         [HttpPost]
-        public JsonResult saveEventData(string eventName, string eventCity, string dateTime, int duration, 
+        public JsonResult SaveEventData(string eventName, string eventCity, string dateTime, int duration, 
             string address, int cost, string description, string[] tagIds)
         {
+            DateTime startDateTime = Convert.ToDateTime(dateTime);
+            int creatorId = _dbHandler.GetUserId();
+            int newEventId = _dbHandler.AddEvent(eventName, eventCity, description, startDateTime, duration, address, cost, creatorId);
+
+            foreach (var id in tagIds)
+            {
+                int tagId = int.Parse(id);
+                _dbHandler.AddTagToEvent(newEventId, tagId);
+            }
+
             return Json(true);
+            //TODO: Add stuff to eventtotag
         }
     }
 }

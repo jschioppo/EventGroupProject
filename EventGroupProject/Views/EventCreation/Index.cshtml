@@ -128,6 +128,9 @@
                     currentForm = "locationDateTime";
                     break;
                 case "locationDateTime":
+                    if (!validateDetailsForm()) {
+                        return;
+                    }
                     transitionNextForm("#location-time-form", "#extra-details-form");
                     currentForm = "extraDetails";
                     break;
@@ -162,7 +165,7 @@
         });
 
         $('#save-btn').click(function () {
-            sendEventData("TEST NAME", "TEST CITY", "TEST DATE", 3, "TEST ADDRESS", 3, "TEST DESCRIPTION", userTags);
+            sendEventData();
         });
 
         userTags = new Array();
@@ -242,102 +245,151 @@
         showErrorList();
     }
 
-    function sendEventData(eventName, eventCity, dateTime, duration,
-        address, cost, description) {
+    function sendEventData() {
+
+        var eventNameInput = $('#event-name-input').val();
+        var eventCityInput = $('#city-input').val();
+        var dateInput = $('#date-input').val();
+        var timeInput = $('#time-input').val();
+        var dateTimeInput = dateInput + " " + timeInput;
+        var durationMinutes = convert_to_minutes();
+        var locationInput = $("#location-input").val();
+        var costInput = $("#cost-input").val();
+        var descriptionInput = $("#description-input").val();
+
         $.ajax({
             type: "POST",
             url: "/EventCreation/saveEventData",
             data: {
-                eventName: eventName, eventCity: eventCity, dateTime: dateTime, duration: duration,
-                address: address, cost: cost, desciption: description, tagIds: userTags
+                eventName: eventNameInput, eventCity: eventCityInput, dateTime: dateTimeInput, duration: durationMinutes,
+                address: locationInput, cost: costInput, description: descriptionInput, tagIds: userTags
             },
             success: function () {
-                alert("Event Saved!");
+                window.location.href = '/Home/Index';
             },
             error: function () {
-                alert("FU FAIL");
+                alert("Event creation was unsuccessful.");
             }
         });
     }
 
+    //Using a bool in this way lets us run every 
     function validateCityForm() {
+
+        errorFlag = false;
+
         if (!validateNameField()) {
-            return false;
+            errorFlag = true;
         }
+
         if (!validateCityField()) {
-            return false;
+            errorFlag = true;
         }
-        return true;
+
+        return !errorFlag;
     }
 
     function validateNameField() {
+
         var eventName = $('#event-name-input').val();
+
         if (eventName.length == 0) {
-            addError("Please provide a name for your event.");
+            addError("The name field cannot be empty.");
             return false;
         }
+
         return true;
     }
 
     function validateCityField() {
+
         var cityName = $('#city-input').val();
+
         if (cityName.length == 0) {
-            addError("Please provide a city for your event.");
+            addError("The city field cannot be empty.");
             return false;
         }
+
         return true;
     }
 
     function validateDetailsForm() {
+
+        errorFlag = false;
+
         if (!validateDate()) {
-            return false;
+            errorFlag = true;
         }
+
+        if (!validateTime()) {
+            errorFlag = true;
+        }
+
         if (!validateDuration()) {
-            return false;
+            errorFlag = true;
         }
+
         if (!validateAddress()) {
-            return false;
+            errorFlag = true;
         }
+
         if (!validateCost()) {
-            return false;
+            errorFlag = true;
         }
-        return true;
+
+        return !errorFlag;
     }
 
     function validateDate() {
-        var dateTime = $('#date-input').val();
-        if (dateTime.length == 0) {
-            addError("Please provide a date for your event.");
+
+        var date = $('#date-input').val();
+
+        if (date.length == 0) {
+            addError("The date field cannot be empty.");
             return false;
         }
+
+        return true;
+    }
+
+    function validateTime() {
+        var time = $('#time-input').val();
+
+        if (time.length == 0) {
+            addError("The time field cannot be empty.");
+            return false;
+        }
+
         return true;
     }
 
     function validateDuration() {
+
         var durationHour = $('#duration-hour-input').val();
         var durationMinute = $('#duration-minute-input').val();
-        if (durationHour.length == 0) {
-            addError("Please provide some number of hours in duration for your event.");
-            return false;
-        }
-        return true;
-        if (durationMinute.length == 0) {
-            addError("Please provide some number of minutes in duration for your event.");
-            return false;
-        }
-        return true;
-        if (durationHour == 0 && durationMinute == 0) {
-            addError("Please provide some duration for your event.");
-            return false;
-        }
-        return true;
 
+        if (durationHour.length == 0) {
+            addError("The hour duration field can not be empty.");
+            return false;
+        }
+
+        if (durationMinute.length == 0) {
+            addError("The minute duration field cannot be empty.");
+            return false;
+        }
+
+        if (durationHour == 0 && durationMinute == 0) {
+            addError("The event duration cannot be 0.");
+            return false;
+        }
+
+        return true;
     }
 
     function validateAddress() {
         var address = $('#location-input').val();
         if (address.length == 0) {
-            addError("Please add a location address for your event.")
+            addError("The location field cannot be empty.")
             return false;
         }
         return true;
@@ -346,22 +398,19 @@
     function validateCost() {
         var cost = $('#cost-input').val();
         if (cost.length == 0) {
-            addError("Please add the cost of your event or '0' if it is free.")
+            addError("The cost field cannot be empty. Enter '0' if it is free.")
             return false;
         }
         return true;
+    }
 
     function convert_to_minutes()
     {
-        var hours_to_minutes = parseFloat(document.getElementById('description-hour-input').value) * 60;
-        var minutes = parseFloat(document.getElementById('description-minute-input').value);
+        var hours_to_minutes = parseFloat(document.getElementById('duration-hour-input').value) * 60;
+        var minutes = parseFloat(document.getElementById('duration-minute-input').value);
         var duration_in_minutes = hours_to_minutes + minutes;
 
         return duration_in_minutes;
-
-        //console.log(duration_in_minutes);
-        /* How to pass variable into model? Should I just change input value? There is two. My guess it to
-         wrap all parameters in an object and use an actionlink?*/
     }
 
 </script>

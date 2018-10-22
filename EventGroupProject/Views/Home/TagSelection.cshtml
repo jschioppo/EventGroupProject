@@ -87,7 +87,10 @@
                 url: "/Home/SaveTags",
                 data: { tagIds: userTags },
                 success: function () {
-                    window.location.href='/Home/Index'
+                    window.location.href = '/Home/Index';
+                },
+                error: function () {
+                    alert("Tag selection unsuccessful.");
                 }
             });
         }

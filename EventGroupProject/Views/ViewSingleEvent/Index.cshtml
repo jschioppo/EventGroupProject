@@ -1,30 +1,249 @@
-﻿@model EventGroupProject.Models.Tag
+﻿@model EventGroupProject.Models.Events
 
 @{
     ViewData["Title"] = "Index";
 }
 
-<h2>Index</h2>
+<link rel="stylesheet" href="~/css/site.css" />
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
 
-<div>
-    <h4>Tag</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.TagID)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.TagID)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-    </dl>
+<h2>@Html.DisplayFor(model => model.EventName)</h2>
+
+<div id="main-pane">
+    <div id="details-pane" class="info-text">
+        <div class="pane-header">
+            Details:
+        </div>
+        <div class="scrollable-list">
+            <div class="detail-box">
+                <div class="info-text">
+                    Host:
+                </div>
+                <div class="info-text">
+                    @Html.DisplayFor(model => model.EventCreator.UserDisplayName)
+                </div>
+            </div>
+            <div class="detail-box">
+                <div class="info-text">
+                    City:
+                </div>
+                <div class="info-text">
+                    @Html.DisplayFor(model => model.City)
+                </div>
+            </div>
+            <div class="detail-box">
+                <div class="info-text">
+                    Location:
+                </div>
+                <div class="info-text">
+                    @Html.DisplayFor(model => model.Location)
+                </div>
+            </div>
+            <div class="detail-box">
+                <div class="info-text">
+                    City:
+                </div>
+                <div class="info-text">
+                    @Html.DisplayFor(model => model.StartTime)
+                </div>
+            </div>
+            <div class="detail-box">
+                <div class="info-text">
+                    Duration:
+                </div>
+                <div class="info-text">
+                    @Html.DisplayFor(model => model.Duration)
+                </div>
+            </div>
+            <div class="detail-box">
+                <div class="info-text">
+                    Cost:
+                </div>
+                <div class="info-text">
+                    $@Html.DisplayFor(model => model.Price)
+                </div>
+            </div>
+            <div class="detail-box">
+                <div class="info-text">
+                    Description:
+                </div>
+                <div class="info-text">
+                    @Html.DisplayFor(model => model.Description)
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="users-pane" class="info-text">
+        <div class="pane-header">Signed Up Users:</div>
+        <div class="scrollable-list">
+            @foreach (var user in Model.SignedUpUsers)
+            {
+                <div>@user.UserDisplayName</div>
+                <div>@user.UserDisplayName</div>
+                <div>@user.UserDisplayName</div>
+                <div>@user.UserDisplayName</div>
+                <div>@user.UserDisplayName</div>
+            }
+        </div>
+    </div>
+    <div id="comment-pane" class="info-text">
+        <div class="pane-header">Comments: </div>
+        <textarea id="comment-box" placeholder="Leave a comment.."></textarea>
+        <div id="comment-section">
+            <div id="comments-list">
+                <div>Comment One</div>
+                <div>Comment One</div>
+                <div>Comment One</div>
+                <div>Comment One</div>
+                <div>Comment One</div>
+                <div>Comment One</div>
+                <div>Comment One</div>
+                <div>Comment One</div>
+                <div>Comment One</div>
+                <div>Comment One</div>
+                <div>Comment One</div>
+                <div>Comment One</div>
+                <div>Comment One</div>
+                <div>Comment One</div>
+                <div>Comment One</div>
+                <div>Comment One</div>
+                <div>Comment One</div>
+                <div>Comment One</div>
+                <div>Comment One</div>
+                <div>Comment One</div>
+                <div>Comment One</div>
+                <div>Comment One</div>
+                <div>Comment One</div>
+                <div>Comment One</div>
+                <div>Comment One</div>
+                <div>Comment One</div>
+                <div>Comment One</div>
+                <div>Comment One</div>
+                <div>Comment One</div>
+                <div>Comment One</div>
+                <div>Comment One</div>
+                <div>Comment One</div>
+                <div>Comment One</div>
+                <div>Comment One</div>
+                <div>Comment One</div>
+                <div>Comment One</div>
+                <div>Comment One</div>
+                <div>Comment One</div>
+                <div>Comment One</div>
+                <div>Comment One</div>
+                <div>Comment One</div>
+                <div>Comment One</div>
+                <div>Comment One</div>
+                <div>Comment One</div>
+                <div>Comment One</div>
+            </div>
+        </div>
+        
+    </div>
+
 </div>
-<div>
-    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
-    <a asp-action="Index">Back to List</a>
-</div>
+
+
+
+<script type="text/javascript">
+    var comments = []
+    $(document).ready(function () {
+        getComments();
+    });
+
+    function getComments() {
+        var id = 1;
+        
+        $.ajax({
+            type: "GET",
+            url: "GetComments",
+            contentType: "application/json;charset=utf-8",
+            data: { eventId: id },
+            dataType: "json",
+            success: function (result) {
+                comments = result
+            },
+            error: function (response) {
+                alert("Error");
+            }
+        })
+    }
+</script>
+
+<style type="text/css">
+    #main-pane {
+        height: 100%;
+        margin-top: 50px;
+        
+    }
+
+    #comment-pane {
+        border-radius: 12px;
+        height: 500px;
+        width: 45%;
+        margin: auto;
+    }
+
+    #details-pane {
+        padding-left: 10px;
+        padding-right: 10px;
+        border-radius: 12px;
+        height: 500px;
+        float: left;
+        width: 25%;
+        -webkit-box-shadow: 3px 3px 5px 6px #006747; /* Safari 3-4, iOS 4.0.2 - 4.2, Android 2.3+ */
+        -moz-box-shadow: 3px 3px 5px 6px #006747; /* Firefox 3.5 - 3.6 */
+        box-shadow: 3px 3px 5px 6px #006747; /* Opera 10.5, IE 9, Firefox 4+, Chrome 6+, iOS 5 */
+    }
+
+    #users-pane {
+        padding-left: 10px;
+        padding-right: 10px;
+        border-radius: 12px;
+        height: 500px;
+        float: right;
+        width: 25%;
+        -webkit-box-shadow: 3px 3px 5px 6px #006747; /* Safari 3-4, iOS 4.0.2 - 4.2, Android 2.3+ */
+        -moz-box-shadow: 3px 3px 5px 6px #006747; /* Firefox 3.5 - 3.6 */
+        box-shadow: 3px 3px 5px 6px #006747; /* Opera 10.5, IE 9, Firefox 4+, Chrome 6+, iOS 5 */
+    }
+
+    .scrollable-list {
+        overflow-y: scroll;
+        max-height: 90%;
+    }
+
+    .detail-box{
+        margin-bottom: 15px;
+    }
+
+        .detail-box > div:first-of-type{
+            font-weight: bold;
+        }
+
+    .pane-header{
+        font-weight: bold;
+        font-size: 20px;
+        margin-bottom: 15px;
+    }
+
+    #comments-list {
+        overflow-y: scroll;
+        background: white;
+        height: 80%;
+        max-height: 375px;
+        color: black;
+        margin-top: -7px;
+        border: 1px solid black;
+    }
+
+    #comment-box{
+        color: black;
+        height: 75px;
+        width: 100%;
+        resize: none;
+        margin-bottom: 0;
+        border: 1px solid black;
+    }
+</style>
