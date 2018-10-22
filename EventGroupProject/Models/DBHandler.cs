@@ -239,6 +239,25 @@ namespace EventGroupProject.Models
             Con.Close();
         }
 
+        public bool IsUserRegisteredToEvent(int UserID, int EventID)
+        {
+            StartConnection();
+            SqlCommand cmd = new SqlCommand("CheckIfRegistered", Con)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+
+            cmd.Parameters.AddWithValue("@UserId", UserID);
+            cmd.Parameters.AddWithValue("@EventId", EventID);
+
+            Con.Open();
+            int i = (int)cmd.ExecuteScalar();
+            Con.Close();
+
+            return (i == 1 ? true : false);
+
+        }
+      
         public int AddEvent(string name, string city, string desc, DateTime dateTime, int Duration, string location, int price, int creatorId)
         {
             StartConnection();
