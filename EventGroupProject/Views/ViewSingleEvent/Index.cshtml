@@ -147,9 +147,15 @@
 
 
 <script type="text/javascript">
-    var comments = []
+    var comments = [];
+    var eventId = @Model.EventId;
+    var userId;
+    var userSignedUp;
+
     $(document).ready(function () {
-        getComments();
+        userId = getUserId();
+        alert(userId);
+        userSignedUp = isUserSignedUp();
     });
 
     function getComments() {
@@ -168,6 +174,44 @@
                 alert("Error");
             }
         })
+    }
+
+    function getUserId() {
+        $.ajax({
+            type: "GET",
+            url: "GetUserId",
+            contentType: "application/json;charset=utf-8",
+            dataType: "json",
+            success: function (result) {
+                return result;
+            },
+            error: function (response) {
+                alert("Error");
+            }
+        })
+    }
+
+    function isUserSignedUp() {
+        alert(userId);
+        alert(eventId);
+        var signedUp;
+
+        $.ajax({
+            type: "GET",
+            url: "IsUserSignedUp",
+            contentType: "application/json;charset=utf-8",
+            data: { userId: userId, eventId: eventId },
+            dataType: "json",
+            success: function (result) {
+                alert(result);
+                return result;
+            },
+            error: function (response) {
+                alert("Error");
+            }
+        })
+
+        return signedUp;
     }
 </script>
 

@@ -39,6 +39,18 @@ namespace EventGroupProject.Controllers
             return Json(comments);
         }
 
+        [HttpGet]
+        public JsonResult GetUserId()
+        {
+            return Json(_dbHandler.GetUserId());
+        }
+
+        [HttpGet]
+        public JsonResult IsUserSignedUp(int userId, int eventId)
+        {
+            return Json(_dbHandler.IsUserRegisteredToEvent(userId, eventId));
+        }
+
         
     }
 }
