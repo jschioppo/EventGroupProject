@@ -88,58 +88,37 @@
         </div>
     </div>
     <div id="comment-pane" class="info-text">
-        <div class="pane-header">Comments: </div>
-        <textarea id="comment-box" placeholder="Leave a comment.."></textarea>
-        <div id="comment-section">
-            <div id="comments-list">
-                <div>Comment One</div>
-                <div>Comment One</div>
-                <div>Comment One</div>
-                <div>Comment One</div>
-                <div>Comment One</div>
-                <div>Comment One</div>
-                <div>Comment One</div>
-                <div>Comment One</div>
-                <div>Comment One</div>
-                <div>Comment One</div>
-                <div>Comment One</div>
-                <div>Comment One</div>
-                <div>Comment One</div>
-                <div>Comment One</div>
-                <div>Comment One</div>
-                <div>Comment One</div>
-                <div>Comment One</div>
-                <div>Comment One</div>
-                <div>Comment One</div>
-                <div>Comment One</div>
-                <div>Comment One</div>
-                <div>Comment One</div>
-                <div>Comment One</div>
-                <div>Comment One</div>
-                <div>Comment One</div>
-                <div>Comment One</div>
-                <div>Comment One</div>
-                <div>Comment One</div>
-                <div>Comment One</div>
-                <div>Comment One</div>
-                <div>Comment One</div>
-                <div>Comment One</div>
-                <div>Comment One</div>
-                <div>Comment One</div>
-                <div>Comment One</div>
-                <div>Comment One</div>
-                <div>Comment One</div>
-                <div>Comment One</div>
-                <div>Comment One</div>
-                <div>Comment One</div>
-                <div>Comment One</div>
-                <div>Comment One</div>
-                <div>Comment One</div>
-                <div>Comment One</div>
-                <div>Comment One</div>
+        <div id="loading-icon" class="loader">
+
+        </div>
+        <div id="not-signed-up-window">
+            <div class="pane-header">To view this event's comments please sign up.</div>
+            <button class="save-button" id="join-event-btn">Join</button>
+        </div>
+        <div id="signed-up-window">
+            <div class="pane-header">Comments: </div>
+            <div>
+                <textarea id="comment-box" placeholder="Leave a comment.."></textarea>
+                <button id="submit-comment-btn">Submit</button>
+            </div>
+            <div id="comment-section">
+                @foreach (var comment in Model.EventComments)
+                {
+                    <div id="comments-list">
+                        <div>
+                            <div id="comment-user-name">
+                                @comment.UserId
+                            </div>
+                            <div id="comment-text">
+                                @comment.Content
+                                <button id="del-comment-btn" class="fas fa-trash"></button>
+                            </div>
+                            <hr />
+                        </div>
+                    </div>
+                }
             </div>
         </div>
-        
     </div>
 
 </div>
@@ -147,20 +126,35 @@
 
 
 <script type="text/javascript">
-    var comments = [];
+    $("#signed-up-window").hide();
+    $("#not-signed-up-window").hide();
+    $("#loading-icon").show();
+    
     var eventId = @Model.EventId;
     var userId;
-    var userSignedUp;
 
     $(document).ready(function () {
-        userId = getUserId();
-        alert(userId);
-        userSignedUp = isUserSignedUp();
+
+        getUserId(function user_id_cb(response) {
+            userId = response;
+            isUserSignedUp(function user_signed_up_cb(response) {
+                $("#loading-icon").hide();
+                if (response) {
+                    $("#signed-up-window").show();
+                    $("#not-signed-up-window").hide();
+                }
+                else{
+                    $("#signed-up-window").hide();
+                    $("#not-signed-up-window").show();
+                }
+            });
+        });
     });
 
+    //Not currently in use
     function getComments() {
         var id = 1;
-        
+
         $.ajax({
             type: "GET",
             url: "GetComments",
@@ -169,49 +163,37 @@
             dataType: "json",
             success: function (result) {
                 comments = result
-            },
-            error: function (response) {
-                alert("Error");
             }
         })
     }
 
-    function getUserId() {
+    function getUserId(user_id_cb) {
         $.ajax({
             type: "GET",
             url: "GetUserId",
             contentType: "application/json;charset=utf-8",
             dataType: "json",
-            success: function (result) {
-                return result;
-            },
-            error: function (response) {
-                alert("Error");
+            success: function (response) {
+                user_id_cb(response);
             }
-        })
+        });
     }
 
-    function isUserSignedUp() {
-        alert(userId);
-        alert(eventId);
-        var signedUp;
-
+    function isUserSignedUp(user_signed_up_cb) {
         $.ajax({
             type: "GET",
             url: "IsUserSignedUp",
             contentType: "application/json;charset=utf-8",
             data: { userId: userId, eventId: eventId },
             dataType: "json",
-            success: function (result) {
-                alert(result);
-                return result;
-            },
-            error: function (response) {
-                alert("Error");
+            success: function (response) {
+                user_signed_up_cb(response);
             }
-        })
+        });
+    }
 
-        return signedUp;
+    function addComment() {
+
     }
 </script>
 
@@ -219,7 +201,6 @@
     #main-pane {
         height: 100%;
         margin-top: 50px;
-        
     }
 
     #comment-pane {
@@ -258,31 +239,38 @@
         max-height: 90%;
     }
 
-    .detail-box{
+    .detail-box {
         margin-bottom: 15px;
     }
 
-        .detail-box > div:first-of-type{
+        .detail-box > div:first-of-type {
             font-weight: bold;
         }
 
-    .pane-header{
+    .pane-header {
         font-weight: bold;
         font-size: 20px;
         margin-bottom: 15px;
     }
 
     #comments-list {
+        width: 100%;
         overflow-y: scroll;
         background: white;
-        height: 80%;
+        height: 375px;
         max-height: 375px;
         color: black;
         margin-top: -7px;
         border: 1px solid black;
     }
 
-    #comment-box{
+    #not-signed-up-window, #join-event-btn{
+        width: 50%;
+        margin: auto;
+        text-align: center;
+    }
+
+    #comment-box {
         color: black;
         height: 75px;
         width: 100%;
@@ -290,4 +278,36 @@
         margin-bottom: 0;
         border: 1px solid black;
     }
+
+    #comment-user-name {
+        font-size: 14px;
+        color: #595959;
+    }
+
+    #del-comment-btn{
+        float:right;
+        background-color: transparent;
+        border: none;
+        outline: none;
+        cursor: pointer;
+        background-repeat: no-repeat;
+        overflow: hidden;
+    }
+
+    hr {
+        margin-top: 1px;
+        border-color: #cccccc;
+    }
+
+    #submit-comment-btn {
+        background-color: #cccccc;
+        border-color: black;
+        width: 20%;
+        float:left;
+        color: black !important;
+        text-align: center;
+        margin-top: -5px;
+        margin-bottom: 5px;
+    }
 </style>
+
