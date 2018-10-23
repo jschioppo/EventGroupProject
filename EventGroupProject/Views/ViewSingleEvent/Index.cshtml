@@ -12,54 +12,149 @@
 
 <div id="main-pane">
     <div id="details-pane" class="info-text">
-        <div>
-            @Html.DisplayFor(model => model.City)
+        <div class="pane-header">
+            Details:
         </div>
-        <div>
-            @Html.DisplayFor(model => model.Location)
-        </div>
-        <div>
-            @Html.DisplayFor(model => model.StartTime)
-        </div>
-        <div>
-            @Html.DisplayFor(model => model.Duration)
-        </div>
-        <div>
-            @Html.DisplayFor(model => model.Price)
-        </div>
-        <div>
-            @Html.DisplayFor(model => model.Description)
+        <div class="scrollable-list">
+            <div class="detail-box">
+                <div class="info-text">
+                    Host:
+                </div>
+                <div class="info-text">
+                    @Html.DisplayFor(model => model.EventCreator.UserDisplayName)
+                </div>
+            </div>
+            <div class="detail-box">
+                <div class="info-text">
+                    City:
+                </div>
+                <div class="info-text">
+                    @Html.DisplayFor(model => model.City)
+                </div>
+            </div>
+            <div class="detail-box">
+                <div class="info-text">
+                    Location:
+                </div>
+                <div class="info-text">
+                    @Html.DisplayFor(model => model.Location)
+                </div>
+            </div>
+            <div class="detail-box">
+                <div class="info-text">
+                    City:
+                </div>
+                <div class="info-text">
+                    @Html.DisplayFor(model => model.StartTime)
+                </div>
+            </div>
+            <div class="detail-box">
+                <div class="info-text">
+                    Duration:
+                </div>
+                <div class="info-text">
+                    @Html.DisplayFor(model => model.Duration)
+                </div>
+            </div>
+            <div class="detail-box">
+                <div class="info-text">
+                    Cost:
+                </div>
+                <div class="info-text">
+                    $@Html.DisplayFor(model => model.Price)
+                </div>
+            </div>
+            <div class="detail-box">
+                <div class="info-text">
+                    Description:
+                </div>
+                <div class="info-text">
+                    @Html.DisplayFor(model => model.Description)
+                </div>
+            </div>
         </div>
     </div>
-    <div id="comment-section">
-        <ul id="comments-list"></ul>
-        <textarea></textarea>
+    <div id="users-pane" class="info-text">
+        <div class="pane-header">Signed Up Users:</div>
+        <div class="scrollable-list">
+            @foreach (var user in Model.SignedUpUsers)
+            {
+                <div>@user.UserDisplayName</div>
+                <div>@user.UserDisplayName</div>
+                <div>@user.UserDisplayName</div>
+                <div>@user.UserDisplayName</div>
+                <div>@user.UserDisplayName</div>
+            }
+        </div>
     </div>
-    <div id="users-pane">
-        <ul>
-            <li>User 1</li>
-            <li>User 2</li>
-            <li>User 3</li>
-            <li>User 4</li>
-            <li>User 5</li>
-            <li>User 6</li>
-            <li>User 7</li>
-            <li>User 8</li>
-        </ul>
+    <div id="comment-pane" class="info-text">
+        <div id="loading-icon" class="loader">
+
+        </div>
+        <div id="not-signed-up-window">
+            <div class="pane-header">To view this event's comments please sign up.</div>
+            <button class="save-button" id="join-event-btn">Join</button>
+        </div>
+        <div id="signed-up-window">
+            <div class="pane-header">Comments: </div>
+            <div>
+                <textarea id="comment-box" placeholder="Leave a comment.."></textarea>
+                <button id="submit-comment-btn">Submit</button>
+            </div>
+            <div id="comment-section">
+                @foreach (var comment in Model.EventComments)
+                {
+                    <div id="comments-list">
+                        <div>
+                            <div id="comment-user-name">
+                                @comment.UserId
+                            </div>
+                            <div id="comment-text">
+                                @comment.Content
+                                <button id="del-comment-btn" class="fas fa-trash"></button>
+                            </div>
+                            <hr />
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
     </div>
+
 </div>
 
 
 
 <script type="text/javascript">
-    var comments = []
+    $("#signed-up-window").hide();
+    $("#not-signed-up-window").hide();
+    $("#loading-icon").show();
+    
+    var eventId = @Model.EventId;
+    var userId;
+
     $(document).ready(function () {
-        getComments();
+
+        getUserId(function user_id_cb(response) {
+            userId = response;
+            isUserSignedUp(function user_signed_up_cb(response) {
+                $("#loading-icon").hide();
+                if (response) {
+                    $("#signed-up-window").show();
+                    $("#not-signed-up-window").hide();
+                }
+                else{
+                    $("#signed-up-window").hide();
+                    $("#not-signed-up-window").show();
+                }
+            });
+        });
     });
 
+    //Not currently in use
     function getComments() {
         var id = 1;
-        
+
         $.ajax({
             type: "GET",
             url: "GetComments",
@@ -68,40 +163,151 @@
             dataType: "json",
             success: function (result) {
                 comments = result
-            },
-            error: function (response) {
-                alert("Error");
             }
         })
+    }
+
+    function getUserId(user_id_cb) {
+        $.ajax({
+            type: "GET",
+            url: "GetUserId",
+            contentType: "application/json;charset=utf-8",
+            dataType: "json",
+            success: function (response) {
+                user_id_cb(response);
+            }
+        });
+    }
+
+    function isUserSignedUp(user_signed_up_cb) {
+        $.ajax({
+            type: "GET",
+            url: "IsUserSignedUp",
+            contentType: "application/json;charset=utf-8",
+            data: { userId: userId, eventId: eventId },
+            dataType: "json",
+            success: function (response) {
+                user_signed_up_cb(response);
+            }
+        });
+    }
+
+    function addComment() {
+
     }
 </script>
 
 <style type="text/css">
-    ul{
-        list-style: none;
-    }
-
-    #main-pane{
+    #main-pane {
         height: 100%;
         margin-top: 50px;
     }
 
-    #comment-section {
-        height: 100%;
-        background: white;
-        width: 40%;
+    #comment-pane {
+        border-radius: 12px;
+        height: 500px;
+        width: 45%;
         margin: auto;
     }
 
     #details-pane {
-        height: 100%;
+        padding-left: 10px;
+        padding-right: 10px;
+        border-radius: 12px;
+        height: 500px;
         float: left;
-        width: 30%;
+        width: 25%;
+        -webkit-box-shadow: 3px 3px 5px 6px #006747; /* Safari 3-4, iOS 4.0.2 - 4.2, Android 2.3+ */
+        -moz-box-shadow: 3px 3px 5px 6px #006747; /* Firefox 3.5 - 3.6 */
+        box-shadow: 3px 3px 5px 6px #006747; /* Opera 10.5, IE 9, Firefox 4+, Chrome 6+, iOS 5 */
     }
 
     #users-pane {
-        height: 100%;
+        padding-left: 10px;
+        padding-right: 10px;
+        border-radius: 12px;
+        height: 500px;
         float: right;
-        width: 30%;
+        width: 25%;
+        -webkit-box-shadow: 3px 3px 5px 6px #006747; /* Safari 3-4, iOS 4.0.2 - 4.2, Android 2.3+ */
+        -moz-box-shadow: 3px 3px 5px 6px #006747; /* Firefox 3.5 - 3.6 */
+        box-shadow: 3px 3px 5px 6px #006747; /* Opera 10.5, IE 9, Firefox 4+, Chrome 6+, iOS 5 */
+    }
+
+    .scrollable-list {
+        overflow-y: scroll;
+        max-height: 90%;
+    }
+
+    .detail-box {
+        margin-bottom: 15px;
+    }
+
+        .detail-box > div:first-of-type {
+            font-weight: bold;
+        }
+
+    .pane-header {
+        font-weight: bold;
+        font-size: 20px;
+        margin-bottom: 15px;
+    }
+
+    #comments-list {
+        width: 100%;
+        overflow-y: scroll;
+        background: white;
+        height: 375px;
+        max-height: 375px;
+        color: black;
+        margin-top: -7px;
+        border: 1px solid black;
+    }
+
+    #not-signed-up-window, #join-event-btn{
+        width: 50%;
+        margin: auto;
+        text-align: center;
+    }
+
+    #comment-box {
+        color: black;
+        height: 75px;
+        width: 100%;
+        resize: none;
+        margin-bottom: 0;
+        border: 1px solid black;
+    }
+
+    #comment-user-name {
+        font-size: 14px;
+        color: #595959;
+    }
+
+    #del-comment-btn{
+        float:right;
+        background-color: transparent;
+        border: none;
+        outline: none;
+        cursor: pointer;
+        background-repeat: no-repeat;
+        overflow: hidden;
+    }
+
+    hr {
+        margin-top: 1px;
+        border-color: #cccccc;
+    }
+
+    #submit-comment-btn {
+        background-color: #cccccc;
+        border-color: black;
+        width: 20%;
+        float:left;
+        color: black !important;
+        text-align: center;
+        margin-top: -5px;
+        margin-bottom: 5px;
     }
 </style>
+

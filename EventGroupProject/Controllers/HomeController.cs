@@ -19,13 +19,11 @@ namespace EventGroupProject.Controllers
         public HomeController(DBHandler dbHandler)
         {
             _dbHandler = dbHandler;
-            //_dbHandler.AddEvent("Tampa", "Software Engineering Test", "2", 25, "USF", 25);
         }
 
         public IActionResult Index()
         {
-            bool isAuthenticated = User.Identity.IsAuthenticated;
-
+            bool isAuthenticated = User.Identity.IsAuthenticated; 
             if (isAuthenticated && !_dbHandler.UserTagsSelected())
             {
                 List<Tag> tags = _dbHandler.GetAllTags();

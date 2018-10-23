@@ -23,16 +23,7 @@ namespace EventGroupProject.Controllers
         // GET: /<controller>/
         public IActionResult Index()
         {
-            /*  Testing GetComments (Works as Expected)
-                List<Comments> test = _dbHandler.GetComments(4);
-            */
-
-            /*  Testing Add Comments (Works as Expected)
-                bool test = _dbHandler.AddComment("Femi has entered the fray!", 4);
-            */
-       
-
-            return View(_dbHandler.GetEvent(4));
+            return View(_dbHandler.GetEvent(5));
         }
 
         [HttpGet]
@@ -46,6 +37,18 @@ namespace EventGroupProject.Controllers
             };
 
             return Json(comments);
+        }
+
+        [HttpGet]
+        public JsonResult GetUserId()
+        {
+            return Json(_dbHandler.GetUserId());
+        }
+
+        [HttpGet]
+        public JsonResult IsUserSignedUp(int userId, int eventId)
+        {
+            return Json(_dbHandler.IsUserRegisteredToEvent(userId, eventId));
         }
 
         
