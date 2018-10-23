@@ -26,6 +26,7 @@ namespace EventGroupProject.Controllers
             return View(_dbHandler.GetEvent(5));
         }
 
+        //Not in use
         [HttpGet]
         public JsonResult GetComments(int eventId)
         {

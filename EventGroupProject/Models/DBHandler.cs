@@ -294,6 +294,7 @@ namespace EventGroupProject.Models
         {
             List<Tag> eventTags = GetEventTags(GetEventTagIds(eventId));
             List<User> signedUpUsers = GetSignedUpUsers(eventId);
+            List<Comments> eventComments = GetComments(eventId);
             Events newEvent = null;
 
             StartConnection();
@@ -326,7 +327,8 @@ namespace EventGroupProject.Models
                         UserDisplayName = GetDisplayName(int.Parse(reader["EventCreatorID"].ToString()))
                     },
                     SignedUpUsers = signedUpUsers,
-                    EventTags = eventTags
+                    EventTags = eventTags,
+                    EventComments = eventComments
                 };
             }
 
@@ -464,7 +466,7 @@ namespace EventGroupProject.Models
                     CommentId = int.Parse(reader["CommentID"].ToString()),
                     UserId = int.Parse(reader["UserID"].ToString()),
                     Content = reader["Content"].ToString(),
-                    //UserDisplayName = reader["UserDisplayName"].ToString(),
+                    UserDisplayName = reader["UserDisplayName"].ToString()
                 });
             }
 
@@ -488,6 +490,7 @@ namespace EventGroupProject.Models
             cmd.Parameters.AddWithValue("@UserComment", user_comment);
             cmd.Parameters.AddWithValue("@EventId", event_ID);
             cmd.Parameters.AddWithValue("@UserId", user_id);
+            cmd.Parameters.AddWithValue("@UserDisplayName", GetDisplayName(user_id));
 
             Con.Open();
             int i = cmd.ExecuteNonQuery();
@@ -495,8 +498,6 @@ namespace EventGroupProject.Models
 
             /*Returns if Query was successful or not*/
             return (i == 1 ? true : false);
-
-
         }
 
     }
