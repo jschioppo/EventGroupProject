@@ -437,5 +437,67 @@ namespace EventGroupProject.Models
 
             return users;
         }
+
+        public List<Comments> GetComments(int event_ID)
+        {
+            StartConnection();
+
+            List<Comments> comment_list= new List<Comments>();
+
+
+            SqlCommand cmd = new SqlCommand("GetEventComments", Con)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+
+            cmd.Parameters.AddWithValue("@EventId", event_ID);
+            Con.Open();
+
+            SqlDataReader reader = cmd.ExecuteReader();
+
+            while (reader.Read())
+            {
+
+                comment_list.Add(new Comments
+                {
+                    EventId = event_ID,
+                    CommentId = int.Parse(reader["CommentID"].ToString()),
+                    UserId = int.Parse(reader["UserID"].ToString()),
+                    Content = reader["Content"].ToString(),
+                    //UserDisplayName = reader["UserDisplayName"].ToString(),
+                });
+            }
+
+            Con.Close();
+
+            return comment_list;
+
+        }
+
+        public bool AddComment(string user_comment, int event_ID) {
+
+            int user_id = GetUserId();
+
+            StartConnection();
+
+            SqlCommand cmd = new SqlCommand("AddComment", Con)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+
+            cmd.Parameters.AddWithValue("@UserComment", user_comment);
+            cmd.Parameters.AddWithValue("@EventId", event_ID);
+            cmd.Parameters.AddWithValue("@UserId", user_id);
+
+            Con.Open();
+            int i = cmd.ExecuteNonQuery();
+            Con.Close();
+
+            /*Returns if Query was successful or not*/
+            return (i == 1 ? true : false);
+
+
+        }
+
     }
 }
