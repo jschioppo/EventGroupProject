@@ -11,5 +11,6 @@ namespace EventGroupProject.Models
         public int UserId { get; set; }
         public int EventId { get; set; }
         public string Content { get; set; }
+        public string UserDisplayName{ get; set; }
     }
 }

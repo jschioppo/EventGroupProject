@@ -23,6 +23,15 @@ namespace EventGroupProject.Controllers
         // GET: /<controller>/
         public IActionResult Index()
         {
+            /*  Testing GetComments (Works as Expected)
+                List<Comments> test = _dbHandler.GetComments(4);
+            */
+
+            /*  Testing Add Comments (Works as Expected)
+                bool test = _dbHandler.AddComment("Femi has entered the fray!", 4);
+            */
+       
+
             return View(_dbHandler.GetEvent(4));
         }
 
