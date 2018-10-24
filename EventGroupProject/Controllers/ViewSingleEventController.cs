@@ -52,6 +52,20 @@ namespace EventGroupProject.Controllers
             return Json(_dbHandler.IsUserRegisteredToEvent(userId, eventId));
         }
 
-        
+        [HttpPost]
+        public JsonResult SaveCommentData(string commentBody, int eventId) //int userId, int eventId
+        {
+            //int writerId = _dbHandler.GetUserId();
+            int eventID = eventId;
+
+            bool saveData = _dbHandler.AddComment(commentBody, eventId);
+            if (!saveData)
+            {
+                return Json(false);
+            }
+
+            return Json(true);
+        }
+
     }
 }

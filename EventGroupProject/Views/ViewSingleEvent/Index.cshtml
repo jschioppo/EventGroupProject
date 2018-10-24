@@ -177,30 +177,17 @@
                 user_id_cb(response);
             }
         });
+        
+    }
 
-        function newComment(commentBody, eventId, userId) {
-            $.ajax({
-                type: "POST",
-                url: "/NewComment/SaveCommentData",
-                data: {
-                    commentBody: commentBody, eventId: eventId, userId: userId
-                },
-                success: function () {
-                    alert("Comment Saved!");
-                },
-                error: function () {
-                    alert("COMMENT FAIL");
-                }
-            });
-            /*function validateCommentHasContent() {
-                var eventName = $('#ADD-VALUE').val();
-                if (eventName.length == 0) {
-                    addError("Please provide content for your comment.");
-                    return false;
-                }
-                return true;
-            }*/
-        }
+    function newComment(commentBody) {
+        $.ajax({
+            type: "POST",
+            url: "SaveCommentData",
+            data: {
+                commentBody: commentBody, eventId: eventId
+            }
+        });
     }
 
     function isUserSignedUp(user_signed_up_cb) {

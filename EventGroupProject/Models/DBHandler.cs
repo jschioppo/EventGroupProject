@@ -478,9 +478,10 @@ namespace EventGroupProject.Models
 
         public bool AddComment(string user_comment, int event_ID) {
 
-            int user_id = GetUserId();
-
             StartConnection();
+
+            int user_id = GetUserId();
+            string displayName = GetDisplayName(user_id);
 
             SqlCommand cmd = new SqlCommand("AddComment", Con)
             {
@@ -490,7 +491,7 @@ namespace EventGroupProject.Models
             cmd.Parameters.AddWithValue("@UserComment", user_comment);
             cmd.Parameters.AddWithValue("@EventId", event_ID);
             cmd.Parameters.AddWithValue("@UserId", user_id);
-            cmd.Parameters.AddWithValue("@UserDisplayName", GetDisplayName(user_id));
+            cmd.Parameters.AddWithValue("@UserDisplayName", displayName);
 
             Con.Open();
             int i = cmd.ExecuteNonQuery();
