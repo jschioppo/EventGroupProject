@@ -26,18 +26,9 @@ namespace EventGroupProject.Controllers
             return View(_dbHandler.GetEvent(5));
         }
 
-        //Not in use
-        [HttpGet]
-        public JsonResult GetComments(int eventId)
+        public ActionResult _EventComments()
         {
-            List<Comments> comments = new List<Comments>()
-            {
-                new Comments{CommentId = 1, Content = "Comment 1"},
-                new Comments{CommentId = 2, Content = "Comment 2"},
-                new Comments{CommentId = 3, Content = "Comment 3"}
-            };
-
-            return Json(comments);
+            return PartialView(_dbHandler.GetComments(5));
         }
 
         [HttpGet]
@@ -47,9 +38,22 @@ namespace EventGroupProject.Controllers
         }
 
         [HttpGet]
-        public JsonResult IsUserSignedUp(int userId, int eventId)
+        public JsonResult IsUserSignedUp(int eventId)
         {
-            return Json(_dbHandler.IsUserRegisteredToEvent(userId, eventId));
+            int userId = _dbHandler.GetUserId();
+            return Json(_dbHandler.IsUserRegisteredToEvent(userId, eventId) || _dbHandler.IsAdmin(userId));
+        }
+
+        [HttpGet]
+        public JsonResult IsUserAdmin()
+        {
+            return Json(_dbHandler.IsAdmin(_dbHandler.GetUserId()));
+        }
+
+        [HttpGet]
+        public JsonResult IsUserEventCreator(int eventId)
+        {
+            return Json(_dbHandler.IsEventCreator(_dbHandler.GetUserId(), eventId));
         }
 
         [HttpPost]
@@ -66,6 +70,6 @@ namespace EventGroupProject.Controllers
 
             return Json(true);
         }
-
+        
     }
 }

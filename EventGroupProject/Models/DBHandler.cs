@@ -354,6 +354,24 @@ namespace EventGroupProject.Models
             return (i == 1 ? true : false);
         }
 
+        public bool IsEventCreator(int userId, int eventId)
+        {
+            StartConnection();
+            SqlCommand cmd = new SqlCommand("CheckIfEventCreator", Con)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+
+            cmd.Parameters.AddWithValue("@UserId", userId);
+            cmd.Parameters.AddWithValue("@EventId", eventId);
+
+            Con.Open();
+            int i = (int)cmd.ExecuteScalar();
+            Con.Close();
+
+            return (i == 1 ? true : false);
+        }
+
         List<int> GetEventTagIds(int eventId)
         {
             StartConnection();
