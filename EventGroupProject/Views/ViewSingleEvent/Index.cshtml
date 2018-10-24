@@ -52,8 +52,8 @@
                 <div class="info-text">
                     Duration:
                 </div>
-                <div class="info-text">
-                    @Html.DisplayFor(model => model.Duration)
+                <div class="info-text" id="duration-field">
+                    
                 </div>
             </div>
             <div class="detail-box">
@@ -101,7 +101,10 @@
                 <textarea id="comment-box" placeholder="Leave a comment.."></textarea>
                 <button id="submit-comment-btn">Submit</button>
             </div>
-            <div id="comment-section">
+            <div id="comments-partial-view">
+                @Html.Partial("_EventComments", new System.Collections.Generic.List<Comments>(Model.EventComments))
+            </div>
+            @*<div id="comment-section">
                 <div id="comments-list">
                     @foreach (var comment in Model.EventComments)
                     {
@@ -117,7 +120,7 @@
                         </div>
                     }
                 </div>
-            </div>
+            </div>*@
         </div>
     </div>
 
@@ -129,9 +132,13 @@
     $("#signed-up-window").hide();
     $("#not-signed-up-window").hide();
     $("#loading-icon").show();
-    
+    $("#duration-field").html(convertDuration());
+
     var eventId = @Model.EventId;
     var userId;
+
+    var admin = false;
+    var eventCreator = false;
 
     $(document).ready(function () {
 
@@ -140,6 +147,8 @@
             isUserSignedUp(function user_signed_up_cb(response) {
                 $("#loading-icon").hide();
                 if (response) {
+                    loadComments();
+                    window.setInterval("loadComments()", 3000);
                     $("#signed-up-window").show();
                     $("#not-signed-up-window").hide();
                 }
@@ -148,23 +157,55 @@
                     $("#not-signed-up-window").show();
                 }
             });
+
+            isUserAdmin(function user_is_admin_cb(response) {
+                if (response) {
+                    $("#del-comment-btn").show();
+                    admin = true;
+                }
+            });
+
+            isUserEventCreator(function user_is_event_creator_cb(response) {
+                if (response) {
+                    $("#del-comment-btn").show();
+                    eventCreator = true;
+                }
+            });
+
         });
     });
 
-    //Not currently in use
-    function getComments() {
-        var id = 1;
+    function convertDuration(){
+        var durationHours = parseInt(@Model.Duration) / 60;
+        var durationMins = parseInt(@Model.Duration) % 60;
 
+        var durationOutput;
+        if (durationHours == 0) {
+            durationOutput = durationHours + " hours";
+        }
+        else if (durationMins == 0) {
+            durationOutput = durationMins + " minutes"
+        }
+        else {
+            durationOutput = durationHours + " hours " + durationMins + " minutes";
+        }
+        return durationOutput;
+    }
+
+    function loadComments() {
+        var scrollPosition = $("#comments-list").scrollTop();
         $.ajax({
+            url: "_EventComments",
             type: "GET",
-            url: "GetComments",
-            contentType: "application/json;charset=utf-8",
-            data: { eventId: id },
-            dataType: "json",
+            datatype: 'html',
             success: function (result) {
-                comments = result
+                $("#comments-partial-view").html(result);
+                $("#comments-list").scrollTop(scrollPosition);
+                if (admin || eventCreator) {
+                    $(".delCommentBtn").css("visibility", "visible");
+                }
             }
-        })
+        });
     }
 
     function getUserId(user_id_cb) {
@@ -188,6 +229,29 @@
             dataType: "json",
             success: function (response) {
                 user_signed_up_cb(response);
+            }
+        });
+    }
+
+    function isUserAdmin(user_is_admin_cb) {
+        $.ajax({
+            type: "GET",
+            url: "IsUserAdmin",
+            contentType: "application/json;charset=uth-8",
+            success: function (response) {
+                user_is_admin_cb(response);
+            }
+        });
+    }
+
+    function isUserEventCreator(user_is_event_creator_cb) {
+        $.ajax({
+            type: "GET",
+            url: "IsUserEventCreator",
+            data: { eventId: eventId },
+            datatype: "json",
+            success: function (response) {
+                user_is_event_creator_cb(response);
             }
         });
     }
@@ -217,7 +281,7 @@
         height: 500px;
         float: left;
         width: 25%;
-        background-color: #006747;
+        background-color: #249170;
         -webkit-box-shadow: 3px 3px 5px 6px #006747; /* Safari 3-4, iOS 4.0.2 - 4.2, Android 2.3+ */
         -moz-box-shadow: 3px 3px 5px 6px #006747; /* Firefox 3.5 - 3.6 */
         box-shadow: 3px 3px 5px 6px #006747; /* Opera 10.5, IE 9, Firefox 4+, Chrome 6+, iOS 5 */
@@ -230,7 +294,7 @@
         height: 500px;
         float: right;
         width: 25%;
-        background-color: #006747;
+        background-color: #249170;
         -webkit-box-shadow: 3px 3px 5px 6px #006747; /* Safari 3-4, iOS 4.0.2 - 4.2, Android 2.3+ */
         -moz-box-shadow: 3px 3px 5px 6px #006747; /* Firefox 3.5 - 3.6 */
         box-shadow: 3px 3px 5px 6px #006747; /* Opera 10.5, IE 9, Firefox 4+, Chrome 6+, iOS 5 */
@@ -315,6 +379,10 @@
         text-align: center;
         margin-top: -5px;
         margin-bottom: 5px;
+    }
+
+    .delCommentBtn{
+        visibility: hidden;
     }
 </style>
 

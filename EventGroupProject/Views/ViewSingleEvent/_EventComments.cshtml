@@ -1,0 +1,26 @@
+﻿@model System.Collections.Generic.List<Comments>
+
+@{
+    ViewData["Title"] = "_EventComments";
+}
+
+<div id="comment-section">
+    <div id="comments-list">
+        @foreach (var comment in Model)
+        {
+            <div id="single-comment">
+                <div id="comment-user-name">
+                    @comment.UserDisplayName
+                </div>
+                <div id="comment-text">
+                    @comment.Content
+                    <button id="del-comment-btn" class="delCommentBtn">
+                        <span class="fas fa-trash"></span>
+                    </button>
+                </div>
+                <hr />
+            </div>
+        }
+    </div>
+</div>
+

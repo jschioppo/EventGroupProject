@@ -14,6 +14,5 @@ namespace EventGroupProject.Controllers
         {
             return View();
         }
-
     }
 }
