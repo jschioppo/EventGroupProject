@@ -142,36 +142,64 @@
 
     $(document).ready(function () {
 
-        getUserId(function user_id_cb(response) {
-            userId = response;
-            isUserSignedUp(function user_signed_up_cb(response) {
-                $("#loading-icon").hide();
-                if (response) {
-                    loadComments();
-                    window.setInterval("loadComments()", 3000);
-                    $("#signed-up-window").show();
-                    $("#not-signed-up-window").hide();
-                }
-                else{
-                    $("#signed-up-window").hide();
-                    $("#not-signed-up-window").show();
-                }
-            });
+        //getUserId(function user_id_cb(response) {
+        //    userId = response;
+        //    isUserSignedUp(function user_signed_up_cb(response) {
+        //        $("#loading-icon").hide();
+        //        if (response) {
+        //            loadComments();
+        //            window.setInterval("loadComments()", 3000);
+        //            $("#signed-up-window").show();
+        //            $("#not-signed-up-window").hide();
+        //        }
+        //        else{
+        //            $("#signed-up-window").hide();
+        //            $("#not-signed-up-window").show();
+        //        }
+        //    });
 
-            isUserAdmin(function user_is_admin_cb(response) {
-                if (response) {
-                    $("#del-comment-btn").show();
-                    admin = true;
-                }
-            });
+        //    isUserAdmin(function user_is_admin_cb(response) {
+        //        if (response) {
+        //            $("#del-comment-btn").show();
+        //            admin = true;
+        //        }
+        //    });
 
-            isUserEventCreator(function user_is_event_creator_cb(response) {
-                if (response) {
-                    $("#del-comment-btn").show();
-                    eventCreator = true;
-                }
-            });
+        //    isUserEventCreator(function user_is_event_creator_cb(response) {
+        //        if (response) {
+        //            $("#del-comment-btn").show();
+        //            eventCreator = true;
+        //        }
+        //    });
 
+        //});
+
+        isUserSignedUp(function user_signed_up_cb(response) {
+            $("#loading-icon").hide();
+            if (response) {
+                loadComments();
+                window.setInterval("loadComments()", 3000);
+                $("#signed-up-window").show();
+                $("#not-signed-up-window").hide();
+            }
+            else {
+                $("#signed-up-window").hide();
+                $("#not-signed-up-window").show();
+            }
+        });
+
+        isUserAdmin(function user_is_admin_cb(response) {
+            if (response) {
+                $("#del-comment-btn").show();
+                admin = true;
+            }
+        });
+
+        isUserEventCreator(function user_is_event_creator_cb(response) {
+            if (response) {
+                $("#del-comment-btn").show();
+                eventCreator = true;
+            }
         });
     });
 
