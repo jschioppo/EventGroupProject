@@ -8,7 +8,28 @@
 
 <h2>Find an Event</h2>
 
-@Html.Partial("_Search")
+@Html.Partial("_Search", new List<Tag>() {
+    new Tag()
+    {
+        TagID = 1,
+        Name = "Sports"
+    },
+    new Tag()
+    {
+        TagID = 2,
+        Name = "Fun"
+    },
+    new Tag()
+    {
+        TagID = 3,
+        Name = "Business"
+    },
+    new Tag()
+    {
+        TagID = 4,
+        Name = "Tech"
+    },
+})
 
 @Html.Partial("_Recommended")
 
