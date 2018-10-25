@@ -99,7 +99,7 @@
             <div class="pane-header">Comments: </div>
             <div>
                 <textarea id="comment-box" placeholder="Leave a comment.."></textarea>
-                <button id="submit-comment-btn">Submit</button>
+                <button id="submit-comment-btn" onclick="newComment()">Submit</button>
             </div>
             <div id="comments-partial-view">
                 @Html.Partial("_EventComments", new System.Collections.Generic.List<Comments>(Model.EventComments))
@@ -180,10 +180,10 @@
         var durationMins = parseInt(@Model.Duration) % 60;
 
         var durationOutput;
-        if (durationHours == 0) {
+        if (durationMins == 0) {
             durationOutput = durationHours + " hours";
         }
-        else if (durationMins == 0) {
+        else if (durationHours == 0) {
             durationOutput = durationMins + " minutes"
         }
         else {
@@ -221,14 +221,26 @@
         
     }
 
-    function newComment(commentBody) {
+    function newComment() {
+
+        var commentBody = $("#comment-box").val();
+        if (commentBody === "") {
+            alert("Comment box can not be empty.");
+            return;
+        }
+
         $.ajax({
             type: "POST",
             url: "SaveCommentData",
             data: {
                 commentBody: commentBody, eventId: eventId
+            },
+            success: function (response) {
+                $("#comment-box").val('');
+                loadComments();
+                $("#comments-list").scrollTop(0);
             }
-        });
+        });   
     }
 
     function isUserSignedUp(user_signed_up_cb) {
