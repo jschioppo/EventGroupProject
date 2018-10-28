@@ -4,12 +4,41 @@
 *@
 @{
 }
+<link rel="stylesheet" href="~/css/site.css" />
 
-<h2>Search</h2>
+<head>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
 
-@foreach (var tag in Model)
-{
-    <div>
-        @tag.Name
+        #searchbox {
+            float: right;
+            width: 75%;
+            padding: 10px;
+        }
+
+        .true-top {
+            overflow: hidden;
+            padding: 10px;
+            border: 2px solid black;
+        }
+    </style>
+</head>
+
+<div class="true-top">
+    <div class="topbar">
+        <label class="header-text" for="searchbox">Search</label>
+        <input id="searchbox" type="text" placeholder="Enter City Name..." />
     </div>
-}
+    <div style="margin:0;">
+        <span class="header-text">Tags</span>
+        <div class="tag-container" style="display:inline; margin:0px;">
+
+            @foreach (var tag in Model)
+            {
+                <button class="tag-btn" type="button" style="float:right; margin-top:0px;">@tag.Name</button>
+            }
+        </div>
+    </div>
+</div>
