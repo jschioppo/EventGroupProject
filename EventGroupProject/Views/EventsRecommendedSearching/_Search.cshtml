@@ -6,39 +6,92 @@
 }
 <link rel="stylesheet" href="~/css/site.css" />
 
-<head>
-    <style>
-        * {
-            box-sizing: border-box;
-        }
-
-        #searchbox {
-            float: right;
-            width: 75%;
-            padding: 10px;
-        }
-
-        .true-top {
-            overflow: hidden;
-            padding: 10px;
-            border: 2px solid black;
-        }
-    </style>
-</head>
-
 <div class="true-top">
     <div class="topbar">
-        <label class="header-text" for="searchbox">Search</label>
-        <input id="searchbox" type="text" placeholder="Enter City Name..." />
+        <label class="header-text" for="searchbox">Where are you located?</label>
+        <input id="searchbox" class="form-control" type="text" placeholder="Enter City Name..." />
     </div>
-    <div style="margin:0;">
-        <span class="header-text">Tags</span>
-        <div class="tag-container" style="display:inline; margin:0px;">
+    <div id="tag-section">
+        <div id="tag-header">
+            <span  class="header-text">What are you interested in?</span>
+        </div>
+        <div id="search-tags">
 
             @foreach (var tag in Model)
             {
-                <button class="tag-btn" type="button" style="float:right; margin-top:0px;">@tag.Name</button>
+                <button class="tag-btn" id="tag-search-btn" type="button">@tag.Name</button>
             }
         </div>
     </div>
 </div>
+
+<script type="text/javascript">
+    $('.tag-btn').click(function () {
+        $(this).toggleClass("active");
+    });
+</script>
+
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    .topbar{
+        width: 50%;
+        margin: auto;
+    }
+
+    #searchbox {
+        width: 50%;
+        padding: 10px;
+        margin-top: -20px;
+        margin-bottom: 30px;
+    }
+
+    .true-top {
+        overflow: hidden;
+        padding: 10px;
+    }
+
+    #search-tags{
+        display: inline;
+        margin: 0;
+        margin: auto;
+    }
+
+    #tag-search-btn{
+        float: none;
+        margin-top: 0px;
+    }
+
+    .tag-btn {
+        width: 100px;
+        white-space: nowrap;
+        background-color: #006747;
+        color: #DEB887;
+        margin: 15px;
+        border-radius: 12px;
+        /*I didn't come up with the below. It's really intense. I just copied it from a blog to give the buttons the floaty effects*/
+        -webkit-box-shadow: 0px 2px 0px #2b638f, 0px 1px 6px rgba(0,0,0,.4), inset 0px 1px 0px rgba(255,255,255,.3), inset 0px 0px 3px rgba(255,255,255,.5);
+        -moz-box-shadow: 0px 2px 0px #2b638f, 0px 1px 6px rgba(0,0,0,.4), inset 0px 1px 0px rgba(255,255,255,.3), inset 0px 0px 3px rgba(255,255,255,.5);
+        box-shadow: 0px 2px 0px #2b638f, 0px 1px 6px rgba(0,0,0,.4), inset 0px 1px 0px rgba(255,255,255,.3), inset 0px 0px 3px rgba(255,255,255,.5);
+    }
+
+        .tag-btn:active, .active {
+            border-color: black !important;
+            /*Makes the buttons sink down*/
+            -webkit-transform: translate(0, 4px);
+            -moz-transform: translate(0, 4px);
+            transform: translate(0, 4px);
+        }
+
+    #tag-section{
+        margin-left: -20px;
+    }
+
+    #tag-header {
+        width: 50%;
+        margin:auto;
+        padding-bottom: 15px;
+    }
+</style>

@@ -8,29 +8,31 @@
 
 <h2>Find an Event</h2>
 
-@Html.Partial("_Search", new List<Tag>() {
-    new Tag()
-    {
-        TagID = 1,
-        Name = "Sports"
-    },
-    new Tag()
-    {
-        TagID = 2,
-        Name = "Fun"
-    },
-    new Tag()
-    {
-        TagID = 3,
-        Name = "Business"
-    },
-    new Tag()
-    {
-        TagID = 4,
-        Name = "Tech"
-    },
-})
+<div id="search-partial-view">
+    @Html.Partial("_Search", new List<Tag>())
+</div>
+
 
 @Html.Partial("_Recommended")
 
 @Html.Partial("_ResultView")
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        getTags();
+    });
+
+   
+
+    function getTags() {
+        $.ajax({
+            url: "EventsRecommendedSearching/_Search",
+            type: "GET",
+            datatype: 'html',
+            success: function (result) {
+                $("#search-partial-view").html(result);
+            }
+        });
+    }
+</script>
