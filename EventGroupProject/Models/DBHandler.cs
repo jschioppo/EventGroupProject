@@ -519,5 +519,82 @@ namespace EventGroupProject.Models
             return (i == 1 ? true : false);
         }
 
+        public List<Events> SearchEvents(List<int> tagIds, string city)
+        {
+            StartConnection();
+
+            List<Events> events = new List<Events>();
+            List<int> eventIds = new List<int>();
+
+            SqlCommand cmd = new SqlCommand("GetEventFromCityAndTag", Con)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+
+            Con.Open();
+            foreach(var tagId in tagIds)
+            {
+                cmd.Parameters.AddWithValue("@City", city);
+                cmd.Parameters.AddWithValue("@TagId", tagId);
+
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    int eventId = int.Parse(reader["EventId"].ToString());
+
+                    if (!eventIds.Contains(eventId))
+                    {
+                        eventIds.Add(eventId);
+
+                        events.Add(new Events()
+                        {
+                            EventId = eventId,
+                            EventName = reader["EventName"].ToString(),
+                            StartTime = reader.GetDateTime(1),
+                            Duration = int.Parse(reader["Duration"].ToString()),
+                            Location = reader["Location"].ToString(),
+                            Price = int.Parse(reader["Price"].ToString())
+                        });
+                    }
+                }
+
+                cmd.Parameters.Clear();
+                reader.Close();
+
+            }
+            return events;
+        }
+
+        //Using above method instead of this one
+        public List<int> GetEventIdsFromTag(List<int> tagIds)
+        {
+            StartConnection();
+            List<int> eventIds = new List<int>();
+
+            SqlCommand cmd = new SqlCommand("GetEventsFromTag", Con)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+
+            Con.Open();
+            foreach(int tagId in tagIds)
+            {
+                cmd.Parameters.AddWithValue("@tagId", tagId);
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    int eventId = int.Parse(reader["EventId"].ToString());
+                    if (!eventIds.Contains(eventId))
+                    {
+                        eventIds.Add(eventId);
+                    }
+                }
+                cmd.Parameters.Clear();
+                reader.Close();
+            }
+            Con.Close();
+
+            return eventIds;
+        }   
     }
 }

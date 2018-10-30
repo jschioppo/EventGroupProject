@@ -7,23 +7,28 @@
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
 
 <h2>Find an Event</h2>
+<button onclick="search()">Search</button>
+<button onclick="recommended()">Recommended</button>
 
 <div id="search-partial-view">
     @Html.Partial("_Search", new List<Tag>())
 </div>
 
+<div id="recommended-partial-view">
+    @Html.Partial("_Recommended")
+</div>
 
-@Html.Partial("_Recommended")
+<div id="result-partial-view">
+    @Html.Partial("_ResultView", new List<Events>())
+</div>
 
-@Html.Partial("_ResultView")
 
 <script type="text/javascript">
 
     $(document).ready(function () {
         getTags();
+        search();
     });
-
-   
 
     function getTags() {
         $.ajax({
@@ -34,5 +39,29 @@
                 $("#search-partial-view").html(result);
             }
         });
+    }
+
+    function searchEvents() {
+        var city = $("#searchbox").val();
+        findSelected();
+        $.ajax({
+            type: "POST",
+            url: "EventsRecommendedSearching/_ResultView",
+            data: { tagIds: userTags, city: city },
+            datatype: "json",
+            success: function (result) {
+                $("#result-partial-view").html(result);
+            }
+        });
+    }
+
+    function search() {
+        $("#search-partial-view").css("visibility", "visible");
+        $("#recommended-partial-view").css("visibility", "hidden");
+    }
+
+    function recommended() {
+        $("#search-partial-view").css("visibility", "hidden");
+        $("#recommended-partial-view").css("visibility", "visible");
     }
 </script>

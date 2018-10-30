@@ -27,5 +27,10 @@ namespace EventGroupProject.Controllers
         {
             return PartialView(_dbHandler.GetAllTags());
         }
+
+        public ActionResult _ResultView(string[] tagIds, string city)
+        {
+            return PartialView(_dbHandler.SearchEvents(new List<int>(Array.ConvertAll(tagIds, int.Parse)), city););
+        }
     }
 }

@@ -23,12 +23,33 @@
             }
         </div>
     </div>
+    <div>
+        <button id="search-btn">Search</button>
+    </div>
 </div>
 
 <script type="text/javascript">
+    var userTags
+
     $('.tag-btn').click(function () {
         $(this).toggleClass("active");
     });
+
+    $("#search-btn").click(function () {
+        searchEvents();
+    });
+
+    function findSelected() {
+        userTags = new Array();
+        var btnContainer = document.getElementById('search-tags');
+        var buttons = btnContainer.getElementsByTagName('button');
+
+        for (i = 0; i < buttons.length; ++i) {
+            if ($(buttons[i]).hasClass("active")) {
+                userTags.push(i + 1);
+            }
+        }
+    }
 </script>
 
 <style>
@@ -39,6 +60,7 @@
     .topbar{
         width: 50%;
         margin: auto;
+        margin-left: 35%;
     }
 
     #searchbox {
@@ -51,6 +73,9 @@
     .true-top {
         overflow: hidden;
         padding: 10px;
+        -webkit-box-shadow: 3px 3px 5px 6px #006747;
+        -moz-box-shadow: 3px 3px 5px 6px #006747;
+        box-shadow: 3px 3px 5px 6px #006747;
     }
 
     #search-tags{
@@ -93,5 +118,17 @@
         width: 50%;
         margin:auto;
         padding-bottom: 15px;
+        margin-left: 35%;
+    }
+
+    #search-btn {
+        background-color: #cccccc;
+        border-color: black;
+        width: 10%;
+        float: right;
+        color: black !important;
+        text-align: center;
+        margin-top: -5px;
+        margin-bottom: 5px;
     }
 </style>
