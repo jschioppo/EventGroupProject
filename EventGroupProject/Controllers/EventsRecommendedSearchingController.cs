@@ -30,7 +30,7 @@ namespace EventGroupProject.Controllers
 
         public ActionResult _ResultView(string[] tagIds, string city)
         {
-            return PartialView(_dbHandler.SearchEvents(new List<int>(Array.ConvertAll(tagIds, int.Parse)), city););
+            return PartialView(_dbHandler.SearchEvents(new List<int>(Array.ConvertAll(tagIds, int.Parse)), city));
         }
     }
 }

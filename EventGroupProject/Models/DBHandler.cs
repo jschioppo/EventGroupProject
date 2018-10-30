@@ -203,10 +203,9 @@ namespace EventGroupProject.Models
             cmd.Parameters.AddWithValue("@EmailAddress", email);
 
             Con.Open();
-            int userId = (int)cmd.ExecuteScalar();
+            var userId = cmd.ExecuteScalar();
             Con.Close();
-
-            return userId;
+            return (userId != null) ? (int)userId : 0;
         }
 
         public void DeleteUserTags(int userId)
