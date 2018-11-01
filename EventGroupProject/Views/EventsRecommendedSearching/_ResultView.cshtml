@@ -5,11 +5,21 @@
 @{
 }
 
-<h2>Results</h2>
+<div class="all-result-container">
+    @foreach (var x in Model)
+    {
+        <div class="result">
+            @x.Location
+        </div>
+    }
+</div>
 
-@foreach(var x in Model)
-{
-    <div>
-        @x.Location
-    </div>
-}
+
+<style type="text/css">
+    .all-result-container {
+        background-color: white;
+        -webkit-box-shadow: -3px -3px -5px -6px #006747;
+        -moz-box-shadow: -3px -3px -5px -6px #006747;
+        box-shadow: -3px -3px -5px -6px #006747;
+    }
+</style>
