@@ -238,6 +238,24 @@ namespace EventGroupProject.Models
             Con.Close();
         }
 
+        public void AddCityToUser(string city)
+        {
+            int userId = GetUserId();
+
+            StartConnection();
+            SqlCommand cmd = new SqlCommand("AddCityToUser", Con)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+
+            cmd.Parameters.AddWithValue("@UserId", userId);
+            cmd.Parameters.AddWithValue("@City", city);
+
+            Con.Open();
+            cmd.ExecuteNonQuery();
+            Con.Close();
+        }
+
         public bool IsUserRegisteredToEvent(int UserID, int EventID)
         {
             StartConnection();

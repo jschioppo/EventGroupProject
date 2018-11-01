@@ -38,7 +38,7 @@ namespace EventGroupProject.Controllers
         }
 
         [HttpPost]
-        public JsonResult SaveTags(string[] tagIds)
+        public JsonResult SaveTags(string[] tagIds, string city)
         {
             int userId = _dbHandler.GetUserId();
 
@@ -49,6 +49,7 @@ namespace EventGroupProject.Controllers
                 _dbHandler.AddTagToUser(userId, tagId);
             }
             _dbHandler.SetTagSelectedToTrue(userId);
+            _dbHandler.AddCityToUser(city);
 
             return Json(true);
         }

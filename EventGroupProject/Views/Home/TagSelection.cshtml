@@ -11,7 +11,12 @@
 
 <div id="tags-section">
     <p class="header-text"> These tags are going to help us recommend events based on your preference. Choose one or more tags based on your interests.</p>
-    <p id="no-tag-error" class="error-text">Error: At least one tag needs to be selected</p>
+    <p id="no-tag-error" class="error-text">At least one tag needs to be selected</p>
+    <p id="no-city-error" class="error-text">There must be a value for the city</p>
+    <div id="city-field">
+        <span class="header-text">What city do you live in?</span>
+        <input id="city-input" class="form-control"/>
+    </div>
     <div class="tag-container" id="tag-btn-container">
         @foreach (var tag in Model)
         {
@@ -37,8 +42,12 @@
             userTags = new Array();
         });
 
-        function ShowErrorText() {
+        function ShowTagError() {
             $("#no-tag-error").css("visibility", "visible");
+        }
+
+        function showCityError() {
+            $("#no-city-error").css("visibility", "visible");
         }
 
         function HideErrorText() {
@@ -47,12 +56,19 @@
 
         function saveTags() {
             findSelected();
-            if (validateOneTagSelected()) {
-                HideErrorText();
+            var oneTagSelected = validateOneTagSelected();
+            var cityNotBlank = validateCityField();
+            HideErrorText();
+            if (oneTagSelected && cityNotBlank) {
                 sendTags();
             }
             else {
-                ShowErrorText();
+                if (!oneTagSelected) {
+                    ShowTagError();
+                }
+                if (!cityNotBlank) {
+                    showCityError();
+                }
             }
         }
 
@@ -74,6 +90,14 @@
             return false;
         }
 
+        function validateCityField(){
+            var city = $("#city-input").val();
+
+            if (!city)
+                return false;
+            return true;
+        }
+
         function sendTags() {
             //Example of an ajax call.
             //Feel free to use this as an example, but your best bet will be to use Google 
@@ -81,11 +105,13 @@
             //The url is the method in the Home controller
             //"tagIds" is the name of the parameter in the respective C# method
             //traditional is needed since I sent an array, usually not needed
+            var city = $("#city-input").val();
+
             $.ajax({
                 type: "POST",
                 traditional: true,
                 url: "/Home/SaveTags",
-                data: { tagIds: userTags },
+                data: { tagIds: userTags, city: city },
                 success: function () {
                     window.location.href = '/Home/Index';
                 },
@@ -96,6 +122,15 @@
         }
     </script>
 }
+
+<style type="text/css">
+    #city-field {
+        margin: auto;
+        margin-bottom: 15px;
+        width: 60%;
+        text-align: center;
+    }
+</style>
 
 
 
