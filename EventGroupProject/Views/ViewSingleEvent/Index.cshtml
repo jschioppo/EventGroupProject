@@ -307,6 +307,20 @@
         });
     }
 
+    function joinEvent() {
+        $.ajax({
+            type: "POST",
+            url: "AddUserToEvent", //Controller Method to Invoke
+            data: {
+                eventId: eventId
+            },
+            success: function (response) {
+                location.reload(); //Reload webpage once user is added to page
+            }
+        });
+
+    }
+
     function addComment() {
 
     }
