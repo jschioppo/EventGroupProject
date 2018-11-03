@@ -612,6 +612,29 @@ namespace EventGroupProject.Models
             Con.Close();
 
             return eventIds;
-        }   
+        }
+
+        public bool AddUserToEvent(int event_id)
+        {
+            StartConnection();
+
+            int user_id = GetUserId();
+
+            SqlCommand cmd = new SqlCommand("AddUserToEvent", Con)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+
+            cmd.Parameters.AddWithValue("@event_ID", event_id);
+            cmd.Parameters.AddWithValue("@user_ID", user_id);
+
+            Con.Open();
+            int i = cmd.ExecuteNonQuery();
+            Con.Close();
+
+            /*Returns if Query was successful or not*/
+            return (i == 1 ? true : false);
+
+        }
     }
 }
