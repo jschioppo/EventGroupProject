@@ -70,6 +70,13 @@ namespace EventGroupProject.Controllers
 
             return Json(true);
         }
-        
+
+        [HttpPost]
+        public JsonResult AddUserToEvent(int eventId)
+        {
+            return Json(_dbHandler.AddUserToEvent(eventId)); //Not sure what the return Json thing is doing here...
+
+        }
+
     }
 }
