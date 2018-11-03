@@ -7,8 +7,13 @@
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
 
 <h2>Find an Event</h2>
-<button onclick="search()">Search</button>
-<button onclick="recommended()">Recommended</button>
+<button onclick="search()" 
+        style="width: 49.8%;
+        float: left;">Search</button>
+<button onclick="recommended()" 
+        style="width: 49.8%;
+        float: right;">Recommended</button>
+
 
 <div id="search-partial-view">
     @Html.Partial("_Search", new List<Tag>())
@@ -122,6 +127,23 @@
             -webkit-transform: translate(0, 4px);
             -moz-transform: translate(0, 4px);
             transform: translate(0, 4px);
+        }
+
+        /*Subclass to make the button appear to stay pressed down*/
+        .tag-btn:focus, .active {
+            background: #e5e5e5;
+            outline: none;
+            -webkit-box-shadow: inset 0px 0px 5px #c1c1c1;
+            -moz-box-shadow: inset 0px 0px 5px #c1c1c1;
+            box-shadow: inset 0px 0px 5px #c1c1c1;
+        }
+        /*Or maybe this*/
+        .tag-btn:target {
+            background: #e5e5e5;
+            outline: none;
+            -webkit-box-shadow: inset 0px 0px 5px #c1c1c1;
+            -moz-box-shadow: inset 0px 0px 5px #c1c1c1;
+            box-shadow: inset 0px 0px 5px #c1c1c1;
         }
 
     #tag-section {
