@@ -74,7 +74,7 @@ namespace EventGroupProject.Controllers
         [HttpPost]
         public JsonResult AddUserToEvent(int eventId)
         {
-            return Json(_dbHandler.AddUserToEvent(eventId)); //Not sure what the return Json thing is doing here...
+            return Json(_dbHandler.AddUserToEvent(eventId)); //Return Json?
 
         }
 
