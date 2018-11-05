@@ -20,6 +20,8 @@
 </div>
 
 <div id="result-partial-view">
+    <div id="loading-icon" class="loader">
+    </div>
     @Html.Partial("_ResultView", new List<Events>())
 </div>
 
@@ -27,6 +29,7 @@
 <script type="text/javascript">
 
     $(document).ready(function () {
+        $("#loading-icon").hide();
         getTags();
         search();
     });
@@ -43,6 +46,7 @@
     }
 
     function searchEvents() {
+        $("#loading-icon").show();
         var city = $("#searchbox").val();
         findSelected();
         $.ajax({
@@ -51,6 +55,7 @@
             data: { tagIds: userTags, city: city },
             datatype: "json",
             success: function (result) {
+                $("#loading-icon").hide();
                 $("#result-partial-view").html(result);
             }
         });
@@ -71,6 +76,10 @@
 <style type="text/css">
     * {
         box-sizing: border-box;
+    }
+
+    #loading-icon{
+        visibility: hidden;
     }
 
     .topbar {

@@ -10,14 +10,14 @@
     {
         <div id="result" onclick="viewEventDetails(@result.EventId)">
             <div class="name-section">
-                @result.EventName
+                <strong>@result.EventName</strong>
             </div>
             <div class="location-section">
-                @result.Location
+                <strong>@result.Location</strong>
             </div>
             <div class="time-section">
-                @result.StartTime
-                @result.Duration
+                <div>Happens at <strong>@result.StartTime</strong></div>
+                <div>Lasts <strong>@result.Duration</strong> minutes</div>
             </div>
         </div>
     }
