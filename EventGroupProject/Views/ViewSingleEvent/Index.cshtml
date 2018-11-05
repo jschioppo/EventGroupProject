@@ -93,7 +93,7 @@
         </div>
         <div id="not-signed-up-window">
             <div class="pane-header">To view this event's comments please sign up.</div>
-            <button class="save-button" id="join-event-btn">Join</button>
+            <button class="save-button" id="join-event-btn" onclick="joinEvent()">Join</button>
         </div>
         <div id="signed-up-window">
             <div class="pane-header">Comments: </div>
@@ -305,6 +305,20 @@
                 user_is_event_creator_cb(response);
             }
         });
+    }
+
+    function joinEvent() {
+        $.ajax({
+            type: "POST",
+            url: "AddUserToEvent", //Controller Method to Invoke
+            data: {
+                eventId: eventId
+            },
+            success: function (response) {
+                location.reload(); //Reload webpage once user is added to page
+            }
+        });
+
     }
 
     function addComment() {
