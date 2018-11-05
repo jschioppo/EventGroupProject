@@ -4,14 +4,17 @@
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
-<h2>Home Screen</h2>
+<h2>Your Upcoming Events</h2>
 
-<button onclick="testEvent()">Test Event Details</button>
+<div id="upcoming-events">
+    @foreach(var upcomingEvent in Model)
+    {
+        <div >@upcomingEvent.EventName</div>
+    }
+</div>
 
 <script type="text/javascript">
-    function testEvent() {
-        window.location.href = '/ViewSingleEvent/Index';
-    }
+    
 </script>
 
 

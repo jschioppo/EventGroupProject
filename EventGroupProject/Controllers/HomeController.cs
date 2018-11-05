@@ -29,7 +29,7 @@ namespace EventGroupProject.Controllers
                 List<Tag> tags = _dbHandler.GetAllTags();
                 return View("TagSelection", tags);
             }
-            return View();
+            return View(_dbHandler.GetUserEvents());
         }
 
         public IActionResult Error()

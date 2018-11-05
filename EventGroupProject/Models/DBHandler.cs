@@ -635,5 +635,38 @@ namespace EventGroupProject.Models
             return (i == 1 ? true : false);
 
         }
+
+        public List<Events> GetUserEvents()
+        {
+            List<Events> events = new List<Events>();
+            int userId = GetUserId();
+
+            StartConnection();
+
+            SqlCommand cmd = new SqlCommand("GetUserEvents", Con)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+
+            cmd.Parameters.AddWithValue("@UserId", userId);
+
+            Con.Open();
+            SqlDataReader reader = cmd.ExecuteReader();
+
+            while (reader.Read()) {
+                events.Add(new Events()
+                {
+                    EventId = int.Parse(reader["EventId"].ToString()),
+                    EventName = reader["EventName"].ToString(),
+                    City = reader["City"].ToString(),
+                    StartTime = reader.GetDateTime(3),
+                    Duration = int.Parse(reader["Duration"].ToString()),
+                    Location = reader["Location"].ToString(),
+                    Price = int.Parse(reader["Price"].ToString())
+                });
+            }
+
+            return events;
+        }
     }
 }
