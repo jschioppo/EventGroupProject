@@ -7,10 +7,10 @@
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
 
 <h2>Find an Event</h2>
-<button onclick="search()" 
+<button class="focus"  onclick="search()" 
         style="width: 49.8%;
         float: left;">Search</button>
-<button onclick="recommended()" 
+<button class="focus" onclick="recommended()" 
         style="width: 49.8%;
         float: right;">Recommended</button>
 
@@ -170,5 +170,15 @@
         -moz-box-shadow: inset 0px 0px 5px #c1c1c1;
         box-shadow: inset 0px 0px 5px #c1c1c1;
     }*@
+
+     
     }
+    .focus:focus {
+        color: forestgreen;
+    }
+
+    :target {
+        color: forestgreen;
+    }
+    
 </style>
