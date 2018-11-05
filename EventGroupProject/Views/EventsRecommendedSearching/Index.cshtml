@@ -123,28 +123,12 @@
 
         .tag-btn:active, .active {
             border-color: black !important;
-            /*Makes the buttons sink down*/
+            /*Makes the buttons sink down}*/
             -webkit-transform: translate(0, 4px);
             -moz-transform: translate(0, 4px);
             transform: translate(0, 4px);
         }
-
-        /*Subclass to make the button appear to stay pressed down*/
-        .tag-btn:focus, .active {
-            background: #e5e5e5;
-            outline: none;
-            -webkit-box-shadow: inset 0px 0px 5px #c1c1c1;
-            -moz-box-shadow: inset 0px 0px 5px #c1c1c1;
-            box-shadow: inset 0px 0px 5px #c1c1c1;
-        }
-        /*Or maybe this*/
-        .tag-btn:target {
-            background: #e5e5e5;
-            outline: none;
-            -webkit-box-shadow: inset 0px 0px 5px #c1c1c1;
-            -moz-box-shadow: inset 0px 0px 5px #c1c1c1;
-            box-shadow: inset 0px 0px 5px #c1c1c1;
-        }
+        
 
     #tag-section {
         margin-left: -20px;
@@ -166,5 +150,25 @@
         text-align: center;
         margin-top: -5px;
         margin-bottom: 5px;
+    }
+
+    .recommended-btn {
+        /*Subclass to make the button appear to stay pressed down*/
+        .recommended-btn:focus
+        {
+        background: #e5e5e5;
+        outline: none;
+        -webkit-box-shadow: inset 0px 0px 5px #c1c1c1;
+        -moz-box-shadow: inset 0px 0px 5px #c1c1c1;
+        box-shadow: inset 0px 0px 5px #c1c1c1;
+        }
+        /*Or maybe this*/
+        .recommended-btn:target {
+            background: #e5e5e5;
+            outline: none;
+            -webkit-box-shadow: inset 0px 0px 5px #c1c1c1;
+            -moz-box-shadow: inset 0px 0px 5px #c1c1c1;
+            box-shadow: inset 0px 0px 5px #c1c1c1;
+        }
     }
 </style>
