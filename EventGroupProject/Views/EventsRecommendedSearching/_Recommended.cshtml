@@ -1,4 +1,5 @@
-﻿@*
+﻿@model System.Collections.Generic.List<Tag>
+@*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @{
@@ -6,3 +7,59 @@
 
 <h2>Recommended</h2>
 
+
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+<link rel="stylesheet" href="~/css/site.css" />
+
+<div class="true-top">
+    <div class="topbar">
+        <label class="header-text">Where you are located:</label>
+
+    </div>
+    <div id="tag-section">
+        <div id="tag-header">
+            <span class="header-text">What you are interested in:</span>
+        </div>
+        @*<div id="search-tags">
+
+            @foreach (var tag in Model)
+            {
+
+                <button class="tag-btn" id="tag-search-btn" type="button">@tag.Name</button>
+                /*(if (tag.Name in UserId.TagsSelected){
+                    button == active;
+                }*/
+            }
+        </div>*@
+    </div>
+            @*<div>
+                    <button id="search-btn">Search</button>
+                </div>*@
+        </div>
+
+        <script type="text/javascript">
+            var userTags
+
+            $('.tag-btn').click(function () {
+                $(this).toggleClass("active");
+            });
+
+            function findSelected() {
+                userTags = new Array();
+                var btnContainer = document.getElementById('search-tags');
+                var buttons = btnContainer.getElementsByTagName('button');
+
+                for (i = 0; i < buttons.length; ++i) {
+                    if ($(buttons[i]).hasClass("active")) {
+                        userTags.push(i + 1);
+                    }
+                }
+            }
+        </script>
+
+        <style>
+        </style>

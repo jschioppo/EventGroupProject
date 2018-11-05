@@ -152,9 +152,9 @@
         margin-bottom: 5px;
     }
 
-    .recommended-btn {
+    .button {
         /*Subclass to make the button appear to stay pressed down*/
-        .recommended-btn:focus
+        .button:focus
         {
         background: #e5e5e5;
         outline: none;
@@ -163,12 +163,12 @@
         box-shadow: inset 0px 0px 5px #c1c1c1;
         }
         /*Or maybe this*/
-        .recommended-btn:target {
-            background: #e5e5e5;
-            outline: none;
-            -webkit-box-shadow: inset 0px 0px 5px #c1c1c1;
-            -moz-box-shadow: inset 0px 0px 5px #c1c1c1;
-            box-shadow: inset 0px 0px 5px #c1c1c1;
-        }
+    @*.button:target {
+        background: #e5e5e5;
+        outline: none;
+        -webkit-box-shadow: inset 0px 0px 5px #c1c1c1;
+        -moz-box-shadow: inset 0px 0px 5px #c1c1c1;
+        box-shadow: inset 0px 0px 5px #c1c1c1;
+    }*@
     }
 </style>
