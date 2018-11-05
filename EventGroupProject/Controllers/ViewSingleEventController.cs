@@ -21,14 +21,14 @@ namespace EventGroupProject.Controllers
         }
 
         // GET: /<controller>/
-        public IActionResult Index()
+        public IActionResult Index(int eventId)
         {
-            return View(_dbHandler.GetEvent(5));
+            return View(_dbHandler.GetEvent(eventId));
         }
 
-        public ActionResult _EventComments()
+        public ActionResult _EventComments(int eventId)
         {
-            return PartialView(_dbHandler.GetComments(5));
+            return PartialView(_dbHandler.GetComments(eventId));
         }
 
         [HttpGet]

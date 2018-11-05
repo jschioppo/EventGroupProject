@@ -6,20 +6,30 @@
 }
 
 <div class="all-result-container">
-    @foreach (var x in Model)
+    @foreach (var result in Model)
     {
-        <div class="result">
-            @x.Location
+        <div id="result" onclick="viewEventDetails(@result.EventId)">
+            <div class="name-section">
+                @result.EventName
+            </div>
+            <div class="location-section">
+                @result.Location
+            </div>
+            <div class="time-section">
+                @result.StartTime
+                @result.Duration
+            </div>
         </div>
     }
 </div>
 
+<script type="text/javascript">
+    function viewEventDetails(eventId) {
+        var url = "/ViewSingleEvent/Index?eventId=" + eventId;
+        window.location.href = url;
+    }
+</script>
 
 <style type="text/css">
-    .all-result-container {
-        background-color: white;
-        -webkit-box-shadow: -3px -3px -5px -6px #006747;
-        -moz-box-shadow: -3px -3px -5px -6px #006747;
-        box-shadow: -3px -3px -5px -6px #006747;
-    }
+    
 </style>

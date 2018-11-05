@@ -311,7 +311,7 @@ namespace EventGroupProject.Models
         {
             List<Tag> eventTags = GetEventTags(GetEventTagIds(eventId));
             List<User> signedUpUsers = GetSignedUpUsers(eventId);
-            List<Comments> eventComments = GetComments(eventId);
+            //List<Comments> eventComments = GetComments(eventId);
             Events newEvent = null;
 
             StartConnection();
@@ -344,8 +344,7 @@ namespace EventGroupProject.Models
                         UserDisplayName = GetDisplayName(int.Parse(reader["EventCreatorID"].ToString()))
                     },
                     SignedUpUsers = signedUpUsers,
-                    EventTags = eventTags,
-                    EventComments = eventComments
+                    EventTags = eventTags
                 };
             }
 
