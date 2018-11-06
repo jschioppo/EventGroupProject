@@ -29,6 +29,8 @@ namespace EventGroupProject.Controllers
                 List<Tag> tags = _dbHandler.GetAllTags();
                 return View("TagSelection", tags);
             }
+            /*Testing Delete Function*/
+            //_dbHandler.deleteEvent(16);
             return View(_dbHandler.GetUserEvents());
         }
 

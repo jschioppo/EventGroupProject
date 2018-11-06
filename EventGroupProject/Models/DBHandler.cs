@@ -668,5 +668,25 @@ namespace EventGroupProject.Models
 
             return events;
         }
+
+        public bool deleteEvent(int event_id)
+        {
+            StartConnection();
+
+            SqlCommand cmd = new SqlCommand("DeleteEvent", Con)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+
+            cmd.Parameters.AddWithValue("@eventID", event_id);
+
+            Con.Open();
+            int i = cmd.ExecuteNonQuery();
+            Con.Close();
+
+            /*Returns if Query was successful or not*/
+            return (i == 1 ? true : false);
+
+        }
     }
 }
