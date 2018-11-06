@@ -185,19 +185,6 @@
         });
     }
 
-    function getUserId(user_id_cb) {
-        $.ajax({
-            type: "GET",
-            url: "GetUserId",
-            contentType: "application/json;charset=utf-8",
-            dataType: "json",
-            success: function (response) {
-                user_id_cb(response);
-            }
-        });
-        
-    }
-
     function newComment() {
 
         var commentBody = $("#comment-box").val();
@@ -267,10 +254,6 @@
                 location.reload(); //Reload webpage once user is added to page
             }
         });
-
-    }
-
-    function addComment() {
 
     }
 </script>
