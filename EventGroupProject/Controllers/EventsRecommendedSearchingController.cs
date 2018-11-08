@@ -33,9 +33,5 @@ namespace EventGroupProject.Controllers
             return PartialView(_dbHandler.SearchEvents(new List<int>(Array.ConvertAll(tagIds, int.Parse)), city));
         }
 
-        public ActionResult _Recommended()
-        {
-            return PartialView(_dbHandler.)
-        }
     }
 }

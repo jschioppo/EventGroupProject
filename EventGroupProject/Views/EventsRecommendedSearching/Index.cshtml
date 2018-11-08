@@ -1,6 +1,4 @@
-﻿@model EventsRecommendedModel 
-
-@{
+﻿@{
     ViewData["Title"] = "Index";
 }
 
@@ -10,19 +8,19 @@
 
 <h2>Find an Event</h2>
 <button id ="search-part" class="btn btn-partial"  onclick="search()" 
-        style="width: 49.8%;
+        style="width: 50%;
         float: left;">Search</button>
 <button id="recom-part" class="btn btn-partial" onclick="recommended()" 
-        style="width: 49.8%;
+        style="width: 50%;
         float: right;">Recommended</button>
 
 
 <div id="search-partial-view">
-    @Html.Partial("_Search", Model.Tags)
+    @Html.Partial("_Search", new List<Tag>())
 </div>
 
 <div id="recommended-partial-view">
-    @Html.Partial("_Recommended", Model)
+    @Html.Partial("_Recommended", new EventsRecommendedModel())
 </div>
 
 <div id="result-partial-view">
@@ -76,9 +74,6 @@
         document.getElementById("recom-part").disabled = true;
     }
 
-    //function toggleOn(button) {
-        //$(button)
-    //})
 </script>
 
 <style type="text/css">
@@ -174,13 +169,8 @@
             -moz-transform: translate(0, 4px);
             transform: translate(0, 4px);
         }
-
-    @*Changes text color when clicked*@
-    @*.focus:focus {
-        color: forestgreen;
-        
-    }*@
-
-    
+        .btn-partial:disabled {
+            cursor: pointer;
+        }
     
 </style>
