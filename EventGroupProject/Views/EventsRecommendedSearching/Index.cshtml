@@ -7,10 +7,10 @@
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
 
 <h2>Find an Event</h2>
-<button class="focus"  onclick="search()" 
+<button class="btn"  onclick="search()" 
         style="width: 49.8%;
         float: left;">Search</button>
-<button class="focus" onclick="recommended()" 
+<button class="btn" onclick="recommended()" 
         style="width: 49.8%;
         float: right;">Recommended</button>
 
@@ -69,6 +69,10 @@
         $("#search-partial-view").css("visibility", "hidden");
         $("#recommended-partial-view").css("visibility", "visible");
     }
+
+    //function toggleOn(button) {
+        //$(button)
+    //})
 </script>
 
 <style type="text/css">
@@ -152,35 +156,24 @@
         margin-bottom: 5px;
     }
 
-    .button {
-        /*Subclass to make the button appear to stay pressed down*/
-        .button:focus
-        {
-        background: #e5e5e5;
-        outline: none;
-        -webkit-box-shadow: inset 0px 0px 5px #c1c1c1;
-        -moz-box-shadow: inset 0px 0px 5px #c1c1c1;
-        box-shadow: inset 0px 0px 5px #c1c1c1;
+    .btn {
+
+    }
+
+        .btn:active, .active {
+            border-color: black !important;
+            /*Makes the buttons sink down}*/
+            -webkit-transform: translate(0, 4px);
+            -moz-transform: translate(0, 4px);
+            transform: translate(0, 4px);
         }
-        /*Or maybe this*/
-    @*.button:target {
-        background: #e5e5e5;
-        outline: none;
-        -webkit-box-shadow: inset 0px 0px 5px #c1c1c1;
-        -moz-box-shadow: inset 0px 0px 5px #c1c1c1;
-        box-shadow: inset 0px 0px 5px #c1c1c1;
+
+    @*Changes text color when clicked*@
+    @*.focus:focus {
+        color: forestgreen;
+        
     }*@
 
-     
-    }
-    .focus:focus {
-        color: forestgreen;
-        outline: !important;
-    }
-
-    :target {
-        color: forestgreen;
-        outline:!important;
-    }
+    
     
 </style>
