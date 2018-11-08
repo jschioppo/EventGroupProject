@@ -7,10 +7,10 @@
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
 
 <h2>Find an Event</h2>
-<button class="btn"  onclick="search()" 
+<button id ="search-part" class="btn"  onclick="search()" 
         style="width: 49.8%;
         float: left;">Search</button>
-<button class="btn" onclick="recommended()" 
+<button id="recom-part" class="btn" onclick="recommended()" 
         style="width: 49.8%;
         float: right;">Recommended</button>
 
@@ -63,11 +63,15 @@
     function search() {
         $("#search-partial-view").css("visibility", "visible");
         $("#recommended-partial-view").css("visibility", "hidden");
+        document.getElementById("search-part").disabled = true;
+        document.getElementById("recom-part").disabled = false;
     }
 
     function recommended() {
         $("#search-partial-view").css("visibility", "hidden");
         $("#recommended-partial-view").css("visibility", "visible");
+        document.getElementById("search-part").disabled = false;
+        document.getElementById("recom-part").disabled = true;
     }
 
     //function toggleOn(button) {
