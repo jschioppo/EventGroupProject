@@ -48,7 +48,14 @@
     function searchEvents() {
         $("#loading-icon").show();
         var city = $("#searchbox").val();
-        findSelected();
+
+        if (!validateCity()) {
+            return;
+        }
+        if (!findSelected()) {
+            return;
+        }
+        
         $.ajax({
             type: "POST",
             url: "EventsRecommendedSearching/_ResultView",
@@ -71,6 +78,18 @@
         $("#search-partial-view").css("visibility", "hidden");
         $("#recommended-partial-view").css("visibility", "visible");
     }
+
+    function validateCity() {
+        var city = $("#searchbox").val();
+
+        if (!city) {
+            alert("The city field can not be blank.");
+            return false;
+        }
+
+        return true;
+    }
+
 </script>
 
 <style type="text/css">
@@ -162,6 +181,7 @@
         -moz-box-shadow: 3px 3px 5px 6px #006747;
         box-shadow: 3px 3px 5px 6px #006747;
         overflow-y: scroll;
+        overflow-x: hidden;
         max-height: 475px;
     }
 

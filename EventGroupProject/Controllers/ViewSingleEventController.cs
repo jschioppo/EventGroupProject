@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using EventGroupProject.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
@@ -11,6 +12,7 @@ using Newtonsoft.Json;
 
 namespace EventGroupProject.Controllers
 {
+    [Authorize]
     public class ViewSingleEventController : Controller
     {
         private DBHandler _dbHandler { get; set; }
@@ -76,6 +78,18 @@ namespace EventGroupProject.Controllers
         {
             return Json(_dbHandler.AddUserToEvent(eventId)); //Return Json?
 
+        }
+
+        [HttpPost]
+        public void DeleteUserFromEvent(int eventId)
+        {
+            _dbHandler.RemoveUserFromEvent(_dbHandler.GetUserId(), eventId);
+        }
+
+        [HttpPost]
+        public void DeleteComment(int commentId)
+        {
+            _dbHandler.DeleteComment(commentId);
         }
 
     }

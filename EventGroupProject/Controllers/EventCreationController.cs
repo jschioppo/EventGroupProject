@@ -4,9 +4,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using EventGroupProject.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace EventGroupProject.Controllers
 {
+    [Authorize]
     public class EventCreationController : Controller
     {
         DBHandler _dbHandler;

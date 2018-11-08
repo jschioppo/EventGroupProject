@@ -15,7 +15,7 @@
                 </div>
                 <div id="comment-text">
                     @comment.Content
-                    <button id="del-comment-btn" class="delCommentBtn">
+                    <button id="del-comment-btn" class="delCommentBtn" onclick="deleteComment(@comment.CommentId)">
                         <span class="fas fa-trash"></span>
                     </button>
                 </div>

@@ -35,7 +35,10 @@
 </div>
 
 <script type="text/javascript">
-    
+    function viewEventDetails(eventId) {
+        var url = "/ViewSingleEvent/Index?eventId=" + eventId;
+        window.location.href = url;
+    }
 </script>
 
 <style type="text/css">
@@ -55,16 +58,19 @@
     .all-events {
         display: flex;
         flex-wrap: wrap;
-        align-content: center;
         width: 80%;
         margin: auto;
         text-align: center;
         color: #DEB887;
         padding: 5px;
         padding: 5px 25px 5px 25px;
-        overflow-y: scroll;
-        height: 475px;
-        margin-top: 15px;
+        overflow-y: auto;
+        /*-webkit-box-shadow: 3px 3px 5px 6px #006747;
+        -moz-box-shadow: 3px 3px 5px 6px #006747;
+        box-shadow: 3px 3px 5px 6px #006747;*/
+        margin-top: 35px;
+        overflow-x: hidden;
+        max-height: 600px;
     }
 
     .name-section {

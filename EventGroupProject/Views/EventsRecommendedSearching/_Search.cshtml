@@ -9,7 +9,7 @@
 <div class="true-top">
     <div class="topbar">
         <label class="header-text" for="searchbox">Where are you located?</label>
-        <input id="searchbox" class="form-control" type="text" placeholder="Enter City Name..." />
+        <input id="searchbox" class="form-control" type="text" placeholder="Enter City Name..." maxlength="30"/>
     </div>
     <div id="tag-section">
         <div id="tag-header">
@@ -41,14 +41,23 @@
 
     function findSelected() {
         userTags = new Array();
+        var oneTagSelected = false;
         var btnContainer = document.getElementById('search-tags');
         var buttons = btnContainer.getElementsByTagName('button');
 
         for (i = 0; i < buttons.length; ++i) {
             if ($(buttons[i]).hasClass("active")) {
+                oneTagSelected = true;
                 userTags.push(i + 1);
             }
         }
+
+        if (!oneTagSelected) {
+            alert("At least one tag must be selected.");
+            return false;
+        }
+
+        return true;
     }
 </script>
 

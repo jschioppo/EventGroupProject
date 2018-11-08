@@ -254,7 +254,27 @@
                 location.reload(); //Reload webpage once user is added to page
             }
         });
+    }
 
+    function leaveEvent(eventId) {
+        $.ajax({
+            type: "POST",
+            url: "DeleteUserFromEvent",
+            data: {
+                eventId : eventId
+            },
+        });
+    }
+
+    function deleteComment(commentId) {
+        $.ajax({
+            type: "POST",
+            url: "DeleteComment",
+            data: {
+                commentId : commentId
+            },
+        });
+        loadComments();
     }
 </script>
 
