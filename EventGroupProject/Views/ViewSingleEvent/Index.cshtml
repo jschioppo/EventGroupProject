@@ -152,7 +152,7 @@
     });
 
     function convertDuration(){
-        var durationHours = parseInt(@Model.Duration) / 60;
+        var durationHours = Math.round(parseInt(@Model.Duration) / 60);
         var durationMins = parseInt(@Model.Duration) % 60;
 
         var durationOutput;
