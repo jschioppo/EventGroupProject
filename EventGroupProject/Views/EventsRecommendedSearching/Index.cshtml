@@ -1,4 +1,6 @@
-﻿@{
+﻿@model EventsRecommendedModel 
+
+@{
     ViewData["Title"] = "Index";
 }
 
@@ -7,20 +9,20 @@
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
 
 <h2>Find an Event</h2>
-<button id ="search-part" class="btn"  onclick="search()" 
+<button id ="search-part" class="btn btn-partial"  onclick="search()" 
         style="width: 49.8%;
         float: left;">Search</button>
-<button id="recom-part" class="btn" onclick="recommended()" 
+<button id="recom-part" class="btn btn-partial" onclick="recommended()" 
         style="width: 49.8%;
         float: right;">Recommended</button>
 
 
 <div id="search-partial-view">
-    @Html.Partial("_Search", new List<Tag>())
+    @Html.Partial("_Search", Model.Tags)
 </div>
 
 <div id="recommended-partial-view">
-    @Html.Partial("_Recommended")
+    @Html.Partial("_Recommended", Model)
 </div>
 
 <div id="result-partial-view">
@@ -160,7 +162,8 @@
         margin-bottom: 5px;
     }
 
-    .btn {
+    .btn-partial {
+        cursor: pointer;
 
     }
 

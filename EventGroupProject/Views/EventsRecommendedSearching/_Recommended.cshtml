@@ -1,4 +1,4 @@
-﻿@model System.Collections.Generic.List<Tag>
+﻿@model EventsRecommendedModel
 
 <h2>Recommended</h2>
 @{
@@ -8,12 +8,19 @@
 <div class="true-top">
     <div class="topbar">
         <label class="header-text">Where you are located:</label>
+        <p>@Model.Location</p>
+
 
     </div>
     <div id="tag-section">
         <div id="tag-header">
             <span class="header-text">What you are interested in:</span>
-        </div>
+            @foreach (var tag in Model.Tags)
+            {
+                <button disabled>@tag.Name</button>
+            }
+
+        </div>foreach
         @*<div id="search-tags">
 
             @foreach (var tag in Model)
