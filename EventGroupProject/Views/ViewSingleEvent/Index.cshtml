@@ -8,7 +8,12 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
 
-<h2>@Html.DisplayFor(model => model.EventName)</h2>
+<div>
+    <div style="display:inline">
+        <h2>@Html.DisplayFor(model => model.EventName)</h2>
+        <a class="deleteButton" id="deleteEventButton" onclick="deleteEvent()">Delete Event</a>
+    </div>
+</div>
 
 <div id="main-pane">
     <div id="details-pane" class="info-text">
@@ -121,7 +126,7 @@
 
     $(document).ready(function () {
 
-
+        $("#deleteEventButton").hide();
         isUserSignedUp(function user_signed_up_cb(response) {
             $("#loading-icon").hide();
             if (response) {
@@ -139,6 +144,7 @@
         isUserAdmin(function user_is_admin_cb(response) {
             if (response) {
                 $("#del-comment-btn").show();
+                $("#deleteEventButton").show();
                 admin = true;
             }
         });
@@ -146,6 +152,7 @@
         isUserEventCreator(function user_is_event_creator_cb(response) {
             if (response) {
                 $("#del-comment-btn").show();
+                $("#deleteEventButton").show();
                 eventCreator = true;
             }
         });
@@ -265,6 +272,24 @@
             },
             success: function (response) {
                 location.reload(); //Reload webpage once user is added to page
+            }
+        });
+
+    }
+
+    function deleteEvent() {
+        if (!confirm("Are you sure you want to delete the event?")) {
+            return;
+        }
+        $.ajax({
+            type: "POST",
+            url: "DeleteEvent",
+            data: {
+                eventId:  eventId
+            },
+            success: function () {
+                var url = "/Home/Index";
+                window.location.href = url;
             }
         });
 
@@ -397,6 +422,19 @@
 
     .delCommentBtn{
         visibility: hidden;
+    }
+
+    .deleteButton{
+        float:right;
+        color:red;
+        font-size:16px;
+        
+    }
+
+    .deleteButton:hover{
+        color:red;
+        text-decoration:underline;
+        cursor:pointer;
     }
 </style>
 

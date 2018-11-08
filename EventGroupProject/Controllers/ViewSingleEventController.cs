@@ -78,5 +78,12 @@ namespace EventGroupProject.Controllers
 
         }
 
+        [HttpPost]
+        public void DeleteEvent(int eventId)
+        {
+            _dbHandler.deleteEvent(eventId); //Return Json?
+
+        }
+
     }
 }
