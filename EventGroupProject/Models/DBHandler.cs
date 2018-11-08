@@ -304,6 +304,8 @@ namespace EventGroupProject.Models
             int createdEventId = (int)cmd.ExecuteScalar();
             Con.Close();
 
+            AddUserToEvent(createdEventId);
+
             return createdEventId;
         }
 

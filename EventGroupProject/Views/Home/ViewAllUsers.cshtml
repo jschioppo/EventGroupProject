@@ -19,6 +19,7 @@
 
 <script type="text/javascript">
     function banUser(userId) {
+        alert("User " + userId + " has been banned.");
         $.ajax({
             type: "POST",
             url: "BanUser",
@@ -29,6 +30,7 @@
     }
 
     function makeUserAdmin(userId) {
+        alert("User " + userId + " has been made an admin.");
         $.ajax({
             type: "POST",
             url: "MakeUserAdmin",
