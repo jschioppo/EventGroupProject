@@ -1,7 +1,50 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
+﻿@model EventsRecommendedModel
 
 <h2>Recommended</h2>
+@{
+}
+<link rel="stylesheet" href="~/css/site.css" />
+
+<div class="true-top">
+    <div class="topbar">
+        <label class="header-text">Where you are located:</label>
+        <p>@Model.Location</p>
+
+
+    </div>
+    <div id="tag-section">
+        <div id="tag-header">
+            <span class="header-text">What you are interested in:</span>
+            @foreach (var tag in Model.Tags)
+            {
+                <button disabled>@tag.Name</button>
+            }
+
+        </div>
+        
+    </div>
+           
+</div>
+
+        <script type="text/javascript">
+            var userTags
+
+            $('.tag-btn').click(function () {
+                $(this).toggleClass("active");
+            });
+
+            function findSelected() {
+                userTags = new Array();
+                var btnContainer = document.getElementById('search-tags');
+                var buttons = btnContainer.getElementsByTagName('button');
+
+                for (i = 0; i < buttons.length; ++i) {
+                    if ($(buttons[i]).hasClass("active")) {
+                        userTags.push(i + 1);
+                    }
+                }
+            }
+        </script>
+
+        <style>
+        </style>

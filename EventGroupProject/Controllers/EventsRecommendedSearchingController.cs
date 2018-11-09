@@ -22,7 +22,7 @@ namespace EventGroupProject.Controllers
         // GET: /<controller>/
         public IActionResult Index()
         {
-            return View();
+            return View(new EventsRecommendedModel());
         }
 
         public ActionResult _Search()
@@ -34,5 +34,6 @@ namespace EventGroupProject.Controllers
         {
             return PartialView(_dbHandler.SearchEvents(new List<int>(Array.ConvertAll(tagIds, int.Parse)), city));
         }
+
     }
 }
