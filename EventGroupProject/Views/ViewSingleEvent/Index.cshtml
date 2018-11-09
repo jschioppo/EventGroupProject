@@ -159,7 +159,7 @@
     });
 
     function convertDuration(){
-        var durationHours = parseInt(@Model.Duration) / 60;
+        var durationHours = Math.round(parseInt(@Model.Duration) / 60);
         var durationMins = parseInt(@Model.Duration) % 60;
 
         var durationOutput;
@@ -190,19 +190,6 @@
                 }
             }
         });
-    }
-
-    function getUserId(user_id_cb) {
-        $.ajax({
-            type: "GET",
-            url: "GetUserId",
-            contentType: "application/json;charset=utf-8",
-            dataType: "json",
-            success: function (response) {
-                user_id_cb(response);
-            }
-        });
-        
     }
 
     function newComment() {
@@ -274,8 +261,8 @@
                 location.reload(); //Reload webpage once user is added to page
             }
         });
-
     }
+
 
     function deleteEvent() {
         if (!confirm("Are you sure you want to delete the event?")) {
@@ -295,8 +282,26 @@
 
     }
 
-    function addComment() {
+    
+    function leaveEvent(eventId) {
+        $.ajax({
+            type: "POST",
+            url: "DeleteUserFromEvent",
+            data: {
+                eventId : eventId
+            },
+        });
+    }
 
+    function deleteComment(commentId) {
+        $.ajax({
+            type: "POST",
+            url: "DeleteComment",
+            data: {
+                commentId : commentId
+            },
+        });
+        loadComments();
     }
 </script>
 

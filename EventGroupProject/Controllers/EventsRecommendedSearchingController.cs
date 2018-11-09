@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using EventGroupProject.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 
 namespace EventGroupProject.Controllers
 {
+    [Authorize]
     public class EventsRecommendedSearching : Controller
     {
         private DBHandler _dbHandler { get; set; }
@@ -20,7 +22,7 @@ namespace EventGroupProject.Controllers
         // GET: /<controller>/
         public IActionResult Index()
         {
-            return View();
+            return View(new EventsRecommendedModel());
         }
 
         public ActionResult _Search()
@@ -32,5 +34,6 @@ namespace EventGroupProject.Controllers
         {
             return PartialView(_dbHandler.SearchEvents(new List<int>(Array.ConvertAll(tagIds, int.Parse)), city));
         }
+
     }
 }
