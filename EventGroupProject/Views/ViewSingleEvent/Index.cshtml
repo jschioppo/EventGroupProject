@@ -137,7 +137,11 @@
                 window.setInterval("loadComments()", 3000);
                 $("#signed-up-window").show();
                 $("#not-signed-up-window").hide();
-                $("#leaveEventButton").show();
+
+                if (!eventCreator) {
+                    $("#leaveEventButton").show();
+                }
+                
             }
             else {
                 $("#signed-up-window").hide();
@@ -298,6 +302,10 @@
             data: {
                 eventId : eventId
             },
+            success: function () {
+                var url = "/Home/Index";
+                window.location.href = url;
+            }
         });
     }
 
