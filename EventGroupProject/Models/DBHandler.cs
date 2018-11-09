@@ -73,7 +73,7 @@ namespace EventGroupProject.Models
             Con.Close();
 
             //Return to check if add succeeded
-            return (i >= 1 ? true : false);
+            return (i >= 1);
         }
 
         public string GetDisplayName(int userId)
@@ -108,7 +108,7 @@ namespace EventGroupProject.Models
             int i = cmd.ExecuteNonQuery();
             Con.Close();
 
-            return (i == 1 ? true : false);
+            return (i == 1);
         }
 
         public List<Tag> GetAllTags()
@@ -154,7 +154,7 @@ namespace EventGroupProject.Models
             int i = cmd.ExecuteNonQuery();
             Con.Close();
 
-            return (i == 1 ? true : false);
+            return (i == 1);
         }
 
         public bool AddTagToEvent(int eventId, int tagId)
@@ -172,7 +172,7 @@ namespace EventGroupProject.Models
             int i = cmd.ExecuteNonQuery();
             Con.Close();
 
-            return (i == 1 ? true : false);
+            return (i == 1);
         }
 
         public int GetUserId()
@@ -271,7 +271,7 @@ namespace EventGroupProject.Models
             int i = (int)cmd.ExecuteScalar();
             Con.Close();
 
-            return (i == 1 ? true : false);
+            return (i == 1);
 
         }
       
@@ -304,6 +304,8 @@ namespace EventGroupProject.Models
             int createdEventId = (int)cmd.ExecuteScalar();
             Con.Close();
 
+            AddUserToEvent(createdEventId);
+
             return createdEventId;
         }
 
@@ -311,7 +313,7 @@ namespace EventGroupProject.Models
         {
             List<Tag> eventTags = GetEventTags(GetEventTagIds(eventId));
             List<User> signedUpUsers = GetSignedUpUsers(eventId);
-            List<Comments> eventComments = GetComments(eventId);
+            //List<Comments> eventComments = GetComments(eventId);
             Events newEvent = null;
 
             StartConnection();
@@ -344,8 +346,7 @@ namespace EventGroupProject.Models
                         UserDisplayName = GetDisplayName(int.Parse(reader["EventCreatorID"].ToString()))
                     },
                     SignedUpUsers = signedUpUsers,
-                    EventTags = eventTags,
-                    EventComments = eventComments
+                    EventTags = eventTags
                 };
             }
 
@@ -368,7 +369,26 @@ namespace EventGroupProject.Models
             int i = (int)cmd.ExecuteScalar();
             Con.Close();
 
-            return (i == 1 ? true : false);
+            return (i == 1);
+        }
+
+        public bool UserIsBanned()
+        {
+            int userId = GetUserId();
+
+            StartConnection();
+            SqlCommand cmd = new SqlCommand("CheckUserBanned", Con)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+
+            cmd.Parameters.AddWithValue("@UserId", userId);
+
+            Con.Open();
+            bool banned = (bool)cmd.ExecuteScalar();
+            Con.Close();
+
+            return banned;
         }
 
         public bool IsEventCreator(int userId, int eventId)
@@ -386,7 +406,7 @@ namespace EventGroupProject.Models
             int i = (int)cmd.ExecuteScalar();
             Con.Close();
 
-            return (i == 1 ? true : false);
+            return (i == 1);
         }
 
         List<int> GetEventTagIds(int eventId)
@@ -533,7 +553,7 @@ namespace EventGroupProject.Models
             Con.Close();
 
             /*Returns if Query was successful or not*/
-            return (i == 1 ? true : false);
+            return (i == 1);
         }
 
         public List<Events> SearchEvents(List<int> tagIds, string city)
@@ -612,6 +632,153 @@ namespace EventGroupProject.Models
             Con.Close();
 
             return eventIds;
-        }   
+        }
+
+        public bool AddUserToEvent(int event_id)
+        {
+            StartConnection();
+
+            int user_id = GetUserId();
+
+            SqlCommand cmd = new SqlCommand("AddUserToEvent", Con)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+
+            cmd.Parameters.AddWithValue("@event_ID", event_id);
+            cmd.Parameters.AddWithValue("@user_ID", user_id);
+
+            Con.Open();
+            int i = cmd.ExecuteNonQuery();
+            Con.Close();
+
+            /*Returns if Query was successful or not*/
+            return (i == 1);
+
+        }
+
+        public List<Events> GetUserEvents()
+        {
+            List<Events> events = new List<Events>();
+            int userId = GetUserId();
+
+            StartConnection();
+
+            SqlCommand cmd = new SqlCommand("GetUserEvents", Con)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+
+            cmd.Parameters.AddWithValue("@UserId", userId);
+
+            Con.Open();
+            SqlDataReader reader = cmd.ExecuteReader();
+
+            while (reader.Read()) {
+                events.Add(new Events()
+                {
+                    EventId = int.Parse(reader["EventId"].ToString()),
+                    EventName = reader["EventName"].ToString(),
+                    City = reader["City"].ToString(),
+                    StartTime = reader.GetDateTime(3),
+                    Duration = int.Parse(reader["Duration"].ToString()),
+                    Location = reader["Location"].ToString(),
+                    Price = int.Parse(reader["Price"].ToString())
+                });
+            }
+
+            return events;
+        }
+
+        public List<User> GetAllUsers()
+        {
+            List<User> users = new List<User>();
+
+            StartConnection();
+
+            SqlCommand cmd = new SqlCommand("GetAllUserNames", Con)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+
+            Con.Open();
+            SqlDataReader reader = cmd.ExecuteReader();
+
+            while (reader.Read())
+            {
+                users.Add(new User()
+                {
+                    UserId = int.Parse(reader["UserId"].ToString()),
+                    UserDisplayName = reader["DisplayName"].ToString()
+                });
+            }
+
+            return users;
+        }
+
+        public void BanUser(int userId)
+        {
+            StartConnection();
+
+            SqlCommand cmd = new SqlCommand("BanUser", Con)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+
+            cmd.Parameters.AddWithValue("@UserId", userId);
+
+            Con.Open();
+            cmd.ExecuteNonQuery();
+            Con.Close();
+        }
+
+        public void MakeUserAdmin(int userId)
+        {
+            StartConnection();
+
+            SqlCommand cmd = new SqlCommand("MakeUserAdmin", Con)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+
+            cmd.Parameters.AddWithValue("@UserId", userId);
+
+            Con.Open();
+            cmd.ExecuteNonQuery();
+            Con.Close();
+        }
+
+        public void RemoveUserFromEvent(int userId, int eventId)
+        {
+            StartConnection();
+
+            SqlCommand cmd = new SqlCommand("LeaveEvent", Con)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+
+            cmd.Parameters.AddWithValue("@UserId", userId);
+            cmd.Parameters.AddWithValue("@EventId", eventId);
+
+            Con.Open();
+            cmd.ExecuteNonQuery();
+            Con.Close();
+        }
+
+        public void DeleteComment(int commentId)
+        {
+            StartConnection();
+
+            SqlCommand cmd = new SqlCommand("DeleteComment", Con)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+
+            cmd.Parameters.AddWithValue("@CommentId", commentId);
+
+            Con.Open();
+            cmd.ExecuteNonQuery();
+            Con.Close();
+        }
     }
 }

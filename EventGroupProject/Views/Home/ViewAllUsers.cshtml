@@ -1,0 +1,68 @@
+﻿@model System.Collections.Generic.List<User>
+
+@{
+    ViewData["Title"] = "ViewAllUsers";
+}
+<link rel="stylesheet" href="~/css/site.css" />
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<h2>Users</h2>
+
+@foreach (var user in Model)
+{
+<div>
+    <a class="ban-btn" onclick="banUser(@user.UserId)">Ban</a>
+    <a class="make-admin-btn" onclick="makeUserAdmin(@user.UserId)">Admin</a>
+    <span class="header-text">@user.UserDisplayName</span>
+</div>
+}
+
+<script type="text/javascript">
+    function banUser(userId) {
+        alert("User " + userId + " has been banned.");
+        $.ajax({
+            type: "POST",
+            url: "BanUser",
+            data: {
+                userId : userId
+            },
+        });
+    }
+
+    function makeUserAdmin(userId) {
+        alert("User " + userId + " has been made an admin.");
+        $.ajax({
+            type: "POST",
+            url: "MakeUserAdmin",
+            data: {
+                userId: userId
+            },
+        });
+    }
+</script>
+
+<style type="text/css">
+    .ban-btn{
+        margin-right: 10px;
+        color: red;
+        font-size: 16px;
+    }
+
+        .ban-btn:hover{
+            text-decoration: underline;
+            cursor: pointer;
+            color: red;
+        }
+
+    .make-admin-btn {
+        margin-right: 10px;
+        color: yellow;
+        font-size: 16px;
+    }
+
+        .make-admin-btn:hover {
+            text-decoration: underline;
+            cursor: pointer;
+            color: yellow;
+        }
+</style>

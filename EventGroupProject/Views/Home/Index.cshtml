@@ -4,14 +4,99 @@
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
-<h2>Home Screen</h2>
+<h2>Your Upcoming Events</h2>
 
-<button onclick="testEvent()">Test Event Details</button>
+<div class="all-events">
+    @foreach (var upcomingEvent in Model)
+    {
+        @*<div class="event">
+            <div class="event-name">@upcomingEvent.EventName</div>
+            <div>@upcomingEvent.City</div>
+            <div>@upcomingEvent.Location</div>
+            <div>@upcomingEvent.StartTime</div>
+            <div>@upcomingEvent.Duration</div>
+            <div>@upcomingEvent.Price</div>
+        </div>*@
+
+        <div id="upcoming-event" onclick="viewEventDetails(@upcomingEvent.EventId)">
+            <div class="name-section">
+                <strong>@upcomingEvent.EventName</strong>
+            </div>
+            <div class="location-section">
+                <strong>@upcomingEvent.Location</strong>
+            </div>
+            <div class="time-section">
+                <div>Happens at <strong>@upcomingEvent.StartTime</strong></div>
+                <div>Lasts <strong>@upcomingEvent.Duration</strong> minutes</div>
+            </div>
+        </div>
+
+    }
+</div>
 
 <script type="text/javascript">
-    function testEvent() {
-        window.location.href = '/ViewSingleEvent/Index';
+    function viewEventDetails(eventId) {
+        var url = "/ViewSingleEvent/Index?eventId=" + eventId;
+        window.location.href = url;
     }
 </script>
+
+<style type="text/css">
+    .event {
+        width: 75%;
+        margin: auto;
+        color: #DEB887;
+        margin-bottom: 15px;
+        text-align: center;
+    }
+
+    .event-name{
+        font-size: 24px;
+        font-weight: bold;
+    }
+
+    .all-events {
+        display: flex;
+        flex-wrap: wrap;
+        width: 80%;
+        margin: auto;
+        text-align: center;
+        color: #DEB887;
+        padding: 5px;
+        padding: 5px 25px 5px 25px;
+        overflow-y: auto;
+        /*-webkit-box-shadow: 3px 3px 5px 6px #006747;
+        -moz-box-shadow: 3px 3px 5px 6px #006747;
+        box-shadow: 3px 3px 5px 6px #006747;*/
+        margin-top: 35px;
+        overflow-x: hidden;
+        max-height: 600px;
+    }
+
+    .name-section {
+        font-size: 24px;
+    }
+
+    .location-section {
+        font-size: 20px;
+    }
+
+    .time-section {
+        font-size: 16px;
+    }
+
+    #upcoming-event {
+        width: 50%;
+        justify-content: center;
+        margin-top: 30px;
+    }
+
+        #upcoming-event:hover {
+            -moz-box-shadow: 0 0 5px 5px #666;
+            -webkit-box-shadow: 0 0 5px 5px #666;
+            box-shadow: 0 0 5px 5px #979a9e;
+            cursor: pointer;
+        }
+</style>
 
 

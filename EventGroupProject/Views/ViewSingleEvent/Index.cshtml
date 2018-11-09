@@ -80,10 +80,6 @@
             @foreach (var user in Model.SignedUpUsers)
             {
                 <div>@user.UserDisplayName</div>
-                <div>@user.UserDisplayName</div>
-                <div>@user.UserDisplayName</div>
-                <div>@user.UserDisplayName</div>
-                <div>@user.UserDisplayName</div>
             }
         </div>
     </div>
@@ -93,7 +89,7 @@
         </div>
         <div id="not-signed-up-window">
             <div class="pane-header">To view this event's comments please sign up.</div>
-            <button class="save-button" id="join-event-btn">Join</button>
+            <button class="save-button" id="join-event-btn" onclick="joinEvent()">Join</button>
         </div>
         <div id="signed-up-window">
             <div class="pane-header">Comments: </div>
@@ -102,25 +98,8 @@
                 <button id="submit-comment-btn" onclick="newComment()">Submit</button>
             </div>
             <div id="comments-partial-view">
-                @Html.Partial("_EventComments", new System.Collections.Generic.List<Comments>(Model.EventComments))
+                @Html.Partial("_EventComments", new System.Collections.Generic.List<Comments>())
             </div>
-            @*<div id="comment-section">
-                <div id="comments-list">
-                    @foreach (var comment in Model.EventComments)
-                    {
-                        <div id="single-comment">
-                            <div id="comment-user-name">
-                                @comment.UserDisplayName
-                            </div>
-                            <div id="comment-text">
-                                @comment.Content
-                                <button id="del-comment-btn" class="fas fa-trash"></button>
-                            </div>
-                            <hr />
-                        </div>
-                    }
-                </div>
-            </div>*@
         </div>
     </div>
 
@@ -142,37 +121,6 @@
 
     $(document).ready(function () {
 
-        //getUserId(function user_id_cb(response) {
-        //    userId = response;
-        //    isUserSignedUp(function user_signed_up_cb(response) {
-        //        $("#loading-icon").hide();
-        //        if (response) {
-        //            loadComments();
-        //            window.setInterval("loadComments()", 3000);
-        //            $("#signed-up-window").show();
-        //            $("#not-signed-up-window").hide();
-        //        }
-        //        else{
-        //            $("#signed-up-window").hide();
-        //            $("#not-signed-up-window").show();
-        //        }
-        //    });
-
-        //    isUserAdmin(function user_is_admin_cb(response) {
-        //        if (response) {
-        //            $("#del-comment-btn").show();
-        //            admin = true;
-        //        }
-        //    });
-
-        //    isUserEventCreator(function user_is_event_creator_cb(response) {
-        //        if (response) {
-        //            $("#del-comment-btn").show();
-        //            eventCreator = true;
-        //        }
-        //    });
-
-        //});
 
         isUserSignedUp(function user_signed_up_cb(response) {
             $("#loading-icon").hide();
@@ -204,7 +152,7 @@
     });
 
     function convertDuration(){
-        var durationHours = parseInt(@Model.Duration) / 60;
+        var durationHours = Math.round(parseInt(@Model.Duration) / 60);
         var durationMins = parseInt(@Model.Duration) % 60;
 
         var durationOutput;
@@ -226,6 +174,7 @@
             url: "_EventComments",
             type: "GET",
             datatype: 'html',
+            data: {eventId : eventId},
             success: function (result) {
                 $("#comments-partial-view").html(result);
                 $("#comments-list").scrollTop(scrollPosition);
@@ -234,19 +183,6 @@
                 }
             }
         });
-    }
-
-    function getUserId(user_id_cb) {
-        $.ajax({
-            type: "GET",
-            url: "GetUserId",
-            contentType: "application/json;charset=utf-8",
-            dataType: "json",
-            success: function (response) {
-                user_id_cb(response);
-            }
-        });
-        
     }
 
     function newComment() {
@@ -307,8 +243,38 @@
         });
     }
 
-    function addComment() {
+    function joinEvent() {
+        $.ajax({
+            type: "POST",
+            url: "AddUserToEvent", //Controller Method to Invoke
+            data: {
+                eventId: eventId
+            },
+            success: function (response) {
+                location.reload(); //Reload webpage once user is added to page
+            }
+        });
+    }
 
+    function leaveEvent(eventId) {
+        $.ajax({
+            type: "POST",
+            url: "DeleteUserFromEvent",
+            data: {
+                eventId : eventId
+            },
+        });
+    }
+
+    function deleteComment(commentId) {
+        $.ajax({
+            type: "POST",
+            url: "DeleteComment",
+            data: {
+                commentId : commentId
+            },
+        });
+        loadComments();
     }
 </script>
 
@@ -352,7 +318,7 @@
     }
 
     .scrollable-list {
-        overflow-y: scroll;
+        overflow-y: auto;
         max-height: 90%;
     }
 

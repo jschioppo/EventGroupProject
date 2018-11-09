@@ -5,11 +5,31 @@
 @{
 }
 
-<h2>Results</h2>
+<div class="all-result-container">
+    @foreach (var result in Model)
+    {
+        <div id="result" onclick="viewEventDetails(@result.EventId)">
+            <div class="name-section">
+                <strong>@result.EventName</strong>
+            </div>
+            <div class="location-section">
+                <strong>@result.Location</strong>
+            </div>
+            <div class="time-section">
+                <div>Happens at <strong>@result.StartTime</strong></div>
+                <div>Lasts <strong>@result.Duration</strong> minutes</div>
+            </div>
+        </div>
+    }
+</div>
 
-@foreach(var x in Model)
-{
-    <div>
-        @x.Location
-    </div>
-}
+<script type="text/javascript">
+    function viewEventDetails(eventId) {
+        var url = "/ViewSingleEvent/Index?eventId=" + eventId;
+        window.location.href = url;
+    }
+</script>
+
+<style type="text/css">
+    
+</style>

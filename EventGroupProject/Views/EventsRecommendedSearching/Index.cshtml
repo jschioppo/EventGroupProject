@@ -15,6 +15,7 @@
         float: right;">Recommended</button>
 
 
+
 <div id="search-partial-view">
     @Html.Partial("_Search", new List<Tag>())
 </div>
@@ -24,6 +25,8 @@
 </div>
 
 <div id="result-partial-view">
+    <div id="loading-icon" class="loader">
+    </div>
     @Html.Partial("_ResultView", new List<Events>())
 </div>
 
@@ -31,6 +34,7 @@
 <script type="text/javascript">
 
     $(document).ready(function () {
+        $("#loading-icon").hide();
         getTags();
         search();
     });
@@ -47,14 +51,23 @@
     }
 
     function searchEvents() {
+        $("#loading-icon").show();
         var city = $("#searchbox").val();
-        findSelected();
+
+        if (!validateCity()) {
+            return;
+        }
+        if (!findSelected()) {
+            return;
+        }
+        
         $.ajax({
             type: "POST",
             url: "EventsRecommendedSearching/_ResultView",
             data: { tagIds: userTags, city: city },
             datatype: "json",
             success: function (result) {
+                $("#loading-icon").hide();
                 $("#result-partial-view").html(result);
             }
         });
@@ -63,8 +76,11 @@
     function search() {
         $("#search-partial-view").css("visibility", "visible");
         $("#recommended-partial-view").css("visibility", "hidden");
+
         document.getElementById("search-part").disabled = true;
         document.getElementById("recom-part").disabled = false;
+
+        $("#recommended-partial-view").hide();
     }
 
     function recommended() {
@@ -74,11 +90,27 @@
         document.getElementById("recom-part").disabled = true;
     }
 
+    function validateCity() {
+        var city = $("#searchbox").val();
+
+        if (!city) {
+            alert("The city field can not be blank.");
+            return false;
+        }
+
+        return true;
+    }
+
+
 </script>
 
 <style type="text/css">
     * {
         box-sizing: border-box;
+    }
+
+    #loading-icon{
+        visibility: hidden;
     }
 
     .topbar {
@@ -173,4 +205,49 @@
             cursor: pointer;
         }
     
+    #result-partial-view {
+        -webkit-box-shadow: 3px 3px 5px 6px #006747;
+        -moz-box-shadow: 3px 3px 5px 6px #006747;
+        box-shadow: 3px 3px 5px 6px #006747;
+        overflow-y: scroll;
+        overflow-x: hidden;
+        max-height: 475px;
+    }
+
+    .all-result-container {
+        display: flex;
+        flex-wrap: wrap;
+        align-content: center;
+        width: 80%;
+        margin: auto;
+        text-align: center;
+        color: #DEB887;
+        padding: 5px;
+        padding: 5px 25px 5px 25px;
+    }
+
+    .name-section {
+        font-size: 24px;
+    }
+
+    .location-section {
+        font-size: 20px;
+    }
+
+    .time-section {
+        font-size: 16px;
+    }
+
+    #result {
+        width: 50%;
+        justify-content: center;
+        margin-top: 30px;
+    }
+
+        #result:hover {
+            -moz-box-shadow: 0 0 5px 5px #666;
+            -webkit-box-shadow: 0 0 5px 5px #666;
+            box-shadow: 0 0 5px 5px #979a9e;
+            cursor: pointer;
+        }
 </style>
