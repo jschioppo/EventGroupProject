@@ -757,6 +757,16 @@ namespace EventGroupProject.Models
                 CommandType = CommandType.StoredProcedure
             };
 
+
+            cmd.Parameters.AddWithValue("@eventID", event_id);
+
+            Con.Open();
+            int i = cmd.ExecuteNonQuery();
+            Con.Close();
+
+            /*Returns if Query was successful or not*/
+            return (i == 1 ? true : false);
+
             cmd.Parameters.AddWithValue("@UserId", userId);
             cmd.Parameters.AddWithValue("@EventId", eventId);
 

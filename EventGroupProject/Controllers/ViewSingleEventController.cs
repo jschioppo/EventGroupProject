@@ -81,6 +81,10 @@ namespace EventGroupProject.Controllers
         }
 
         [HttpPost]
+        public void DeleteEvent(int eventId)
+        {
+            _dbHandler.deleteEvent(eventId); //Return Json?
+
         public void DeleteUserFromEvent(int eventId)
         {
             _dbHandler.RemoveUserFromEvent(_dbHandler.GetUserId(), eventId);
