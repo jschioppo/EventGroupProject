@@ -1,50 +1,57 @@
 ﻿@model EventsRecommendedModel
 
-<h2>Recommended</h2>
 @{
 }
 <link rel="stylesheet" href="~/css/site.css" />
 
 <div class="true-top">
     <div class="topbar">
-        <label class="header-text">Where you are located:</label>
-        <p>@Model.Location</p>
-
-
+        <label class="header-text">Finding Events In:</label>
+        <p id="city-txt" class="header-text">@Model.Location</p>
     </div>
     <div id="tag-section">
-        <div id="tag-header">
-            <span class="header-text">What you are interested in:</span>
+        <div id="tag-header-recommended">
+            <span class="header-text">Based On:</span>
+        </div>
+        <div id="search-tags">
             @foreach (var tag in Model.Tags)
             {
-                <button disabled>@tag.Name</button>
+                
+                <button disabled class="tag-btn" id="tag-search-btn">@tag.Name</button>
             }
-
         </div>
-        
     </div>
-           
 </div>
 
-        <script type="text/javascript">
-            var userTags
+<script type="text/javascript">
 
-            $('.tag-btn').click(function () {
-                $(this).toggleClass("active");
-            });
+    var userTags;
 
-            function findSelected() {
-                userTags = new Array();
-                var btnContainer = document.getElementById('search-tags');
-                var buttons = btnContainer.getElementsByTagName('button');
+    function getTagIds() {
+        userTags = new Array()
 
-                for (i = 0; i < buttons.length; ++i) {
-                    if ($(buttons[i]).hasClass("active")) {
-                        userTags.push(i + 1);
-                    }
-                }
+        @foreach(var tag in Model.Tags)
+        {
+            @:userTags.push("@tag.TagID");    
+        }
+    }
+
+    function recommendedSearch() {
+        getTagIds();
+        var city = "@Model.Location";
+
+        $.ajax({
+            type: "POST",
+            url: "EventsRecommendedSearching/_ResultView",
+            data: { tagIds: userTags, city: city },
+            datatype: "json",
+            success: function (result) {
+                $("#result-partial-view").html(result);
             }
-        </script>
+        });
+    }
+</script>
 
-        <style>
-        </style>
+<style>
+
+</style>

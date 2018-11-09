@@ -757,18 +757,24 @@ namespace EventGroupProject.Models
                 CommandType = CommandType.StoredProcedure
             };
 
-
-            cmd.Parameters.AddWithValue("@eventID", event_id);
-
-            Con.Open();
-            int i = cmd.ExecuteNonQuery();
-            Con.Close();
-
-            /*Returns if Query was successful or not*/
-            return (i == 1 ? true : false);
-
             cmd.Parameters.AddWithValue("@UserId", userId);
             cmd.Parameters.AddWithValue("@EventId", eventId);
+
+            Con.Open();
+            cmd.ExecuteNonQuery();
+            Con.Close();
+        }
+
+        public void DeleteEvent(int eventId)
+        {
+            StartConnection();
+
+            SqlCommand cmd = new SqlCommand("DeleteEvent", Con)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+
+            cmd.Parameters.AddWithValue("@eventID", eventId);
 
             Con.Open();
             cmd.ExecuteNonQuery();
@@ -789,6 +795,74 @@ namespace EventGroupProject.Models
             Con.Open();
             cmd.ExecuteNonQuery();
             Con.Close();
+        }
+
+        public EventsRecommendedModel BuildRecommendedSearch()
+        {
+            string city = GetUserCity();
+            List<Tag> tags = GetUserTags();
+
+            return new EventsRecommendedModel()
+            {
+                Location = city,
+                Tags = tags
+            };
+        }
+
+        public string GetUserCity()
+        {
+            int userId = GetUserId();
+
+            StartConnection();
+
+            SqlCommand cmd = new SqlCommand("GetUserCity", Con)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+
+            cmd.Parameters.AddWithValue("@UserId", userId);
+
+            Con.Open();
+            SqlDataReader reader = cmd.ExecuteReader();
+
+            string city = "";
+            while (reader.Read())
+            {
+                city = reader["city"].ToString();
+            }
+
+            return city;
+
+        }
+
+        public List<Tag> GetUserTags()
+        {
+
+            List<Tag> tags = new List<Tag>();
+            int userId = GetUserId();
+            StartConnection();
+
+            SqlCommand cmd = new SqlCommand("GetUserTags", Con)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+
+            cmd.Parameters.AddWithValue("@UserId", userId);
+
+            Con.Open();
+            SqlDataReader reader = cmd.ExecuteReader();
+
+            while (reader.Read())
+            {
+                tags.Add(new Tag()
+                {
+                    TagID = int.Parse(reader["TagId"].ToString()),
+                    Name = reader["TagName"].ToString()
+                });
+            }
+
+            Con.Close();
+            return tags;
         }
     }
 }

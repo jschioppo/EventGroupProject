@@ -7,10 +7,10 @@
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
 
 <h2>Find an Event</h2>
-<button id ="search-part" class="btn btn-partial"  onclick="search()" 
+<button id ="search-part" class="btn btn-partial"  onclick="showSearchView()" 
         style="width: 50%;
         float: left;">Search</button>
-<button id="recom-part" class="btn btn-partial" onclick="recommended()" 
+<button id="recom-part" class="btn btn-partial" onclick="showRecommendedView()" 
         style="width: 50%;
         float: right;">Recommended</button>
 
@@ -35,17 +35,28 @@
 
     $(document).ready(function () {
         $("#loading-icon").hide();
-        getTags();
-        search();
+        getAllTags();
+        showSearchView();
+        getUserDetails();
     });
 
-    function getTags() {
+    function getAllTags() {
         $.ajax({
             url: "EventsRecommendedSearching/_Search",
             type: "GET",
             datatype: 'html',
             success: function (result) {
                 $("#search-partial-view").html(result);
+            }
+        });
+    }
+
+    function getUserDetails() {
+        $.ajax({
+            type: "POST",
+            url: "EventsRecommendedSearching/_Recommended",
+            success: function (result) {
+                $("#recommended-partial-view").html(result);
             }
         });
     }
@@ -73,7 +84,7 @@
         });
     }
 
-    function search() {
+    function showSearchView() {
         $("#search-partial-view").css("visibility", "visible");
         $("#recommended-partial-view").css("visibility", "hidden");
 
@@ -81,13 +92,23 @@
         document.getElementById("recom-part").disabled = false;
 
         $("#recommended-partial-view").hide();
+        $("#search-partial-view").show();
+
+        $("#result-partial-view").empty();
     }
 
-    function recommended() {
+    function showRecommendedView() {
         $("#search-partial-view").css("visibility", "hidden");
         $("#recommended-partial-view").css("visibility", "visible");
         document.getElementById("search-part").disabled = false;
         document.getElementById("recom-part").disabled = true;
+
+        $("#recommended-partial-view").show();
+        $("#search-partial-view").hide();
+
+        $("#result-partial-view").empty();
+
+        recommendedSearch();
     }
 
     function validateCity() {
@@ -116,7 +137,7 @@
     .topbar {
         width: 50%;
         margin: auto;
-        margin-left: 35%;
+        margin-left: 39%;
     }
 
     #searchbox {
@@ -124,6 +145,13 @@
         padding: 10px;
         margin-top: -20px;
         margin-bottom: 30px;
+    }
+
+    #city-txt {
+        margin: auto;
+        width: 75%;
+        padding: 10px;
+        margin-top: -30px;
     }
 
     .true-top {
@@ -168,14 +196,21 @@
         
 
     #tag-section {
-        margin-left: -20px;
+        margin-left: 5%;
     }
 
-    #tag-header {
+    #tag-header-search {
         width: 50%;
         margin: auto;
         padding-bottom: 15px;
         margin-left: 35%;
+    }
+
+    #tag-header-recommended {
+        width: 50%;
+        margin: auto;
+        padding-bottom: 15px;
+        margin-left: 41%;
     }
 
     #search-btn {
