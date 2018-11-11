@@ -263,3 +263,4 @@ __pycache__/
 
 /EventGroupProject/appsettings.json
 /UnitTestLibrary/appsettings.json
+/UnitTestLibrary/TestValues.cs
