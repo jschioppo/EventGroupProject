@@ -22,24 +22,24 @@ namespace EventGroupProject.Models
         public string UserEmail { get; private set; }
         public AuthenticatedUser _authenticatedUser { get; private set; }
         public AppValues _appValues { get; private set; }
+        public string ConStr;
 
         public DBHandler(AuthenticatedUser authenticatedUser, AppValues appValues)
         {
-            _appValues = appValues;
+            ConStr = appValues.ConnectionString;
             _authenticatedUser = authenticatedUser;
             UserEmail = _authenticatedUser.Email;
         }
 
         //TODO: Am I using this? Check unit tests
-        public DBHandler()
+        public DBHandler(string conStr)
         {
 
         }
 
         private void StartConnection()
         {
-            string conStr = _appValues.ConnectionString;
-            Con = new SqlConnection(conStr);
+            Con = new SqlConnection(ConStr);
         }
 
         public bool UserTagsSelected()
