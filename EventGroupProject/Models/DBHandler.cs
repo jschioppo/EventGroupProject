@@ -21,7 +21,6 @@ namespace EventGroupProject.Models
         private SqlConnection Con { get; set; }
         public string UserEmail { get; private set; }
         public AuthenticatedUser _authenticatedUser { get; private set; }
-        public AppValues _appValues { get; private set; }
         public string ConStr;
 
         public DBHandler(AuthenticatedUser authenticatedUser, AppValues appValues)
@@ -29,12 +28,6 @@ namespace EventGroupProject.Models
             ConStr = appValues.ConnectionString;
             _authenticatedUser = authenticatedUser;
             UserEmail = _authenticatedUser.Email;
-        }
-
-        //TODO: Am I using this? Check unit tests
-        public DBHandler(string conStr)
-        {
-
         }
 
         private void StartConnection()
@@ -190,6 +183,22 @@ namespace EventGroupProject.Models
             Con.Close();
 
             return userId;
+        }
+
+        public void DeleteUser(int userId)
+        {
+            StartConnection();
+
+            SqlCommand cmd = new SqlCommand("DeleteUser", Con)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+
+            cmd.Parameters.AddWithValue("@UserId", userId);
+
+            Con.Open();
+            cmd.ExecuteNonQuery();
+            Con.Close();
         }
 
         public int GetUserId(string email)
