@@ -27,6 +27,7 @@
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Web.BrowserLink" Version="2.1.1" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.5" PrivateAssets="All" />
+    <PackageReference Include="System.Security.Permissions" Version="4.5.0" />
   </ItemGroup>
 
   <ItemGroup>

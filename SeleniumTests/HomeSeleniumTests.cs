@@ -15,8 +15,8 @@ namespace SeleniumTests
 
         public HomeSeleniumTests()
         {
-            Driver = new ChromeDriver();
-            URL = "https://localhost:44359/Home/Index";
+            Driver = new ChromeDriver(".");
+            URL = "http://www.event-bull.com";
         }
 
 
