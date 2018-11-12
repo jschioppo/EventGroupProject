@@ -47,7 +47,6 @@ namespace SeleniumTests
             GetElementWait("save-btn").Click();
 
             System.Threading.Thread.Sleep(500);
-            var url = Driver.Url;
             return (Driver.Url == "http://www.event-bull.com/Home/Index");
         }
 

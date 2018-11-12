@@ -64,6 +64,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EventCreationSeleniumTests.cs" />
+    <Compile Include="EventSearchSeleniumTests.cs" />
     <Compile Include="HomeSeleniumTests.cs" />
     <Compile Include="MasterSeleniumTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
