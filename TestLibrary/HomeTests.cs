@@ -4,10 +4,9 @@ using SeleniumTests;
 
 namespace TestLibrary
 {
-    public class HomeTests
+    public class HomeTests : IDisposable
     {
         public HomeSeleniumTests _tests;
-        public LoginTest _loginTests;
 
         public HomeTests()
         {
@@ -18,6 +17,11 @@ namespace TestLibrary
         public void NavigateToHome()
         {
             Assert.True(_tests.HomeIsReachAble());
+        }
+
+        public void Dispose()
+        {
+            _tests.Dispose();
         }
     }
 }

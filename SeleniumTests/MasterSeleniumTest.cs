@@ -9,16 +9,21 @@ using System.Threading.Tasks;
 
 namespace SeleniumTests
 {
-    public class MasterTest
+    public class MasterSeleniumTest
     {
         public string URL;
         public IWebDriver Driver;
         private string LoginEmail = "ebtest@gmail.com";
         private string PW = "ebTest1!";
 
-        public MasterTest()
+        public MasterSeleniumTest()
         {
             Driver = new ChromeDriver(".");
+        }
+
+        public void Dispose()
+        {
+            Driver.Dispose();
         }
 
         public void Login()
@@ -29,10 +34,22 @@ namespace SeleniumTests
             GetElementWait("login-button").Click();
         }
 
+        public void GoHome()
+        {
+            Driver.Navigate().GoToUrl("http://www.event-bull.com/");
+        }
+
         public IWebElement GetElementWait(string id)
         {
             WebDriverWait wait = new WebDriverWait(Driver, TimeSpan.FromSeconds(10));
             IWebElement element = wait.Until(ExpectedConditions.ElementIsVisible(By.Id(id)));
+            return element;
+        }
+
+        public IWebElement GetElementWaitByXPath(string xpath)
+        {
+            WebDriverWait wait = new WebDriverWait(Driver, TimeSpan.FromSeconds(10));
+            IWebElement element = wait.Until(ExpectedConditions.ElementIsVisible(By.XPath(xpath)));
             return element;
         }
     }

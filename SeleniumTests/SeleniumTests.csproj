@@ -63,9 +63,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EventCreationSeleniumTests.cs" />
     <Compile Include="HomeSeleniumTests.cs" />
-    <Compile Include="LoginTest.cs" />
-    <Compile Include="MasterTest.cs" />
+    <Compile Include="MasterSeleniumTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

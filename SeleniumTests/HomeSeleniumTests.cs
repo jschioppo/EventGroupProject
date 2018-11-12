@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace SeleniumTests
 {
-    public class HomeSeleniumTests : MasterTest
+    public class HomeSeleniumTests : MasterSeleniumTest
     {
         public HomeSeleniumTests()
         {
