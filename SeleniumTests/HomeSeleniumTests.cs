@@ -12,6 +12,8 @@ namespace SeleniumTests
     {
         private IWebDriver Driver;
         private string URL;
+        private string LoginEmail = "ebtest@gmail.com";
+        private string PW = "ebTest1!";
 
         public HomeSeleniumTests()
         {
@@ -19,6 +21,12 @@ namespace SeleniumTests
             URL = "http://www.event-bull.com";
         }
 
+        public bool Login()
+        {
+            Driver.FindElement(By.Id("email-input")).SendKeys(LoginEmail);
+            Driver.FindElement(By.Id("password-input")).SendKeys(PW);
+            return true;
+        }
 
         public void GoToHome()
         {
