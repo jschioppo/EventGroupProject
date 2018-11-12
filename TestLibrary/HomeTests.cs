@@ -6,17 +6,24 @@ namespace TestLibrary
 {
     public class HomeTests
     {
-        public HomeSeleniumTests Tests;
+        public HomeSeleniumTests _tests;
+        public LoginTest _loginTests;
 
         public HomeTests()
         {
-            Tests = new HomeSeleniumTests();
+            _tests = new HomeSeleniumTests();
+            _loginTests = new LoginTest();
         }
 
         [Fact]
+        public void Login()
+        {
+            Assert.True(_loginTests.Login());
+        }
+        [Fact]
         public void NavigateToHome()
         {
-            Assert.True(Tests.HomeIsReachAble());
+            Assert.True(_tests.HomeIsReachAble());
         }
     }
 }

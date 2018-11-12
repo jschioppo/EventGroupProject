@@ -64,6 +64,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="HomeSeleniumTests.cs" />
+    <Compile Include="LoginTest.cs" />
+    <Compile Include="MasterTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
