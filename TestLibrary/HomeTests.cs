@@ -12,14 +12,8 @@ namespace TestLibrary
         public HomeTests()
         {
             _tests = new HomeSeleniumTests();
-            _loginTests = new LoginTest();
         }
 
-        [Fact]
-        public void Login()
-        {
-            Assert.True(_loginTests.Login());
-        }
         [Fact]
         public void NavigateToHome()
         {

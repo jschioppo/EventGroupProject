@@ -13,11 +13,20 @@ namespace SeleniumTests
     {
         public string URL;
         public IWebDriver Driver;
-        public LoginTest _login;
+        private string LoginEmail = "ebtest@gmail.com";
+        private string PW = "ebTest1!";
 
         public MasterTest()
         {
             Driver = new ChromeDriver(".");
+        }
+
+        public void Login()
+        {
+            Driver.Navigate().GoToUrl(URL);
+            GetElementWait("email-input").SendKeys(LoginEmail);
+            GetElementWait("password-input").SendKeys(PW);
+            GetElementWait("login-button").Click();
         }
 
         public IWebElement GetElementWait(string id)

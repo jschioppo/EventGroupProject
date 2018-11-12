@@ -13,18 +13,18 @@ namespace SeleniumTests
     {
         public HomeSeleniumTests()
         {
-            URL = "http://www.event-bull.com";
+            URL = "http://www.event-bull.com/";
+            GoToHome();
         }
 
         public void GoToHome()
         {
-            _login.Login();
+            Login();
             Driver.Navigate().GoToUrl(URL);
         }
 
         public bool HomeIsReachAble()
         {
-            GoToHome();
             return (URL == Driver.Url);
         }
 
